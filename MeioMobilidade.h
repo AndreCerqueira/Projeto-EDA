@@ -17,6 +17,7 @@
 
 	// Constants
 	#define LOCALIZACAO_LENGHT 20
+
 	#define HARDDATA_FILE_NAME "MeiosMobilidade.txt"
 	#define SAVE_FILE_NAME "MeiosMobilidade.dat"
 
@@ -33,14 +34,16 @@
 
 
 	// Structs
-	typedef struct {
-		TipoMeioMobilidade tipo;
+	typedef struct MeioMobilidade MeioMobilidade;
+	typedef struct MeioMobilidade {
 		char uid[UID_LENGHT];
+		TipoMeioMobilidade tipo;
 		float cargaBateria;
 		float custoAluguer;
 		char localizacao[LOCALIZACAO_LENGHT];
+		bool ativo;
 		MeioMobilidade* proximo;
-	} MeioMobilidade;
+	};
 
 
 	// Funções

@@ -124,10 +124,51 @@ void MostrarMenuRemoverCliente() {
 
 
 // Lista de Clientes
-void MostrarMenuListaClientes() {
+void MostrarMenuListaClientes(Cliente* clientes) {
 
-	// TODO
+	// Variaveis
+	int i;
 
+	// Mostrar os dados da clinica
+	system("cls");
+	puts("+-----------------------------------------------------------------------+");
+	puts("|                               Lista de Clientes                       |");
+	puts("+-----------------------------------------------------------------------+");
+	puts("|       Nome       |       Nif       |       Morada       |    Saldo    |");
+	puts("+-----------------------------------------------------------------------+");
+
+
+	
+	Cliente* cliente_atual = clientes;
+
+	while (cliente_atual != NULL) {
+		printf("UID: %s\n", cliente_atual->uid);
+		printf("Nome: %s\n", cliente_atual->nome);
+		printf("NIF: %s\n", cliente_atual->nif);
+		printf("Morada: %s\n", cliente_atual->morada);
+		printf("Saldo: %.2f\n", cliente_atual->saldo);
+		printf("Ativo: %d\n", cliente_atual->ativo);
+		printf("------------------------\n");
+
+		cliente_atual = cliente_atual->proximo;
+	}
+	
+	
+	/*for (i = 0; i < n; i++)
+	{
+		Cliente cliente = clientes[i];
+
+		if (cliente.ativo == 1)
+		{
+			printf("| %-16s | %-16s | %-18s | %-11.2f |\n", cliente.nome, cliente.nif, cliente.morada, cliente.saldo);
+		}
+		
+	}*/
+	puts("+-----------------------------------------------------------------------+");
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
 }
 
 

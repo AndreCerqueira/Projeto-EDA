@@ -20,9 +20,11 @@
 	// Structs
 	typedef struct Gestor Gestor;
 	struct Gestor {
+		char uid[UID_LENGHT];
 		char nome[NOME_LENGHT];
 		char email[EMAIL_LENGHT];
 		char password[PASSWORD_LENGHT];
+		bool ativo;
 		Gestor* proximo;
 	};
 

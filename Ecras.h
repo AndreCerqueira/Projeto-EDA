@@ -13,6 +13,8 @@
 	 // include
 	#include <locale.h>
 	#include <stdio.h>
+	#include "MeioMobilidade.h"
+	#include "Cliente.h"
 	#include "Gestor.h"
 	#include "Utils.h"
 
@@ -23,7 +25,7 @@
 	void MostrarMenuAdicionarCliente();
 	void MostrarMenuEditarCliente();
 	void MostrarMenuRemoverCliente();
-	void MostrarMenuListaClientes();
+	void MostrarMenuListaClientes(Cliente* clientes);
 	
 	void MostrarMenuAdicionarMeioMobilidade();
 	void MostrarMenuEditarMeioMobilidade();

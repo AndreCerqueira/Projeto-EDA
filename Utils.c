@@ -11,6 +11,18 @@
 #include "Utils.h"
 
 
+char* GetFullPath(char* path)
+{
+	char fullPath[100];
+	strcpy_s(fullPath, sizeof(fullPath), __FILE__);
+	char* p = strrchr(fullPath, '\\');
+	*p = '\0';
+	strcat_s(fullPath, sizeof(fullPath), "\\");
+	strcat_s(fullPath, sizeof(fullPath), path);
+	return fullPath;
+}
+
+
 // GenerateUID
 void GenerateUID(char* uid)
 {

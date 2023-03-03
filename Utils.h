@@ -24,7 +24,12 @@
 	#define IS_CANCELED 2
 
 
+	// Enums
+	typedef enum { false, true } bool;
+
+
 	// Signatures
+	char* GetFullPath(char* path);
 	void GenerateUID(char* uid);
 	int Confirmar();
 	int SelectById(int n);
