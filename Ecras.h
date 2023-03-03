@@ -17,8 +17,22 @@
 	#include "Utils.h"
 
 
-	void MostrarLoginMenu();
-
+	void MostrarMenuLogin();
 	void MostrarMenuPrincipal(int* op);
+	
+	void MostrarMenuAdicionarCliente();
+	void MostrarMenuEditarCliente();
+	void MostrarMenuRemoverCliente();
+	void MostrarMenuListaClientes();
+	
+	void MostrarMenuAdicionarMeioMobilidade();
+	void MostrarMenuEditarMeioMobilidade();
+	void MostrarMenuRemoverMeioMobilidade();
+	void MostrarMenuListaMeiosMobilidade();
+	
+	void MostrarMenuAdicionarGestor();
+	void MostrarMenuEditarGestor();
+	void MostrarMenuRemoverGestor();
+	void MostrarMenuListaGestores();
 
 #endif

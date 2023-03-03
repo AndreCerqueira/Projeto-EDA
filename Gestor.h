@@ -12,24 +12,24 @@
 
 
 	// Constants
-	#define NOME_SIZE 50
-	#define EMAIL_SIZE 50
-	#define PASSWORD_SIZE 20
+	#define NOME_LENGHT 50
+	#define EMAIL_LENGHT 50
+	#define PASSWORD_LENGHT 20
 
 
 	// Structs
 	typedef struct Gestor Gestor;
 	struct Gestor {
-		char nome[NOME_SIZE];
-		char email[EMAIL_SIZE];
-		char password[PASSWORD_SIZE];
+		char nome[NOME_LENGHT];
+		char email[EMAIL_LENGHT];
+		char password[PASSWORD_LENGHT];
 		Gestor* proximo;
 	};
 
 	/*typedef struct {
-		char nome[NOME_SIZE];
-		char email[EMAIL_SIZE];
-		char password[PASSWORD_SIZE];
+		char nome[NOME_LENGHT];
+		char email[EMAIL_LENGHT];
+		char password[PASSWORD_LENGHT];
 		Gestor* proximo;
 	} Gestor;*/
 

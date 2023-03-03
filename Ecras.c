@@ -17,11 +17,11 @@
  * .
  * 
  */
-void MostrarLoginMenu() {
+void MostrarMenuLogin() {
 
 	// Variaveis
-	char email[EMAIL_SIZE];
-	char password[PASSWORD_SIZE];
+	char email[EMAIL_LENGHT];
+	char password[PASSWORD_LENGHT];
 
 	// Inserir os dados da clinica
 	system("cls");
@@ -30,11 +30,11 @@ void MostrarLoginMenu() {
 	puts("+-------------------------------+");
 	
 	printf("Insira o email do gestor: ");
-	scanf_s("%s", email, EMAIL_SIZE);
+	scanf_s("%s", email, EMAIL_LENGHT);
 	fflush(stdin);
 	
 	printf("Insira a palavra-passe do gestor: ");
-	scanf_s("%s", password, PASSWORD_SIZE);
+	scanf_s("%s", password, PASSWORD_LENGHT);
 	fflush(stdin);
 
 	// Confirmar ou cancelar a respetiva operação.
@@ -100,4 +100,99 @@ void MostrarMenuPrincipal(int* op) {
 
 
 // Adicionar Cliente
+void MostrarMenuAdicionarCliente() {
+	
+	// TODO
+
+}
+
+
+// Editar Cliente
+void MostrarMenuEditarCliente() {
+
+	// TODO
+
+}
+
+
+// Remover Cliente
+void MostrarMenuRemoverCliente() {
+
+	// TODO
+
+}
+
+
+// Lista de Clientes
+void MostrarMenuListaClientes() {
+
+	// TODO
+
+}
+
+
+// Adicionar Meio de mobilidade
+void MostrarMenuAdicionarMeioMobilidade() {
+
+	// TODO
+
+}
+
+
+// Editar Meio de mobilidade
+void MostrarMenuEditarMeioMobilidade() {
+
+	// TODO
+
+}
+
+
+// Remover Meio de mobilidade
+void MostrarMenuRemoverMeioMobilidade() {
+
+	// TODO
+
+}
+
+
+// Lista de Meios de mobilidade
+void MostrarMenuListaMeiosMobilidade() {
+
+	// TODO
+
+}
+
+
+// Adicionar Gestor
+void MostrarMenuAdicionarGestor() {
+
+	// TODO
+
+}
+
+
+// Editar Gestor
+void MostrarMenuEditarGestor() {
+
+	// TODO
+
+}
+
+
+// Remover Gestor
+void MostrarMenuRemoverGestor() {
+
+	// TODO
+
+}
+
+
+// Lista de Gestores
+void MostrarMenuListaGestores() {
+
+	// TODO
+
+}
+
+
 

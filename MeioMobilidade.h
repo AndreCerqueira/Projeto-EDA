@@ -1,5 +1,3 @@
-#pragma once
-
 /*****************************************************************//**
  * \file   MeioMobilidade.h
  * \brief  Funções de Meios de Mobilidade
@@ -7,28 +5,23 @@
  * \author A. Cerqueira
  * \date   February 2023
  *********************************************************************/
+#pragma once
 
 
-// Constants
-#ifndef ID_SIZE
-	#define ID_SIZE 20
-#endif
+#ifndef MEIO_MOBILIDADE_H_
+#define MEIO_MOBILIDADE_H_
 
-#ifndef LOCALIZACAO_SIZE
-	#define LOCALIZACAO_SIZE 20
-#endif
+	// Includes
+	#include "Utils.h"
 
-#ifndef HARDDATA_FILE_NAME
+
+	// Constants
+	#define LOCALIZACAO_LENGHT 20
 	#define HARDDATA_FILE_NAME "MeiosMobilidade.txt"
-#endif
-
-#ifndef SAVE_FILE_NAME
 	#define SAVE_FILE_NAME "MeiosMobilidade.dat"
-#endif
 
 
-// Enums
-#ifndef TIPO_MEIO_MOBILIDADE
+	// Enums
 	typedef enum {
 		Bicibleta,
 		Trotinente,
@@ -38,24 +31,19 @@
 		Outro
 	} TipoMeioMobilidade;
 
-	#define TIPO_MEIO_MOBILIDADE 1
-#endif
 
-
-// Structs
-#ifndef MEIO_MOBILIDADE
-
+	// Structs
 	typedef struct {
 		TipoMeioMobilidade tipo;
-		char id[ID_SIZE];
+		char uid[UID_LENGHT];
 		float cargaBateria;
 		float custoAluguer;
-		char localizacao[LOCALIZACAO_SIZE];
+		char localizacao[LOCALIZACAO_LENGHT];
 		MeioMobilidade* proximo;
 	} MeioMobilidade;
+
+
+	// Funções
 	
-	#define MEIO_MOBILIDADE 1
+	
 #endif
-
-
-// Funções

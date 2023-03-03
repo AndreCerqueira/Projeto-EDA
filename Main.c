@@ -21,20 +21,48 @@ void main() {
 
 	int op = -1;
 
-	MostrarLoginMenu();
+	MostrarMenuLogin();
 
 	// program loop
 	while (op != 0) {
 		MostrarMenuPrincipal(&op);
+		
 		switch (op) {
 		case 1:
-			// Adicionar Cliente
+			MostrarMenuAdicionarCliente();
 			break;
 		case 2:
-			// Editar Cliente
+			MostrarMenuEditarCliente();
 			break;
 		case 3:
-			// Remover Cliente
+			MostrarMenuRemoverCliente();
+			break;
+		case 4:
+			MostrarMenuListaClientes();
+			break;
+		case 5:
+			MostrarMenuAdicionarMeioMobilidade();
+			break;
+		case 6:
+			MostrarMenuEditarMeioMobilidade();
+			break;
+		case 7:
+			MostrarMenuRemoverMeioMobilidade();
+			break;
+		case 8:
+			MostrarMenuListaMeiosMobilidade();
+			break;
+		case 9:
+			MostrarMenuAdicionarGestor();
+			break;
+		case 10:
+			MostrarMenuEditarGestor();
+			break;
+		case 11:
+			MostrarMenuRemoverGestor();
+			break;
+		case 12:
+			MostrarMenuListaGestores();
 			break;
 		case 0:
 			// Sair

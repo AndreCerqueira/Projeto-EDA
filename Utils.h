@@ -19,11 +19,13 @@
 
 
 	// Constants
+	#define UID_LENGHT 36
 	#define IS_CONFIRMED 1
 	#define IS_CANCELED 2
 
 
 	// Signatures
+	void GenerateUID(char* uid);
 	int Confirmar();
 	int SelectById(int n);
 	void GetDate(char* date);
