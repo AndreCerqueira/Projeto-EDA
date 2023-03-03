@@ -38,3 +38,24 @@
 
 	
 // Funções
+
+
+
+// Funções de ficheiros
+
+// Ler dados de um ficheiro de texto e guardar numa lista ligada
+Cliente* LerDadosIniciais();
+
+// Carregar dados inicial de um ficheiro de texto e guardar numa lista ligada
+Cliente* CarregarDadosIniciais();
+
+// Ler dados de um ficheiro de .dat e guardar numa lista ligada
+Cliente* LerDados();
+
+// Guardar dados de uma lista ligada num ficheiro .dat
+void GuardarDados(Cliente* clientes);
+
+
+
+
+

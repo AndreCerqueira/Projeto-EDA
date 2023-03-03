@@ -10,10 +10,6 @@
 
 
 // Constants
-#ifndef TIPO_SIZE
-	#define TIPO_SIZE 20
-#endif
-
 #ifndef ID_SIZE
 	#define ID_SIZE 20
 #endif
@@ -31,11 +27,26 @@
 #endif
 
 
+// Enums
+#ifndef TIPO_MEIO_MOBILIDADE
+	typedef enum {
+		Bicibleta,
+		Trotinente,
+		Scooter,
+		Segway,
+		SkateEletrico,
+		Outro
+	} TipoMeioMobilidade;
+
+	#define TIPO_MEIO_MOBILIDADE 1
+#endif
+
+
 // Structs
 #ifndef MEIO_MOBILIDADE
 
 	typedef struct {
-		char tipo[TIPO_SIZE];
+		TipoMeioMobilidade tipo;
 		char id[ID_SIZE];
 		float cargaBateria;
 		float custoAluguer;
@@ -48,4 +59,3 @@
 
 
 // Funções
-

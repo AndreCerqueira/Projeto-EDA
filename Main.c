@@ -1,20 +1,49 @@
 /*****************************************************************//**
  * \file   Main.c
- * \brief  
+ * \brief  Main do programa
  * 
- * \author User
+ * \author A. Cerqueira
  * \date   March 2023
  *********************************************************************/
 
 // include
-#include <stdio.h>
+#include "Ecras.h"
 
 // main
+
 
 /**
  * .
  * 
  */
 void main() {
-	printf("Hello World");
+	setlocale(LC_ALL, "Portuguese");
+
+	int op = -1;
+
+	MostrarLoginMenu();
+
+	// program loop
+	while (op != 0) {
+		MostrarMenuPrincipal(&op);
+		switch (op) {
+		case 1:
+			// Adicionar Cliente
+			break;
+		case 2:
+			// Editar Cliente
+			break;
+		case 3:
+			// Remover Cliente
+			break;
+		case 0:
+			// Sair
+			break;
+		default:
+			// Opção inválida
+			break;
+		}
+	}
 }
+
+
