@@ -11,15 +11,15 @@
 #include "Utils.h"
 
 
-char* GetFullPath(char* path)
+#define MAX_PATH_LENGTH 100
+#pragma warning(disable : 4996)
+void GetFullPath(const char* path, char* fullPath)
 {
-	char fullPath[100];
-	strcpy_s(fullPath, sizeof(fullPath), __FILE__);
+	strcpy(fullPath, __FILE__);
 	char* p = strrchr(fullPath, '\\');
 	*p = '\0';
-	strcat_s(fullPath, sizeof(fullPath), "\\");
-	strcat_s(fullPath, sizeof(fullPath), path);
-	return fullPath;
+	strcat(fullPath, "\\");
+	strcat(fullPath, path);
 }
 
 

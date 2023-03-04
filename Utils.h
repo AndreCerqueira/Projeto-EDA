@@ -19,6 +19,7 @@
 
 
 	// Constants
+	#define MAX_SIZE 1024
 	#define UID_LENGHT 36
 	#define IS_CONFIRMED 1
 	#define IS_CANCELED 2
@@ -29,7 +30,7 @@
 
 
 	// Signatures
-	char* GetFullPath(char* path);
+	void GetFullPath(const char* path, char* fullPath);
 	void GenerateUID(char* uid);
 	int Confirmar();
 	int SelectById(int n);
