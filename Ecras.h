@@ -10,7 +10,6 @@
 #ifndef ECRAS_H_
 #define ECRAS_H_
 
-	 // include
 	#include <locale.h>
 	#include <stdio.h>
 	#include "MeioMobilidade.h"
@@ -22,19 +21,19 @@
 	void MostrarMenuLogin();
 	void MostrarMenuPrincipal(int* op);
 	
-	void MostrarMenuAdicionarCliente();
-	void MostrarMenuEditarCliente();
-	void MostrarMenuRemoverCliente();
-	void MostrarMenuListaClientes(Cliente* clientes);
+	void MostrarMenuAdicionarCliente(Cliente** ultimoCliente);
+	void MostrarMenuEditarCliente(Cliente* ultimoCliente);
+	void MostrarMenuRemoverCliente(Cliente* ultimoCliente);
+	void MostrarMenuListaClientes(Cliente* ultimoCliente);
 	
-	void MostrarMenuAdicionarMeioMobilidade();
-	void MostrarMenuEditarMeioMobilidade();
-	void MostrarMenuRemoverMeioMobilidade();
-	void MostrarMenuListaMeiosMobilidade();
+	void MostrarMenuAdicionarMeioMobilidade(MeioMobilidade** ultimoMeio);
+	void MostrarMenuEditarMeioMobilidade(MeioMobilidade* ultimoMeio);
+	void MostrarMenuRemoverMeioMobilidade(MeioMobilidade* ultimoMeio);
+	void MostrarMenuListaMeiosMobilidade(MeioMobilidade* ultimoMeio);
 	
-	void MostrarMenuAdicionarGestor();
-	void MostrarMenuEditarGestor();
-	void MostrarMenuRemoverGestor();
-	void MostrarMenuListaGestores();
+	void MostrarMenuAdicionarGestor(Gestor** ultimoGestor);
+	void MostrarMenuEditarGestor(Gestor* ultimoGestor);
+	void MostrarMenuRemoverGestor(Gestor* ultimoGestor);
+	void MostrarMenuListaGestores(Gestor* ultimoGestor);
 
 #endif

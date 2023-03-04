@@ -100,31 +100,120 @@ void MostrarMenuPrincipal(int* op) {
 
 
 // Adicionar Cliente
-void MostrarMenuAdicionarCliente() {
+void MostrarMenuAdicionarCliente(Cliente** ultimoCliente) {
 	
-	// TODO
+	// Variaveis
+	char nome[NOME_LENGHT];
+	char nif[NIF_LENGHT];
+	char morada[MORADA_LENGHT];
+	float saldo;
 
+	// Inserir os dados da clinica
+	system("cls");
+	puts("+-------------------------------+");
+	puts("|        Adicionar Cliente      |");
+	puts("+-------------------------------+");
+
+	printf("Insira o nome do cliente: ");
+	scanf_s("%s", nome, NOME_LENGHT);
+	fflush(stdin);
+
+	printf("Insira o nif do cliente: ");
+	scanf_s("%s", nif, NIF_LENGHT);
+	fflush(stdin);
+
+	printf("Insira a morada do cliente: ");
+	scanf_s("%s", morada, MORADA_LENGHT);
+	fflush(stdin);
+
+	printf("Insira o saldo do cliente: ");
+	scanf_s("%f", &saldo);
+	fflush(stdin);
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+
+	// Atribuição de dados
+	AdicionarCliente(ultimoCliente, nome, nif, morada, saldo);
+	
 }
 
 
 // Editar Cliente
-void MostrarMenuEditarCliente() {
+void MostrarMenuEditarCliente(Cliente* ultimoCliente) {
 
-	// TODO
+	// Variaveis
+	int id;
+	char nome[NOME_LENGHT];
+	char nif[NIF_LENGHT];
+	char morada[MORADA_LENGHT];
+	float saldo;
+
+	// Inserir os dados da clinica
+	system("cls");
+	puts("+-------------------------------+");
+	puts("|         Editar Cliente        |");
+	puts("+-------------------------------+");
+
+	printf("Insira o id do cliente: ");
+	scanf_s("%d", &id);
+	fflush(stdin);
+
+	printf("Insira o nome do cliente: ");
+	scanf_s("%s", nome, NOME_LENGHT);
+	fflush(stdin);
+
+	printf("Insira o nif do cliente: ");
+	scanf_s("%s", nif, NIF_LENGHT);
+	fflush(stdin);
+
+	printf("Insira a morada do cliente: ");
+	scanf_s("%s", morada, MORADA_LENGHT);
+	fflush(stdin);
+
+	printf("Insira o saldo do cliente: ");
+	scanf_s("%f", &saldo);
+	fflush(stdin);
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+
+	// Atribuição de dados
+	EditarCliente(ultimoCliente, id, nome, nif, morada, saldo);
 
 }
 
 
 // Remover Cliente
-void MostrarMenuRemoverCliente() {
+void MostrarMenuRemoverCliente(Cliente* ultimoCliente) {
 
-	// TODO
+	// Variaveis
+	int id;
+
+	// Inserir os dados da clinica
+	system("cls");
+	puts("+-------------------------------+");
+	puts("|        Remover Cliente        |");
+	puts("+-------------------------------+");
+
+	printf("Insira o id do cliente: ");
+	scanf_s("%d", &id);
+	fflush(stdin);
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+
+	// Atribuição de dados
+	RemoverCliente(ultimoCliente, id);
 
 }
 
 
 // Lista de Clientes
-void MostrarMenuListaClientes(Cliente* clientes) {
+void MostrarMenuListaClientes(Cliente* ultimoCliente) {
 
 	// Variaveis
 	int i;
@@ -137,13 +226,14 @@ void MostrarMenuListaClientes(Cliente* clientes) {
 	puts("|  ID  |          Nome          |      Nif     |       Morada       |    Saldo    |");
 	puts("+---------------------------------------------------------------------------------+");
 
-	while (clientes != NULL) {
-		if (clientes->ativo == 1)
+	Cliente* cliente = ultimoCliente;
+	while (cliente != NULL) {
+		if (cliente->ativo == true)
 		{
-			printf("| %-4d | %-22s | %-12s | %-18s | %-11.2f |\n", clientes->id, clientes->nome, clientes->nif, clientes->morada, clientes->saldo);
+			printf("| %-4d | %-22s | %-12s | %-18s | %-11.2f |\n", cliente->id, cliente->nome, cliente->nif, cliente->morada, cliente->saldo);
 		}
 
-		clientes = clientes->proximo;
+		cliente = cliente->proximo;
 	}
 
 	puts("+---------------------------------------------------------------------------------+");
@@ -156,65 +246,284 @@ void MostrarMenuListaClientes(Cliente* clientes) {
 
 
 // Adicionar Meio de mobilidade
-void MostrarMenuAdicionarMeioMobilidade() {
+void MostrarMenuAdicionarMeioMobilidade(MeioMobilidade** ultimoMeio) {
+	
+	// Variaveis
+	TipoMeioMobilidade tipo;
+	float cargaBateria;
+	float custoAluguer;
+	char localizacao[LOCALIZACAO_LENGHT];
+	
+	// Inserir os dados da clinica
+	system("cls");
+	puts("+----------------------------------------+");
+	puts("|      Adicionar Meio de Mobilidade      |");
+	puts("+----------------------------------------+");
 
-	// TODO
-
+	printf("\n1 - Bicibleta | 2 - Trotinente | 3 - Scooter | 4 - Segway | 5 - Skate Eletrico | 6 - Outro |\n");
+	printf("Insira o tipo do meio de mobilidade: ");
+	scanf_s("%d", &tipo);
+	fflush(stdin);
+	
+	printf("Insira a carga da bateria do meio de mobilidade: ");
+	scanf_s("%f", &cargaBateria);
+	fflush(stdin);
+	
+	printf("Insira o custo de aluguer do meio de mobilidade: ");
+	scanf_s("%f", &custoAluguer);
+	fflush(stdin);
+	
+	printf("Insira a localizacao do meio de mobilidade: ");
+	scanf_s("%s", localizacao, LOCALIZACAO_LENGHT);
+	fflush(stdin);
+	
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+	
+	// Atribuição de dados
+	AdicionarMeioMobilidade(ultimoMeio, tipo, cargaBateria, custoAluguer, localizacao);
 }
 
 
 // Editar Meio de mobilidade
-void MostrarMenuEditarMeioMobilidade() {
+void MostrarMenuEditarMeioMobilidade(MeioMobilidade* ultimoMeio) {
 
-	// TODO
-
+	// Variaveis
+	int id;
+	TipoMeioMobilidade tipo;
+	float cargaBateria;
+	float custoAluguer;
+	char localizacao[LOCALIZACAO_LENGHT];
+	
+	// Inserir os dados da clinica
+	system("cls");
+	puts("+----------------------------------------+");
+	puts("|       Editar Meio de Mobilidade        |");
+	puts("+----------------------------------------+");
+	
+	printf("Insira o id do meio de mobilidade: ");
+	scanf_s("%d", &id);
+	fflush(stdin);
+	
+	printf("\n1 - Bicibleta | 2 - Trotinente | 3 - Scooter | 4 - Segway | 5 - Skate Eletrico | 6 - Outro |\n");
+	printf("Insira o tipo do meio de mobilidade: ");
+	scanf_s("%d", &tipo);
+	fflush(stdin);
+	
+	printf("Insira a carga da bateria do meio de mobilidade: ");
+	scanf_s("%f", &cargaBateria);
+	fflush(stdin);
+	
+	printf("Insira o custo de aluguer do meio de mobilidade: ");
+	scanf_s("%f", &custoAluguer);
+	fflush(stdin);
+	
+	printf("Insira a localizacao do meio de mobilidade: ");
+	scanf_s("%s", localizacao, LOCALIZACAO_LENGHT);
+	fflush(stdin);
+	
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+	
+	// Atribuição de dados
+	EditarMeioMobilidade(ultimoMeio, id, tipo, cargaBateria, custoAluguer, localizacao);
+	
 }
 
 
 // Remover Meio de mobilidade
-void MostrarMenuRemoverMeioMobilidade() {
+void MostrarMenuRemoverMeioMobilidade(MeioMobilidade* ultimoMeio) {
 
-	// TODO
+	// Variaveis
+	int id;
+
+	// Inserir os dados da clinica
+	system("cls");
+	puts("+----------------------------------------+");
+	puts("|      Remover Meio de Mobilidade        |");
+	puts("+----------------------------------------+");
+
+	printf("Insira o id do meio de mobilidade: ");
+	scanf_s("%d", &id);
+	fflush(stdin);
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+
+	// Atribuição de dados
+	RemoverMeioMobilidade(ultimoMeio, id);
 
 }
 
 
 // Lista de Meios de mobilidade
-void MostrarMenuListaMeiosMobilidade() {
+void MostrarMenuListaMeiosMobilidade(MeioMobilidade* ultimoMeio) {
+	
+	// Variaveis
+	int i;
 
-	// TODO
+	// Mostrar os dados da clinica
+	system("cls");
+	puts("+----------------------------------------------------------------------------------+");
+	puts("|                             Lista de Meios de Mobilidade                         |");
+	puts("+----------------------------------------------------------------------------------+");
+	puts("|  ID  |        Tipo        | Carga Bateria | Custo Aluguer |     Localizacao      |");
+	puts("+----------------------------------------------------------------------------------+");
 
+	// Mostrar os dados dos clientes
+	MeioMobilidade* meio = ultimoMeio;
+	while (meio != NULL) {
+		if (meio->ativo == true)
+		{
+			printf("| %4d | %18s | %13.2f | %13.2f | %20s |\n", meio->id, TipoMeioMobilidadeToString(meio->tipo), meio->cargaBateria, meio->custoAluguer, meio->localizacao);
+		}
+
+		meio = meio->proximo;
+	}
+
+	puts("+----------------------------------------------------------------------------------+");
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
 }
 
 
 // Adicionar Gestor
-void MostrarMenuAdicionarGestor() {
+void MostrarMenuAdicionarGestor(Gestor** ultimoGestor) {
+	
+	// Variaveis
+	char nome[NOME_LENGHT];
+	char email[EMAIL_LENGHT];
+	char password[PASSWORD_LENGHT];
 
-	// TODO
+	// Inserir os dados da clinica
+	system("cls");
+	puts("+----------------------------------------+");
+	puts("|          Adicionar Gestor              |");
+	puts("+----------------------------------------+");
+
+	printf("Insira o nome do gestor: ");
+	scanf_s("%s", nome, NOME_LENGHT);
+	fflush(stdin);
+
+	printf("Insira o email do gestor: ");
+	scanf_s("%s", email, EMAIL_LENGHT);
+	fflush(stdin);
+
+	printf("Insira a password do gestor: ");
+	scanf_s("%s", password, PASSWORD_LENGHT);
+	fflush(stdin);
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+
+	// Atribuição de dados
+	AdicionarGestor(ultimoGestor, nome, email, password);
 
 }
 
 
 // Editar Gestor
-void MostrarMenuEditarGestor() {
+void MostrarMenuEditarGestor(Gestor* ultimoGestor) {
+	
+	// Variaveis
+	int id;
+	char nome[NOME_LENGHT];
+	char email[EMAIL_LENGHT];
+	char password[PASSWORD_LENGHT];
+	
+	// Inserir os dados da clinica
+	system("cls");
+	puts("+----------------------------------------+");
+	puts("|          Editar Gestor                 |");
+	puts("+----------------------------------------+");
+	
+	printf("Insira o id do gestor: ");
+	scanf_s("%d", &id);
+	fflush(stdin);
+	
+	printf("Insira o nome do gestor: ");
+	scanf_s("%s", nome, NOME_LENGHT);
+	fflush(stdin);
+	
+	printf("Insira o email do gestor: ");
+	scanf_s("%s", email, EMAIL_LENGHT);
+	fflush(stdin);
 
-	// TODO
+	printf("Insira a password do gestor: ");
+	scanf_s("%s", password, PASSWORD_LENGHT);
+	fflush(stdin);
+	
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
 
+	// Atribuição de dados
+	EditarGestor(ultimoGestor, id, nome, email, password);
 }
 
 
 // Remover Gestor
-void MostrarMenuRemoverGestor() {
+void MostrarMenuRemoverGestor(Gestor* ultimoGestor) {
+	
+	// Variaveis
+	int id;
 
-	// TODO
+	// Inserir os dados da clinica
+	system("cls");
+	puts("+----------------------------------------+");
+	puts("|          Remover Gestor                |");
+	puts("+----------------------------------------+");
+
+	printf("Insira o id do gestor: ");
+	scanf_s("%d", &id);
+	fflush(stdin);
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+
+	// Atribuição de dados
+	RemoverGestor(ultimoGestor, id);
 
 }
 
 
 // Lista de Gestores
-void MostrarMenuListaGestores() {
+void MostrarMenuListaGestores(Gestor* ultimoGestor) {
 
-	// TODO
+	// Variaveis
+	int i;
+
+	// Mostrar os dados da clinica
+	system("cls");
+	puts("+---------------------------------------------------------------+");
+	puts("|                          Lista de Gestores                    |");
+	puts("+---------------------------------------------------------------+");
+	puts("|  ID  |          Nome          |             Email             |");
+	puts("+---------------------------------------------------------------+");
+
+	// Mostrar os dados dos clientes
+	Gestor* gestor = ultimoGestor;
+	while (gestor != NULL) {
+		if (gestor->ativo == true)
+		{
+			printf("| %4d | %22s | %29s |\n", gestor->id, gestor->nome, gestor->email);
+		}
+
+		gestor = gestor->proximo;
+	}
+
+	puts("+---------------------------------------------------------------+");
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
 
 }
 

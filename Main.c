@@ -19,72 +19,60 @@
  */
 void main() {
 	setlocale(LC_ALL, "Portuguese");
-
-
+	
 	// Variables
 	int op = -1;
-	Cliente* listaClientes = NULL;
-
-
+	Cliente* clientes = LerClientesIniciais();
+	MeioMobilidade* meiosMobilidade = LerMeiosMobilidadeIniciais();
+	Gestor* gestores = LerGestoresIniciais();
 	
-	listaClientes = LerDadosIniciais();
-
-	// Loop listaClientes
-
-	MostrarMenuListaClientes(listaClientes);
-
-
-	MostrarMenuLogin();
-
-	//// program loop
-	//while (op != 0) {
-	//	MostrarMenuPrincipal(&op);
-	//	
-	//	switch (op) {
-	//	case 1:
-	//		MostrarMenuAdicionarCliente();
-	//		break;
-	//	case 2:
-	//		MostrarMenuEditarCliente();
-	//		break;
-	//	case 3:
-	//		MostrarMenuRemoverCliente();
-	//		break;
-	//	case 4:
-	//		MostrarMenuListaClientes();
-	//		break;
-	//	case 5:
-	//		MostrarMenuAdicionarMeioMobilidade();
-	//		break;
-	//	case 6:
-	//		MostrarMenuEditarMeioMobilidade();
-	//		break;
-	//	case 7:
-	//		MostrarMenuRemoverMeioMobilidade();
-	//		break;
-	//	case 8:
-	//		MostrarMenuListaMeiosMobilidade();
-	//		break;
-	//	case 9:
-	//		MostrarMenuAdicionarGestor();
-	//		break;
-	//	case 10:
-	//		MostrarMenuEditarGestor();
-	//		break;
-	//	case 11:
-	//		MostrarMenuRemoverGestor();
-	//		break;
-	//	case 12:
-	//		MostrarMenuListaGestores();
-	//		break;
-	//	case 0:
-	//		// Sair
-	//		break;
-	//	default:
-	//		// Opção inválida
-	//		break;
-	//	}
-	//}
+	// Program loop
+	while (op != 0) {
+		MostrarMenuPrincipal(&op);
+		
+		switch (op) {
+			case 1:
+				MostrarMenuAdicionarCliente(&clientes);
+				break;
+			case 2:
+				MostrarMenuEditarCliente(clientes);
+				break;
+			case 3:
+				MostrarMenuRemoverCliente(clientes);
+				break;
+			case 4:
+				MostrarMenuListaClientes(clientes);
+				break;
+			case 5:
+				MostrarMenuAdicionarMeioMobilidade(&meiosMobilidade);
+				break;
+			case 6:
+				MostrarMenuEditarMeioMobilidade(meiosMobilidade);
+				break;
+			case 7:
+				MostrarMenuRemoverMeioMobilidade(meiosMobilidade);
+				break;
+			case 8:
+				MostrarMenuListaMeiosMobilidade(meiosMobilidade);
+				break;
+			case 9:
+				MostrarMenuAdicionarGestor(&gestores);
+				break;
+			case 10:
+				MostrarMenuEditarGestor(gestores);
+				break;
+			case 11:
+				MostrarMenuRemoverGestor(gestores);
+				break;
+			case 12:
+				MostrarMenuListaGestores(gestores);
+				break;
+			case 0:
+				op = 0;
+			default:
+				break;
+		}
+	}
 }
 
 

@@ -1,6 +1,6 @@
-André Cerqueira;acerq@gmail.com;123;
-João Silva;j.silva@email.com;P@ssword123;
-Mariana Gomes;mariana.gomes@email.com;Gestor2023;
-Ricardo Santos;ricardo.santos@email.com;Pass123!;
-Ana Pereira;ana.pereira@email.com;Secret123;
-Pedro Sousa;pedro.sousa@email.com;GestorPT2023;
+1;André Cerqueira;acerq@gmail.com;123;1;
+2;João Silva;j.silva@email.com;P@ssword123;1;
+3;Mariana Gomes;mariana.gomes@email.com;Gestor2023;1;
+4;Ricardo Santos;ricardo.santos@email.com;Pass123!;1;
+5;Ana Pereira;ana.pereira@email.com;Secret123;1;
+6;Pedro Sousa;pedro.sousa@email.com;GestorPT2023;1;
