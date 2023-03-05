@@ -9,6 +9,13 @@
 #include "Gestor.h"
 
 
+/**
+* \brief Resetar lista ligada de Gestores, reescreve o ficheiro .dat com a lista vazia
+*
+* \return
+* \author A. Cerqueira
+*
+*/
 void ResetarGestores(Gestor* ultimoGestor) {
 	Gestor* gestor = ultimoGestor;
 
@@ -20,6 +27,13 @@ void ResetarGestores(Gestor* ultimoGestor) {
 }
 
 
+/**
+* \brief Resetar dados atuais, carregar dados de um ficheiro .txt para uma lista ligada e guardar no ficheiro .dat
+*
+* \return Lista ligada com os dados lidos
+* \author A. Cerqueira
+*
+*/
 void CarregarGestoresIniciais(Gestor* ultimoGestor) {
 	ResetarGestores(ultimoGestor);
 	ultimoGestor = LerGestoresIniciais();
@@ -27,6 +41,13 @@ void CarregarGestoresIniciais(Gestor* ultimoGestor) {
 }
 
 
+/**
+* \brief Ler Ler dados de um ficheiro de texto e retorna para guardar numa lista ligada
+*
+* \return
+* \author A. Cerqueira
+*
+*/
 Gestor* LerGestoresIniciais() {
 	FILE* fp;
 
@@ -135,16 +156,20 @@ Gestor* LerGestores() {
  */
 void GuardarGestores(Gestor* ultimoGestor) {
 	FILE* fp;
+	Gestor* gestor = ultimoGestor;
 
 	if (fopen_s(&fp, SAVE_FILE_NAME, "wb") != 0) {
 		printf("Erro ao abrir ficheiro\n");
 		return 1;
 	}
 
-	Gestor* gestor = ultimoGestor;
+	if (ultimoGestor == NULL) {
+		printf("Lista vazia\n");
+		return;
+	}
 
 	while (gestor != NULL) {
-		fprintf(fp, "%d;%s;%s;%s;%d\n", gestor->id, gestor->nome, gestor->email, gestor->password, gestor->ativo);
+		fprintf(fp, "%d;%s;%s;%s;%d;\n", gestor->id, gestor->nome, gestor->email, gestor->password, gestor->ativo);
 		gestor = gestor->proximo;
 	}
 

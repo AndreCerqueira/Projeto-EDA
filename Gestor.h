@@ -20,7 +20,7 @@
 	#define PASSWORD_LENGHT 20
 
 	#define HARDDATA_FILE_NAME "D:/IPCA/Projeto-EDA/data/simulacao/Gestores.txt"
-	#define SAVE_FILE_NAME "D:/IPCA/Projeto-EDA/data/simulacao/Gestores.dat"
+	#define SAVE_FILE_NAME "D:/IPCA/Projeto-EDA/data/save/Gestores.dat"
 
 	// Structs
 	typedef struct Gestor Gestor;
@@ -45,7 +45,7 @@
 
 
 	/**
-	* \brief Ler dados de um ficheiro de texto e guardar numa lista ligada
+	* \brief Resetar dados atuais, carregar dados de um ficheiro .txt para uma lista ligada e guardar no ficheiro .dat
 	*
 	* \return Lista ligada com os dados lidos
 	* \author A. Cerqueira

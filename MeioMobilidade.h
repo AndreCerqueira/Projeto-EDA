@@ -18,7 +18,7 @@
 	#define LOCALIZACAO_LENGHT 20
 
 	#define HARDDATA_FILE_NAME "D:/IPCA/Projeto-EDA/data/simulacao/MeiosMobilidade.txt"
-	#define SAVE_FILE_NAME "D:/IPCA/Projeto-EDA/data/simulacao/MeiosMobilidade.dat"
+	#define SAVE_FILE_NAME "D:/IPCA/Projeto-EDA/data/save/MeiosMobilidade.dat"
 
 	// Enums
 	typedef enum {
@@ -53,13 +53,13 @@
 
 
 	/**
-	* \brief 
+	* \brief Resetar dados atuais, carregar dados de um ficheiro .txt para uma lista ligada e guardar no ficheiro .dat
 	*
 	* \return
 	* \author A. Cerqueira
 	*
 	*/
-	void CarregarMeiosMobilidadeIniciais(MeioMobilidade* ultimoMeioMobilidade);
+	void CarregarMeiosMobilidadeIniciais(MeioMobilidade* ultimoMeio);
 
 	
 	/**

@@ -111,9 +111,9 @@ void CarregarDadosIniciais(Cliente* ultimoCliente, MeioMobilidade* ultimoMeio, G
 	if (Confirmar() == IS_CANCELED)
 		return;
 	
-	// CarregarMeiosMobilidadeIniciais(ultimoMeio);
+	CarregarMeiosMobilidadeIniciais(ultimoMeio);
 	CarregarClientesIniciais(ultimoCliente);
-	// CarregarGestoresIniciais(ultimoGestor);
+	CarregarGestoresIniciais(ultimoGestor);
 }
 
 

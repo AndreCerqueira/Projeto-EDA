@@ -9,6 +9,13 @@
 #include "MeioMobilidade.h"
 
 
+/**
+* \brief Resetar lista ligada de Meios de Mobilidade, reescreve o ficheiro .dat com a lista vazia
+*
+* \return
+* \author A. Cerqueira
+*
+*/
 void ResetarMeiosMobilidade(MeioMobilidade* ultimoMeio) {
 	MeioMobilidade* gestor = ultimoMeio;
 
@@ -20,6 +27,13 @@ void ResetarMeiosMobilidade(MeioMobilidade* ultimoMeio) {
 }
 
 
+/**
+* \brief Resetar dados atuais, carregar dados de um ficheiro .txt para uma lista ligada e guardar no ficheiro .dat
+*
+* \return
+* \author A. Cerqueira
+*
+*/
 void CarregarMeiosMobilidadeIniciais(MeioMobilidade* ultimoMeio) {
 	ResetarMeiosMobilidade(ultimoMeio);
 	ultimoMeio = LerMeiosMobilidadeIniciais();
@@ -27,10 +41,17 @@ void CarregarMeiosMobilidadeIniciais(MeioMobilidade* ultimoMeio) {
 }
 
 
+/**
+* \brief Ler dados de um ficheiro de texto e retorna para guardar numa lista ligada
+*
+* \return
+* \author A. Cerqueira
+*
+*/
 MeioMobilidade* LerMeiosMobilidadeIniciais() {
 	FILE* fp;
 
-	if (fopen_s(&fp, SAVE_FILE_NAME, "rb") != 0) {
+	if (fopen_s(&fp, HARDDATA_FILE_NAME, "r") != 0) {
 		printf("Erro ao abrir ficheiro\n");
 		return NULL;
 	}
@@ -86,7 +107,7 @@ MeioMobilidade* LerMeiosMobilidade() {
 
 	FILE* fp;
 
-	if (fopen_s(&fp, HARDDATA_FILE_NAME, "r") != 0) {
+	if (fopen_s(&fp, SAVE_FILE_NAME, "rb") != 0) {
 		printf("Erro ao abrir ficheiro\n");
 		return NULL;
 	}
@@ -141,17 +162,21 @@ MeioMobilidade* LerMeiosMobilidade() {
 */
 void GuardarMeiosMobilidade(MeioMobilidade* ultimoMeioMobilidade) {
 	FILE* fp;
+	MeioMobilidade* meio = ultimoMeioMobilidade;
 
 	if (fopen_s(&fp, SAVE_FILE_NAME, "wb") != 0) {
 		printf("Erro ao abrir ficheiro\n");
 		return;
 	}
 
-	MeioMobilidade* meio = ultimoMeioMobilidade;
+	if (ultimoMeioMobilidade == NULL) {
+		printf("Lista vazia\n");
+		return;
+	}
 
 	while (meio->proximo != NULL) {
 
-		fprintf(fp, "%d;%d;%.2f;%.2f;%s;%d\n", meio->id, meio->tipo, meio->cargaBateria, meio->custoAluguer, meio->localizacao, meio->ativo);
+		fprintf(fp, "%d;%d;%.2f;%.2f;%s;%d;\n", meio->id, meio->tipo, meio->cargaBateria, meio->custoAluguer, meio->localizacao, meio->ativo);
 
 		meio = meio->proximo;
 	}

@@ -20,7 +20,7 @@
 	#define MORADA_LENGHT 50
 
 	#define HARDDATA_FILE_NAME "D:/IPCA/Projeto-EDA/data/simulacao/Clientes.txt"
-	#define SAVE_FILE_NAME "D:/IPCA/Projeto-EDA/data/simulacao/Clientes.dat"
+	#define SAVE_FILE_NAME "D:/IPCA/Projeto-EDA/data/save/Clientes.dat"
 
 	// Structs
 	typedef struct Cliente Cliente;
@@ -46,7 +46,7 @@
 
 
 	/**
-	* \brief Ler dados de um ficheiro de texto e guardar numa lista ligada
+	* \brief Resetar dados atuais, carregar dados de um ficheiro .txt para uma lista ligada e guardar no ficheiro .dat
 	*
 	* \return Lista ligada com os dados lidos
 	* \author A. Cerqueira

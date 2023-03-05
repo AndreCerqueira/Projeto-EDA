@@ -11,6 +11,13 @@
 #include "Cliente.h"
 
 
+/**
+* \brief Resetar lista ligada de Clientes, reescreve o ficheiro .dat com a lista vazia
+*
+* \return
+* \author A. Cerqueira
+*
+*/
 void ResetarClientes(Cliente* ultimoCliente) {
 	Cliente* cliente = ultimoCliente;
 
@@ -22,6 +29,13 @@ void ResetarClientes(Cliente* ultimoCliente) {
 }
 
 
+/**
+* \brief Resetar dados atuais, carregar dados de um ficheiro .txt para uma lista ligada e guardar no ficheiro .dat
+*
+* \return Lista ligada com os dados lidos
+* \author A. Cerqueira
+*
+*/
 void CarregarClientesIniciais(Cliente* ultimoCliente) {
 	ResetarClientes(ultimoCliente);
 	ultimoCliente = LerClientesIniciais();
@@ -29,6 +43,13 @@ void CarregarClientesIniciais(Cliente* ultimoCliente) {
 }
 
 
+/**
+* \brief Ler Ler dados de um ficheiro de texto e retorna para guardar numa lista ligada
+*
+* \return
+* \author A. Cerqueira
+*
+*/
 Cliente* LerClientesIniciais() {
 	FILE* fp;
 
@@ -143,16 +164,20 @@ Cliente* LerClientes() {
 */
 void GuardarClientes(Cliente* ultimoCliente) {
 	FILE* fp;
+	Cliente* cliente = ultimoCliente;
 
 	if (fopen_s(&fp, SAVE_FILE_NAME, "wb") != 0) {
 		printf("Erro ao abrir ficheiro\n");
 		return;
 	}
 
-	Cliente* cliente = ultimoCliente;
+	if (ultimoCliente == NULL) {
+		printf("Lista vazia\n");
+		return;
+	}
 
 	while (cliente != NULL) {
-		fprintf(fp, "%d;%s;%s;%s;%f;%d\n", cliente->id, cliente->nome, cliente->nif, cliente->morada, cliente->saldo, cliente->ativo);
+		fprintf(fp, "%d;%s;%s;%s;%f;%d;\n", cliente->id, cliente->nome, cliente->nif, cliente->morada, cliente->saldo, cliente->ativo);
 		cliente = cliente->proximo;
 	}
 
