@@ -57,45 +57,63 @@ void MostrarMenuPrincipal(int* op) {
 
 	// Menu
 	system("cls");
-	puts("+--------------------------------+");
-	printf("|\tGestor de Mobilidade\t |\n");
-	puts("+--------------------------------+");
-	puts("|\t\t\t\t |");
-	puts("| 1- Adicionar Cliente\t\t |");
-	puts("|\t\t\t\t |");
-	puts("| 2- Editar Cliente\t\t |");
-	puts("|\t\t\t\t |");
-	puts("| 3- Remover Cliente\t\t |");
-	puts("|\t\t\t\t |");
-	puts("| 4- Lista de Clientes\t\t |");
-	puts("|\t\t\t\t |");
-	puts("+--------------------------------+");
-	puts("|\t\t\t\t |");
-	puts("| 5- Adicionar Meio de mobilidade|");
-	puts("|\t\t\t\t |");
-	puts("| 6- Editar Meio de mobilidade\t |");
-	puts("|\t\t\t\t |");
-	puts("| 7- Remover Meio de mobilidade\t |");
-	puts("|\t\t\t\t |");
-	puts("| 8- Lista de Meios de mobilidade|");
-	puts("|\t\t\t\t |");
-	puts("+--------------------------------+");
-	puts("|\t\t\t\t |");
-	puts("| 9- Adicionar Gestor\t\t |");
-	puts("|\t\t\t\t |");
-	puts("| 10- Editar Gestor\t\t |");
-	puts("|\t\t\t\t |");
-	puts("| 11- Remover Gestor\t\t |");
-	puts("|\t\t\t\t |");
-	puts("| 12- Lista de Gestores\t\t |");
-	puts("|\t\t\t\t |");
-	puts("+--------------------------------+");
-	puts("| 0- Sair\t\t\t |");
-	puts("+--------------------------------+");
+	puts("+------------------------------------------+");
+	printf("|\t    Gestor de Mobilidade\t   |\n");
+	puts("+------------------------------------------+");
+	puts("| 1- Adicionar Clientes\t\t\t   |");
+	puts("|\t\t\t\t\t   |");
+	puts("| 2- Editar Clientes\t\t\t   |");
+	puts("|\t\t\t\t\t   |");
+	puts("| 3- Remover Clientes\t\t\t   |");
+	puts("|\t\t\t\t\t   |");
+	puts("| 4- Listar Clientes\t\t\t   |");
+	puts("+------------------------------------------+");
+	puts("| 5- Adicionar Meios de mobilidade\t   |");
+	puts("|\t\t\t\t\t   |");
+	puts("| 6- Editar Meios de mobilidade\t\t   |");
+	puts("|\t\t\t\t\t   |");
+	puts("| 7- Remover Meios de mobilidade\t   |");
+	puts("|\t\t\t\t\t   |");
+	puts("| 8- Listar Meios de mobilidade\t\t   |");
+	puts("|\t\t\t\t\t   |");
+	puts("| 9- Listar ordem decrescente de autonomia |");
+	puts("|\t\t\t\t\t   |");
+	puts("| 10- Listar por localização\t\t   |");
+	puts("+------------------------------------------+");
+	puts("| 11- Adicionar Gestores\t\t   |");
+	puts("|\t\t\t\t\t   |");
+	puts("| 12- Editar Gestores\t\t\t   |");
+	puts("|\t\t\t\t\t   |");
+	puts("| 13- Remover Gestores\t\t\t   |");
+	puts("|\t\t\t\t\t   |");
+	puts("| 14- Listar Gestores\t\t\t   |");
+	puts("+------------------------------------------+");
+	puts("| 15- Carregar dados iniciais\t\t   |");
+	puts("+------------------------------------------+");
+	puts("| 0- Sair\t\t\t\t   |");
+	puts("+------------------------------------------+");
 
 	// Selecionar uma opção
 	printf("Selecione uma opção: ");
 	scanf_s("%d", op);
+}
+
+
+// Apaga os dados nos ficheiros binarios e carrega os dados iniciais
+void CarregarDadosIniciais(Cliente* ultimoCliente, MeioMobilidade* ultimoMeio, Gestor* ultimoGestor) {
+	
+	// Variaveis
+	int op = -1;
+
+	system("cls");
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+	
+	// CarregarMeiosMobilidadeIniciais(ultimoMeio);
+	CarregarClientesIniciais(ultimoCliente);
+	// CarregarGestoresIniciais(ultimoGestor);
 }
 
 
@@ -260,7 +278,7 @@ void MostrarMenuAdicionarMeioMobilidade(MeioMobilidade** ultimoMeio) {
 	puts("|      Adicionar Meio de Mobilidade      |");
 	puts("+----------------------------------------+");
 
-	printf("\n1 - Bicibleta | 2 - Trotinente | 3 - Scooter | 4 - Segway | 5 - Skate Eletrico | 6 - Outro |\n");
+	printf("\n0 - Bicibleta | 1 - Trotinente | 2 - Scooter | 3 - Segway | 4 - Skate Eletrico | 5 - Outro |\n");
 	printf("Insira o tipo do meio de mobilidade: ");
 	scanf_s("%d", &tipo);
 	fflush(stdin);
@@ -306,7 +324,7 @@ void MostrarMenuEditarMeioMobilidade(MeioMobilidade* ultimoMeio) {
 	scanf_s("%d", &id);
 	fflush(stdin);
 	
-	printf("\n1 - Bicibleta | 2 - Trotinente | 3 - Scooter | 4 - Segway | 5 - Skate Eletrico | 6 - Outro |\n");
+	printf("\n0 - Bicibleta | 1 - Trotinente | 2 - Scooter | 3 - Segway | 4 - Skate Eletrico | 5 - Outro |\n");
 	printf("Insira o tipo do meio de mobilidade: ");
 	scanf_s("%d", &tipo);
 	fflush(stdin);
@@ -378,7 +396,7 @@ void MostrarMenuListaMeiosMobilidade(MeioMobilidade* ultimoMeio) {
 	while (meio != NULL) {
 		if (meio->ativo == true)
 		{
-			printf("| %4d | %18s | %13.2f | %13.2f | %20s |\n", meio->id, TipoMeioMobilidadeToString(meio->tipo), meio->cargaBateria, meio->custoAluguer, meio->localizacao);
+			printf("| %-4d | %-18s | %13.2f | %13.2f | %-20s |\n", meio->id, TipoMeioMobilidadeToString(meio->tipo), meio->cargaBateria, meio->custoAluguer, meio->localizacao);
 		}
 
 		meio = meio->proximo;
@@ -513,7 +531,7 @@ void MostrarMenuListaGestores(Gestor* ultimoGestor) {
 	while (gestor != NULL) {
 		if (gestor->ativo == true)
 		{
-			printf("| %4d | %22s | %29s |\n", gestor->id, gestor->nome, gestor->email);
+			printf("| %-4d | %-22s | %-29s |\n", gestor->id, gestor->nome, gestor->email);
 		}
 
 		gestor = gestor->proximo;

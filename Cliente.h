@@ -34,6 +34,16 @@
 		Cliente* proximo;
 	};
 
+	
+	/**
+	* \brief Resetar lista ligada de Clientes, reescreve o ficheiro .dat com a lista vazia
+	*
+	* \return
+	* \author A. Cerqueira
+	*
+	*/
+	void ResetarClientes(Cliente* ultimoCliente);
+
 
 	/**
 	* \brief Ler dados de um ficheiro de texto e guardar numa lista ligada
@@ -42,9 +52,19 @@
 	* \author A. Cerqueira
 	*
 	*/
+	void CarregarClientesIniciais(Cliente* ultimoCliente);
+
+
+	/**
+	* \brief Ler Ler dados de um ficheiro de texto e retorna para guardar numa lista ligada
+	*
+	* \return
+	* \author A. Cerqueira
+	*
+	*/
 	Cliente* LerClientesIniciais();
 
-
+	
 	/**
 	* \brief Ler dados de um ficheiro de .dat e guardar numa lista ligada
 	*
@@ -63,7 +83,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void GuardarClientesIniciais(Cliente* ultimoCliente);
+	void GuardarClientes(Cliente* ultimoCliente);
 
 
 	/**
@@ -94,16 +114,6 @@
 	*
 	*/
 	void EditarCliente(Cliente* ultimoCliente, int id, char* nome, char* nif, char* morada, float saldo);
-
-
-	/**
-	* \brief Listar todos os clientes
-	*
-	* \return
-	* \author A. Cerqueira
-	*
-	*/
-	void ListarClientes(Cliente* ultimoCliente);
 	
 	
 #endif

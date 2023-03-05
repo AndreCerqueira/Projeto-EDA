@@ -9,14 +9,80 @@
 #include "MeioMobilidade.h"
 
 
+void ResetarMeiosMobilidade(MeioMobilidade* ultimoMeio) {
+	MeioMobilidade* gestor = ultimoMeio;
+
+	while (gestor != NULL) {
+		MeioMobilidade* meioAnterior = gestor;
+		gestor = gestor->proximo;
+		free(meioAnterior);
+	}
+}
+
+
+void CarregarMeiosMobilidadeIniciais(MeioMobilidade* ultimoMeio) {
+	ResetarMeiosMobilidade(ultimoMeio);
+	ultimoMeio = LerMeiosMobilidadeIniciais();
+	GuardarMeiosMobilidade(ultimoMeio);
+}
+
+
+MeioMobilidade* LerMeiosMobilidadeIniciais() {
+	FILE* fp;
+
+	if (fopen_s(&fp, SAVE_FILE_NAME, "rb") != 0) {
+		printf("Erro ao abrir ficheiro\n");
+		return NULL;
+	}
+
+	MeioMobilidade* ultimoMeioMobilidade = NULL;
+	char linha[MAX_SIZE];
+
+	while (fgets(linha, MAX_SIZE, fp)) {
+		MeioMobilidade* meioMobilidade = (MeioMobilidade*)malloc(sizeof(MeioMobilidade));
+
+		if (meioMobilidade == NULL) {
+			printf("Erro ao alocar memoria\n");
+			return NULL;
+		}
+
+		char* contexto = NULL;
+		char* campo = strtok_s(linha, ";", &contexto);
+		meioMobilidade->id = atoi(campo);
+
+		campo = strtok_s(NULL, ";", &contexto);
+		meioMobilidade->tipo = (TipoMeioMobilidade)atoi(campo);
+
+		campo = strtok_s(NULL, ";", &contexto);
+		meioMobilidade->cargaBateria = atof(campo);
+
+		campo = strtok_s(NULL, ";", &contexto);
+		meioMobilidade->custoAluguer = atof(campo);
+
+		campo = strtok_s(NULL, ";", &contexto);
+		strcpy_s(meioMobilidade->localizacao, LOCALIZACAO_LENGHT, campo);
+
+		campo = strtok_s(NULL, ";", &contexto);
+		meioMobilidade->ativo = (bool)atoi(campo);
+
+		meioMobilidade->proximo = ultimoMeioMobilidade;
+		ultimoMeioMobilidade = meioMobilidade;
+	}
+
+	fclose(fp);
+
+	return ultimoMeioMobilidade;
+}
+
+
 /**
-* \brief Ler dados de um ficheiro de texto e guardar numa lista ligada
+* \brief Ler dados de um ficheiro binario e guardar numa lista ligada
 *
 * \return Lista ligada com os dados lidos
 * \author A. Cerqueira
 *
 */
-MeioMobilidade* LerMeiosMobilidadeIniciais() {
+MeioMobilidade* LerMeiosMobilidade() {
 
 	FILE* fp;
 
@@ -74,7 +140,23 @@ MeioMobilidade* LerMeiosMobilidadeIniciais() {
 *
 */
 void GuardarMeiosMobilidade(MeioMobilidade* ultimoMeioMobilidade) {
-	
+	FILE* fp;
+
+	if (fopen_s(&fp, SAVE_FILE_NAME, "wb") != 0) {
+		printf("Erro ao abrir ficheiro\n");
+		return;
+	}
+
+	MeioMobilidade* meio = ultimoMeioMobilidade;
+
+	while (meio->proximo != NULL) {
+
+		fprintf(fp, "%d;%d;%.2f;%.2f;%s;%d\n", meio->id, meio->tipo, meio->cargaBateria, meio->custoAluguer, meio->localizacao, meio->ativo);
+
+		meio = meio->proximo;
+	}
+
+	fclose(fp);
 }
 
 
@@ -86,7 +168,24 @@ void GuardarMeiosMobilidade(MeioMobilidade* ultimoMeioMobilidade) {
 *
 */
 void AdicionarMeioMobilidade(MeioMobilidade** ultimoMeioMobilidade, TipoMeioMobilidade tipo, float cargaBateria, float custoAluguer, char* localizacao) {
+	
+	MeioMobilidade* novoMeioMobilidade = (MeioMobilidade*)malloc(sizeof(MeioMobilidade));
 
+	if (novoMeioMobilidade == NULL) {
+		printf("Erro ao alocar memoria\n");
+		return;
+	}
+
+	novoMeioMobilidade->id = (*ultimoMeioMobilidade)->id + 1;
+	novoMeioMobilidade->tipo = tipo;
+	novoMeioMobilidade->cargaBateria = cargaBateria;
+	novoMeioMobilidade->custoAluguer = custoAluguer;
+	strcpy_s(novoMeioMobilidade->localizacao, LOCALIZACAO_LENGHT, localizacao);
+	novoMeioMobilidade->ativo = true;
+	novoMeioMobilidade->proximo = NULL;
+
+	novoMeioMobilidade->proximo = *ultimoMeioMobilidade;
+	*ultimoMeioMobilidade = novoMeioMobilidade;
 }
 
 
@@ -98,6 +197,18 @@ void AdicionarMeioMobilidade(MeioMobilidade** ultimoMeioMobilidade, TipoMeioMobi
 *
 */
 void RemoverMeioMobilidade(MeioMobilidade* ultimoMeioMobilidade, int id) {
+
+	MeioMobilidade* meio = ultimoMeioMobilidade;
+
+	while (meio->proximo != NULL) {
+
+		if (meio->id == id) {
+			meio->ativo = false;
+			return;
+		}
+
+		meio = meio->proximo;
+	}
 }
 
 
@@ -108,19 +219,22 @@ void RemoverMeioMobilidade(MeioMobilidade* ultimoMeioMobilidade, int id) {
 * \author A. Cerqueira
 *
 */
-void EditarMeioMobilidade(MeioMobilidade* ultimoMeioMobilidade, int id, TipoMeioMobilidade tipo, float cargaBateria, float custoAluguer, char* localizacao){
-}
+void EditarMeioMobilidade(MeioMobilidade* ultimoMeioMobilidade, int id, TipoMeioMobilidade tipo, float cargaBateria, float custoAluguer, char* localizacao) {
 
+	MeioMobilidade* meio = ultimoMeioMobilidade;
 
-/**
-* \brief Listar todos os clientes
-*
-* \return
-* \author A. Cerqueira
-*
-*/
-void ListarMeiosMobilidade(MeioMobilidade* ultimoMeioMobilidade) {
+	while (meio->proximo != NULL) {
 
+		if (meio->id == id) {
+			meio->tipo = tipo;
+			meio->cargaBateria = cargaBateria;
+			meio->custoAluguer = custoAluguer;
+			strcpy_s(meio->localizacao, LOCALIZACAO_LENGHT, localizacao);
+			return;
+		}
+
+		meio = meio->proximo;
+	}
 }
 
 
@@ -134,17 +248,17 @@ void ListarMeiosMobilidade(MeioMobilidade* ultimoMeioMobilidade) {
 char* TipoMeioMobilidadeToString(TipoMeioMobilidade tipoMeioMobilidade) {
 
 	switch (tipoMeioMobilidade) {
-	case Bicibleta:
-		return "Bicibleta";
-	case Trotinente:
-		return "Trotinente";
-	case Scooter:
-		return "Scooter";
-	case SkateEletrico:
-		return "SkateEletrico";
-	case Outro:
-		return "Outro";
-	default:
-		return "Tipo de meio de mobilidade desconhecido";
+		case Bicibleta:
+			return "Bicibleta";
+		case Trotinente:
+			return "Trotinente";
+		case Scooter:
+			return "Scooter";
+		case SkateEletrico:
+			return "SkateEletrico";
+		case Outro:
+			return "Outro";
+		default:
+			return "Desconhecido";
 	}
 }

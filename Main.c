@@ -22,9 +22,9 @@ void main() {
 	
 	// Variables
 	int op = -1;
-	Cliente* clientes = LerClientesIniciais();
-	MeioMobilidade* meiosMobilidade = LerMeiosMobilidadeIniciais();
-	Gestor* gestores = LerGestoresIniciais();
+	Cliente* clientes = LerClientes();
+	MeioMobilidade* meiosMobilidade = LerMeiosMobilidade();
+	Gestor* gestores = LerGestores();
 	
 	// Program loop
 	while (op != 0) {
@@ -56,16 +56,25 @@ void main() {
 				MostrarMenuListaMeiosMobilidade(meiosMobilidade);
 				break;
 			case 9:
-				MostrarMenuAdicionarGestor(&gestores);
+				// TO DO
 				break;
 			case 10:
-				MostrarMenuEditarGestor(gestores);
+				// TO DO
 				break;
 			case 11:
-				MostrarMenuRemoverGestor(gestores);
+				MostrarMenuAdicionarGestor(&gestores);
 				break;
 			case 12:
+				MostrarMenuEditarGestor(gestores);
+				break;
+			case 13:
+				MostrarMenuRemoverGestor(gestores);
+				break;
+			case 14:
 				MostrarMenuListaGestores(gestores);
+				break;
+			case 15:
+				CarregarDadosIniciais(clientes, meiosMobilidade, gestores);
 				break;
 			case 0:
 				op = 0;

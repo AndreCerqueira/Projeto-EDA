@@ -43,9 +43,29 @@
 
 
 	/**
-	* \brief Ler dados de um ficheiro de texto e guardar numa lista ligada
+	* \brief Resetar lista ligada de Meios de Mobilidade, reescreve o ficheiro .dat com a lista vazia
 	*
-	* \return Lista ligada com os dados lidos
+	* \return
+	* \author A. Cerqueira
+	*
+	*/
+	void ResetarMeiosMobilidade(MeioMobilidade* ultimoMeioMobilidade);
+
+
+	/**
+	* \brief 
+	*
+	* \return
+	* \author A. Cerqueira
+	*
+	*/
+	void CarregarMeiosMobilidadeIniciais(MeioMobilidade* ultimoMeioMobilidade);
+
+	
+	/**
+	* \brief Ler dados de um ficheiro de texto e retorna para guardar numa lista ligada
+	*
+	* \return
 	* \author A. Cerqueira
 	*
 	*/
@@ -53,7 +73,7 @@
 
 
 	/**
-	* \brief Ler dados de um ficheiro de .dat e guardar numa lista ligada
+	* \brief Ler dados de um ficheiro de .dat e retorna para guardar numa lista ligada
 	*
 	* \return Lista ligada com os dados lidos
 	* \author A. Cerqueira
@@ -100,16 +120,6 @@
 	*
 	*/
 	void EditarMeioMobilidade(MeioMobilidade* ultimoMeioMobilidade, int id, TipoMeioMobilidade tipo, float cargaBateria, float custoAluguer, char* localizacao);
-
-
-	/**
-	* \brief Listar todos os MeiosMobilidade
-	*
-	* \return
-	* \author A. Cerqueira
-	*
-	*/
-	void ListarMeiosMobilidade(MeioMobilidade* ultimoMeioMobilidade);
 	
 
 	/**

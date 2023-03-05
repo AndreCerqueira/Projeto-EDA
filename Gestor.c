@@ -9,18 +9,81 @@
 #include "Gestor.h"
 
 
+void ResetarGestores(Gestor* ultimoGestor) {
+	Gestor* gestor = ultimoGestor;
+
+	while (gestor != NULL) {
+		Gestor* gestorAnterior = gestor;
+		gestor = gestor->proximo;
+		free(gestorAnterior);
+	}
+}
+
+
+void CarregarGestoresIniciais(Gestor* ultimoGestor) {
+	ResetarGestores(ultimoGestor);
+	ultimoGestor = LerGestoresIniciais();
+	GuardarGestores(ultimoGestor);
+}
+
+
+Gestor* LerGestoresIniciais() {
+	FILE* fp;
+
+	if (fopen_s(&fp, HARDDATA_FILE_NAME, "r") != 0) {
+		printf("Erro ao abrir ficheiro\n");
+		return NULL;
+	}
+
+	Gestor* ultimoGestor = NULL;
+	char linha[MAX_SIZE];
+
+	while (fgets(linha, MAX_SIZE, fp)) {
+		Gestor* gestor = (Gestor*)malloc(sizeof(Gestor));
+
+		if (gestor == NULL) {
+			printf("Erro ao alocar memoria\n");
+			return NULL;
+		}
+
+		char* contexto = NULL;
+		char* campo = strtok_s(linha, ";", &contexto);
+		gestor->id = atoi(campo);
+
+		campo = strtok_s(NULL, ";", &contexto);
+		strcpy_s(gestor->nome, NOME_LENGHT, campo);
+
+		campo = strtok_s(NULL, ";", &contexto);
+		strcpy_s(gestor->email, EMAIL_LENGHT, campo);
+
+		campo = strtok_s(NULL, ";", &contexto);
+		strcpy_s(gestor->password, PASSWORD_LENGHT, campo);
+
+		campo = strtok_s(NULL, ";", &contexto);
+		gestor->ativo = (bool)atoi(campo);
+
+		gestor->proximo = ultimoGestor;
+		ultimoGestor = gestor;
+	}
+
+	fclose(fp);
+
+	return ultimoGestor;
+}
+
+
  /**
- * \brief Ler dados de um ficheiro de texto e guardar numa lista ligada
+ * \brief Ler dados de um ficheiro binario e guardar numa lista ligada
  *
  * \return Lista ligada com os dados lidos
  * \author A. Cerqueira
  *
  */
-Gestor* LerGestoresIniciais() {
+Gestor* LerGestores() {
 	
 	FILE* fp;
 
-	if (fopen_s(&fp, HARDDATA_FILE_NAME, "r") != 0) {
+	if (fopen_s(&fp, SAVE_FILE_NAME, "rb") != 0) {
 		printf("Erro ao abrir ficheiro\n");
 		return NULL;
 	}
@@ -59,7 +122,6 @@ Gestor* LerGestoresIniciais() {
 	fclose(fp);
 
 	return ultimoGestor;
-	
 }
 
 
@@ -74,7 +136,7 @@ Gestor* LerGestoresIniciais() {
 void GuardarGestores(Gestor* ultimoGestor) {
 	FILE* fp;
 
-	if (fopen_s(&fp, HARDDATA_FILE_NAME, "w") != 0) {
+	if (fopen_s(&fp, SAVE_FILE_NAME, "wb") != 0) {
 		printf("Erro ao abrir ficheiro\n");
 		return 1;
 	}
@@ -115,9 +177,8 @@ void AdicionarGestor(Gestor** ultimoGestor, char* nome, char* email, char* passw
 	gestor->ativo = true;
 	gestor->proximo = NULL;
 
-	(*ultimoGestor)->proximo = gestor;
+	gestor->proximo = *ultimoGestor;
 	*ultimoGestor = gestor;
-
 }
 
 
@@ -141,9 +202,6 @@ void RemoverGestor(Gestor* ultimoGestor, int id) {
 
 		gestor = gestor->proximo;
 	}
-
-	return;
-	
 }
 
 
@@ -167,5 +225,4 @@ void EditarGestor(Gestor* ultimoGestor, int id, char* nome, char* email, char* p
 		}
 		gestor = gestor->proximo;
 	}
-	
 }

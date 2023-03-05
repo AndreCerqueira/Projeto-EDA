@@ -32,13 +32,16 @@
 		bool ativo;
 		Gestor* proximo;
 	};
+	
 
-	/*typedef struct {
-		char nome[NOME_LENGHT];
-		char email[EMAIL_LENGHT];
-		char password[PASSWORD_LENGHT];
-		Gestor* proximo;
-	} Gestor;*/
+	/**
+	* \brief Resetar lista ligada de Gestores, reescreve o ficheiro .dat com a lista vazia
+	*
+	* \return
+	* \author A. Cerqueira
+	*
+	*/
+	void ResetarGestores(Gestor* ultimoGestor);
 
 
 	/**
@@ -48,8 +51,18 @@
 	* \author A. Cerqueira
 	*
 	*/
-	Gestor* LerGestoresIniciais();
+	void CarregarGestoresIniciais(Gestor* ultimoGestor);
 
+
+	/**
+	* \brief Ler Ler dados de um ficheiro de texto e retorna para guardar numa lista ligada
+	*
+	* \return
+	* \author A. Cerqueira
+	*
+	*/
+	Gestor* LerGestoresIniciais();
+	
 
 	/**
 	* \brief Ler dados de um ficheiro de .dat e guardar numa lista ligada
@@ -99,16 +112,6 @@
 	*
 	*/
 	void EditarGestor(Gestor* ultimoGestor, int id, char* nome, char* email, char* password);
-
-
-	/**
-	* \brief Listar todos os Gestores
-	*
-	* \return
-	* \author A. Cerqueira
-	*
-	*/
-	void ListarGestores(Gestor* ultimoGestor);
 	
 
 #endif
