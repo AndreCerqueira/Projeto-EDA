@@ -26,6 +26,8 @@ void ResetarClientes(Cliente* ultimoCliente) {
 		cliente = cliente->proximo;
 		free(clienteAnterior);
 	}
+
+	ultimoCliente = NULL;
 }
 
 
@@ -52,44 +54,55 @@ void CarregarClientesIniciais(Cliente* ultimoCliente) {
 */
 Cliente* LerClientesIniciais() {
 	FILE* fp;
+	Cliente* ultimoCliente = NULL;
+	char linha[MAX_SIZE];
 
 	if (fopen_s(&fp, HARDDATA_FILE_NAME, "r") != 0) {
 		printf("Erro ao abrir ficheiro\n");
 		return NULL;
 	}
 
-	Cliente* ultimoCliente = NULL;
-	char linha[MAX_SIZE];
-
 	while (fgets(linha, MAX_SIZE, fp)) {
-		Cliente* cliente = (Cliente*)malloc(sizeof(Cliente));
+		Cliente* novoCliente = (Cliente*)malloc(sizeof(Cliente));
 
-		if (cliente == NULL) {
+		if (novoCliente == NULL) {
 			printf("Erro ao alocar memoria\n");
 			return NULL;
 		}
 
 		char* contexto = NULL;
 		char* campo = strtok_s(linha, ";", &contexto);
-		cliente->id = atoi(campo);
+		novoCliente->id = atoi(campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(cliente->nome, NOME_CLIENTE_LENGHT, campo);
+		strcpy_s(novoCliente->nome, NOME_CLIENTE_LENGHT, campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(cliente->nif, NIF_LENGHT, campo);
+		strcpy_s(novoCliente->nif, NIF_LENGHT, campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(cliente->morada, MORADA_LENGHT, campo);
+		strcpy_s(novoCliente->morada, MORADA_LENGHT, campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		cliente->saldo = atof(campo);
+		novoCliente->saldo = atof(campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		cliente->ativo = (bool)atoi(campo);
+		novoCliente->ativo = (bool)atoi(campo);
 
-		cliente->proximo = ultimoCliente;
-		ultimoCliente = cliente;
+		novoCliente->proximo = NULL;
+
+		if (ultimoCliente == NULL) {
+			ultimoCliente = novoCliente;
+		}
+		else {
+			Cliente* clienteAtual = ultimoCliente;
+
+			while (clienteAtual->proximo != NULL) {
+				clienteAtual = clienteAtual->proximo;
+			}
+
+			clienteAtual->proximo = novoCliente;
+		}
 	}
 
 	fclose(fp);
@@ -106,56 +119,58 @@ Cliente* LerClientesIniciais() {
 *
 */
 Cliente* LerClientes() {
-    
-    FILE* fp;
-    
-    if (fopen_s(&fp, SAVE_FILE_NAME, "rb") != 0) {
-        printf("Erro ao abrir ficheiro\n");
-        return NULL;
-    }
-
+	FILE* arquivo;
 	Cliente* ultimoCliente = NULL;
-	char linha[MAX_SIZE];
-        
-	while (fgets(linha, MAX_SIZE, fp)) {
-		Cliente* cliente = (Cliente*)malloc(sizeof(Cliente));
 
-		if (cliente == NULL) {
+	arquivo = fopen(SAVE_FILE_NAME, "rb");
+
+	if (arquivo == NULL) {
+		printf("Erro ao abrir o arquivo\n");
+		return NULL;
+	}
+
+	Cliente cliente;
+	size_t bytesLidos = fread(&cliente, sizeof(Cliente), 1, arquivo);
+
+	while (bytesLidos > 0) {
+		Cliente* novoCliente = (Cliente*)malloc(sizeof(Cliente));
+
+		if (novoCliente == NULL) {
 			printf("Erro ao alocar memoria\n");
 			return NULL;
 		}
+	
+		novoCliente->id = cliente.id;
+		strcpy(novoCliente->nome, cliente.nome);
+		strcpy(novoCliente->nif, cliente.nif);
+		strcpy(novoCliente->morada, cliente.morada);
+		novoCliente->saldo = cliente.saldo;
+		novoCliente->ativo = cliente.ativo;
+		novoCliente->proximo = NULL;
 
-		char* contexto = NULL;
-		char* campo = strtok_s(linha, ";", &contexto);
-		cliente->id = atoi(campo);
+		if (ultimoCliente == NULL) {
+			ultimoCliente = novoCliente;
+		}
+		else {
+			Cliente* clienteAtual = ultimoCliente;
 
-		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(cliente->nome, NOME_CLIENTE_LENGHT, campo);
+			while (clienteAtual->proximo != NULL) {
+				clienteAtual = clienteAtual->proximo;
+			}
 
-		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(cliente->nif, NIF_LENGHT, campo);
-
-		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(cliente->morada, MORADA_LENGHT, campo);
-
-		campo = strtok_s(NULL, ";", &contexto);
-		cliente->saldo = atof(campo);
-
-		campo = strtok_s(NULL, ";", &contexto);
-		cliente->ativo = (bool)atoi(campo);
-
-		cliente->proximo = ultimoCliente;
-		ultimoCliente = cliente;
+			clienteAtual->proximo = novoCliente;
+		}
+		
+		bytesLidos = fread(&cliente, sizeof(Cliente), 1, arquivo);
 	}
 
-	fclose(fp);
-
-    return ultimoCliente;
+	fclose(arquivo);
+	return ultimoCliente;
 }
 
 
 /**
-* \brief Carregar dados inicial de um ficheiro de texto e guardar numa lista ligada
+* \brief Guardar dados de lista ligada em um ficheiro binario
 *
 * \param clientes Lista ligada com os clientes
 * \return
@@ -163,25 +178,22 @@ Cliente* LerClientes() {
 *
 */
 void GuardarClientes(Cliente* ultimoCliente) {
-	FILE* fp;
-	Cliente* cliente = ultimoCliente;
+	FILE* arquivo;
+	arquivo = fopen(SAVE_FILE_NAME, "wb");
 
-	if (fopen_s(&fp, SAVE_FILE_NAME, "wb") != 0) {
-		printf("Erro ao abrir ficheiro\n");
+	if (arquivo == NULL) {
+		printf("Erro ao criar o arquivo\n");
 		return;
 	}
 
-	if (ultimoCliente == NULL) {
-		printf("Lista vazia\n");
-		return;
+	Cliente* clienteAtual = ultimoCliente;
+
+	while (clienteAtual != NULL) {
+		fwrite(clienteAtual, sizeof(Cliente), 1, arquivo);
+		clienteAtual = clienteAtual->proximo;
 	}
 
-	while (cliente != NULL) {
-		fprintf(fp, "%d;%s;%s;%s;%f;%d;\n", cliente->id, cliente->nome, cliente->nif, cliente->morada, cliente->saldo, cliente->ativo);
-		cliente = cliente->proximo;
-	}
-
-	fclose(fp);
+	fclose(arquivo);
 }
 
 
@@ -192,25 +204,60 @@ void GuardarClientes(Cliente* ultimoCliente) {
 * \author A. Cerqueira
 *
 */
-void AdicionarCliente(Cliente** ultimoCliente, char* nome, char* nif, char* morada, float saldo) {
+void AdicionarCliente(Cliente* ultimoCliente, char* nome, char* nif, char* morada, float saldo) {
 
-	Cliente* cliente = (Cliente*)malloc(sizeof(Cliente));
+	Cliente* novoCliente = (Cliente*)malloc(sizeof(Cliente));
 	
-	if (cliente == NULL) {
+	if (novoCliente == NULL) {
 		printf("Erro ao alocar memoria\n");
 		return;
 	}
 
-	cliente->id = (*ultimoCliente == NULL) ? 1 : (*ultimoCliente)->id + 1;
-	strcpy_s(cliente->nome, NOME_CLIENTE_LENGHT, nome);
-	strcpy_s(cliente->nif, NIF_LENGHT, nif);
-	strcpy_s(cliente->morada, MORADA_LENGHT, morada);
-	cliente->saldo = saldo;
-	cliente->ativo = true;
+	novoCliente->id = GetNovoClienteId(ultimoCliente);
+	strcpy_s(novoCliente->nome, NOME_CLIENTE_LENGHT, nome);
+	strcpy_s(novoCliente->nif, NIF_LENGHT, nif);
+	strcpy_s(novoCliente->morada, MORADA_LENGHT, morada);
+	novoCliente->saldo = saldo;
+	novoCliente->ativo = true;
+	novoCliente->proximo = NULL;
 
-	cliente->proximo = *ultimoCliente;
-	*ultimoCliente = cliente;
+	if (ultimoCliente == NULL) {
+		ultimoCliente = novoCliente;
+	}
+	else {
+		Cliente* clienteAtual = ultimoCliente;
+
+		while (clienteAtual->proximo != NULL) {
+			clienteAtual = clienteAtual->proximo;
+		}
+
+		clienteAtual->proximo = novoCliente;
+	}
 }
+
+
+/**
+* \brief Verifica o id de todos os clientes e retorna o proximo
+*
+* \return
+* \author A. Cerqueira
+*
+*/
+int GetNovoClienteId(Cliente* ultimoCliente) {
+	Cliente* clienteAtual = ultimoCliente;
+	int id = 0;
+
+	while (clienteAtual != NULL) {
+		if (clienteAtual->id > id) {
+			id = clienteAtual->id;
+		}
+
+		clienteAtual = clienteAtual->proximo;
+	}
+
+	return id + 1;
+}
+
 
 
 /**
@@ -259,5 +306,4 @@ void EditarCliente(Cliente* ultimoCliente, int id, char* nome, char* nif, char* 
 
 		cliente = cliente->proximo;
 	}
-	
 }

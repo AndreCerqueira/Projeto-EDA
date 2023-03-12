@@ -23,30 +23,6 @@ void GetFullPath(const char* path, char* fullPath)
 }
 
 
-// GenerateUID
-void GenerateUID(char* uid)
-{
-	const char* charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-	const int charsetLen = 62;
-
-	srand(time(NULL)); // Inicializa a semente do gerador de números aleatórios
-
-	int i;
-	for (i = 0; i < UID_LENGHT; i++) {
-		uid[i] = charset[rand() % charsetLen];
-	}
-
-	// Define os caracteres de separação na posição correta do UID
-	uid[8] = '-';
-	uid[13] = '-';
-	uid[18] = '-';
-	uid[23] = '-';
-
-	// Adiciona o caractere nulo no final da string
-	uid[UID_LENGHT] = '\0';
-}
-
-
 /*
 	Esta funçao é responsavel por retornar um valor (1 ou 2). Representando Confirmar ou Cancelar uma operação.
 */
@@ -66,26 +42,6 @@ int Confirmar()
 		scanf_s("%d", &valor);
 
 	return valor;
-}
-
-
-/*
-	This function is responsible for returning an index from a given array, or a negative number if user wants to Cancel.
-	@n = array quantity
-*/
-int SelectById(int n)
-{
-	// Variables
-	int id;
-
-	// Insert ID, and ensure that is valid
-	printf("Para Voltar insira um ID negativo.\n");
-	printf("Insira um ID: ");
-	do
-		scanf_s("%d", &id);
-	while (id >= n);
-
-	return id;
 }
 
 

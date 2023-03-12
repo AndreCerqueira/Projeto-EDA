@@ -186,7 +186,7 @@ void GuardarGestores(Gestor* ultimoGestor) {
 * \author A. Cerqueira
 *
 */
-void AdicionarGestor(Gestor** ultimoGestor, char* nome, char* email, char* password) {
+void AdicionarGestor(Gestor* ultimoGestor, char* nome, char* email, char* password) {
 
 	Gestor* gestor = (Gestor*)malloc(sizeof(Gestor));
 
@@ -195,15 +195,15 @@ void AdicionarGestor(Gestor** ultimoGestor, char* nome, char* email, char* passw
 		return;
 	}
 
-	gestor->id = (*ultimoGestor)->id + 1;
+	gestor->id = ultimoGestor->id + 1;
 	strcpy_s(gestor->nome, NOME_LENGHT, nome);
 	strcpy_s(gestor->email, EMAIL_LENGHT, email);
 	strcpy_s(gestor->password, PASSWORD_LENGHT, password);
 	gestor->ativo = true;
 	gestor->proximo = NULL;
 
-	gestor->proximo = *ultimoGestor;
-	*ultimoGestor = gestor;
+	gestor->proximo = ultimoGestor;
+	ultimoGestor = gestor;
 }
 
 

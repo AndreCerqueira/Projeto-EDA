@@ -93,7 +93,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void AdicionarCliente(Cliente** ultimoCliente, char* nome, char* nif, char* morada, float saldo);
+	void AdicionarCliente(Cliente* ultimoCliente, char* nome, char* nif, char* morada, float saldo);
 
 	
 	/**

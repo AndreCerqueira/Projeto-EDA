@@ -192,7 +192,7 @@ void GuardarMeiosMobilidade(MeioMobilidade* ultimoMeioMobilidade) {
 * \author A. Cerqueira
 *
 */
-void AdicionarMeioMobilidade(MeioMobilidade** ultimoMeioMobilidade, TipoMeioMobilidade tipo, float cargaBateria, float custoAluguer, char* localizacao) {
+void AdicionarMeioMobilidade(MeioMobilidade* ultimoMeioMobilidade, TipoMeioMobilidade tipo, float cargaBateria, float custoAluguer, char* localizacao) {
 	
 	MeioMobilidade* novoMeioMobilidade = (MeioMobilidade*)malloc(sizeof(MeioMobilidade));
 
@@ -201,7 +201,7 @@ void AdicionarMeioMobilidade(MeioMobilidade** ultimoMeioMobilidade, TipoMeioMobi
 		return;
 	}
 
-	novoMeioMobilidade->id = (*ultimoMeioMobilidade)->id + 1;
+	novoMeioMobilidade->id = ultimoMeioMobilidade->id + 1;
 	novoMeioMobilidade->tipo = tipo;
 	novoMeioMobilidade->cargaBateria = cargaBateria;
 	novoMeioMobilidade->custoAluguer = custoAluguer;
@@ -209,8 +209,8 @@ void AdicionarMeioMobilidade(MeioMobilidade** ultimoMeioMobilidade, TipoMeioMobi
 	novoMeioMobilidade->ativo = true;
 	novoMeioMobilidade->proximo = NULL;
 
-	novoMeioMobilidade->proximo = *ultimoMeioMobilidade;
-	*ultimoMeioMobilidade = novoMeioMobilidade;
+	novoMeioMobilidade->proximo = ultimoMeioMobilidade;
+	ultimoMeioMobilidade = novoMeioMobilidade;
 }
 
 

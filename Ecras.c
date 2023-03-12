@@ -111,14 +111,14 @@ void CarregarDadosIniciais(Cliente* ultimoCliente, MeioMobilidade* ultimoMeio, G
 	if (Confirmar() == IS_CANCELED)
 		return;
 	
-	CarregarMeiosMobilidadeIniciais(ultimoMeio);
+	// CarregarMeiosMobilidadeIniciais(ultimoMeio);
 	CarregarClientesIniciais(ultimoCliente);
-	CarregarGestoresIniciais(ultimoGestor);
+	// CarregarGestoresIniciais(ultimoGestor);
 }
 
 
 // Adicionar Cliente
-void MostrarMenuAdicionarCliente(Cliente** ultimoCliente) {
+void MostrarMenuAdicionarCliente(Cliente* ultimoCliente) {
 	
 	// Variaveis
 	char nome[NOME_LENGHT];
@@ -154,7 +154,8 @@ void MostrarMenuAdicionarCliente(Cliente** ultimoCliente) {
 
 	// Atribuição de dados
 	AdicionarCliente(ultimoCliente, nome, nif, morada, saldo);
-	
+
+	GuardarClientes(ultimoCliente);
 }
 
 
@@ -201,6 +202,7 @@ void MostrarMenuEditarCliente(Cliente* ultimoCliente) {
 	// Atribuição de dados
 	EditarCliente(ultimoCliente, id, nome, nif, morada, saldo);
 
+	GuardarClientes(ultimoCliente);
 }
 
 
@@ -227,6 +229,7 @@ void MostrarMenuRemoverCliente(Cliente* ultimoCliente) {
 	// Atribuição de dados
 	RemoverCliente(ultimoCliente, id);
 
+	GuardarClientes(ultimoCliente);
 }
 
 
@@ -264,7 +267,7 @@ void MostrarMenuListaClientes(Cliente* ultimoCliente) {
 
 
 // Adicionar Meio de mobilidade
-void MostrarMenuAdicionarMeioMobilidade(MeioMobilidade** ultimoMeio) {
+void MostrarMenuAdicionarMeioMobilidade(MeioMobilidade* ultimoMeio) {
 	
 	// Variaveis
 	TipoMeioMobilidade tipo;
@@ -411,7 +414,7 @@ void MostrarMenuListaMeiosMobilidade(MeioMobilidade* ultimoMeio) {
 
 
 // Adicionar Gestor
-void MostrarMenuAdicionarGestor(Gestor** ultimoGestor) {
+void MostrarMenuAdicionarGestor(Gestor* ultimoGestor) {
 	
 	// Variaveis
 	char nome[NOME_LENGHT];

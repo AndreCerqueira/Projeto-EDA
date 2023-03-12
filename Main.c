@@ -32,7 +32,7 @@ void main() {
 		
 		switch (op) {
 			case 1:
-				MostrarMenuAdicionarCliente(&clientes);
+				MostrarMenuAdicionarCliente(clientes);
 				break;
 			case 2:
 				MostrarMenuEditarCliente(clientes);
@@ -44,7 +44,7 @@ void main() {
 				MostrarMenuListaClientes(clientes);
 				break;
 			case 5:
-				MostrarMenuAdicionarMeioMobilidade(&meiosMobilidade);
+				MostrarMenuAdicionarMeioMobilidade(meiosMobilidade);
 				break;
 			case 6:
 				MostrarMenuEditarMeioMobilidade(meiosMobilidade);
@@ -62,7 +62,7 @@ void main() {
 				// TO DO
 				break;
 			case 11:
-				MostrarMenuAdicionarGestor(&gestores);
+				MostrarMenuAdicionarGestor(gestores);
 				break;
 			case 12:
 				MostrarMenuEditarGestor(gestores);

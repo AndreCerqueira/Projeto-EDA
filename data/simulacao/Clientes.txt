@@ -1,4 +1,4 @@
-10;Diogo Rodrigues;112233445;Leiria;3200,000000;1;
+10;Diego Rodrigues;112233445;Leiria;3200,000000;1;
 9;Inês Ferreira;112358132;Aveiro;2000,000000;1;
 8;Miguel Costa;141421356;Viana do Castelo;150,000000;1;
 7;Sara Santos;161803399;Bragança;0,000000;1;
