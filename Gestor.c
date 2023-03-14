@@ -16,14 +16,18 @@
 * \author A. Cerqueira
 *
 */
-void ResetarGestores(Gestor* ultimoGestor) {
-	Gestor* gestor = ultimoGestor;
+bool ResetarGestores(Gestor* primeiroGestor) {
+	Gestor* gestor = primeiroGestor;
 
 	while (gestor != NULL) {
 		Gestor* gestorAnterior = gestor;
 		gestor = gestor->proximo;
 		free(gestorAnterior);
 	}
+
+	primeiroGestor = NULL;
+
+	return true;
 }
 
 
@@ -34,10 +38,12 @@ void ResetarGestores(Gestor* ultimoGestor) {
 * \author A. Cerqueira
 *
 */
-void CarregarGestoresIniciais(Gestor* ultimoGestor) {
-	ResetarGestores(ultimoGestor);
-	ultimoGestor = LerGestoresIniciais();
-	GuardarGestores(ultimoGestor);
+bool CarregarGestoresIniciais(Gestor** primeiroGestor) {
+	ResetarGestores(*primeiroGestor);
+	*primeiroGestor = LerGestoresIniciais();
+	GuardarGestores(*primeiroGestor);
+	
+	return true;
 }
 
 
@@ -49,47 +55,54 @@ void CarregarGestoresIniciais(Gestor* ultimoGestor) {
 *
 */
 Gestor* LerGestoresIniciais() {
-	FILE* fp;
-
-	if (fopen_s(&fp, HARDDATA_FILE_NAME, "r") != 0) {
-		printf("Erro ao abrir ficheiro\n");
-		return NULL;
-	}
-
-	Gestor* ultimoGestor = NULL;
+	FILE* file;
+	Gestor* primeiroGestor = NULL;
 	char linha[MAX_SIZE];
 
-	while (fgets(linha, MAX_SIZE, fp)) {
-		Gestor* gestor = (Gestor*)malloc(sizeof(Gestor));
+	if (fopen_s(&file, HARDDATA_FILE_NAME, "r") != 0)
+		return NULL;
 
-		if (gestor == NULL) {
-			printf("Erro ao alocar memoria\n");
+	while (fgets(linha, MAX_SIZE, file)) {
+		Gestor* novoGestor = (Gestor*)malloc(sizeof(Gestor));
+
+		if (novoGestor == NULL)
 			return NULL;
-		}
 
 		char* contexto = NULL;
 		char* campo = strtok_s(linha, ";", &contexto);
-		gestor->id = atoi(campo);
+		novoGestor->id = atoi(campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(gestor->nome, NOME_LENGHT, campo);
+		strcpy_s(novoGestor->nome, NOME_LENGHT, campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(gestor->email, EMAIL_LENGHT, campo);
+		strcpy_s(novoGestor->email, EMAIL_LENGHT, campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(gestor->password, PASSWORD_LENGHT, campo);
+		strcpy_s(novoGestor->password, PASSWORD_LENGHT, campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		gestor->ativo = (bool)atoi(campo);
+		novoGestor->ativo = (bool)atoi(campo);
 
-		gestor->proximo = ultimoGestor;
-		ultimoGestor = gestor;
+		novoGestor->proximo = NULL;
+
+		if (primeiroGestor == NULL) {
+			primeiroGestor = novoGestor;
+		}
+		else {
+			Gestor* gestorAtual = primeiroGestor;
+
+			while (gestorAtual->proximo != NULL) {
+				gestorAtual = gestorAtual->proximo;
+			}
+
+			gestorAtual->proximo = novoGestor;
+		}
 	}
 
-	fclose(fp);
+	fclose(file);
 
-	return ultimoGestor;
+	return primeiroGestor;
 }
 
 
@@ -101,48 +114,48 @@ Gestor* LerGestoresIniciais() {
  *
  */
 Gestor* LerGestores() {
-	
-	FILE* fp;
+	FILE* file;
+	Gestor* primeiroGestor = NULL;
 
-	if (fopen_s(&fp, SAVE_FILE_NAME, "rb") != 0) {
-		printf("Erro ao abrir ficheiro\n");
+	file = fopen(SAVE_FILE_NAME, "rb");
+
+	if (file == NULL)
 		return NULL;
-	}
 
-	Gestor* ultimoGestor = NULL;
-	char linha[MAX_SIZE];
+	Gestor* gestor = NULL;
+	size_t bytesLidos = fread(&gestor, sizeof(Gestor), 1, file);
 	
-	while (fgets(linha, MAX_SIZE, fp)) {
-		Gestor* gestor = (Gestor*)malloc(sizeof(Gestor));
-
-		if (gestor == NULL) {
-			printf("Erro ao alocar memoria\n");
+	while (bytesLidos > 0) {
+		Gestor* novoGestor = (Gestor*)malloc(sizeof(Gestor));
+		
+		if (novoGestor == NULL)
 			return NULL;
+
+		novoGestor->id = gestor->id;
+		strcpy_s(novoGestor->nome, NOME_LENGHT, gestor->nome);
+		strcpy_s(novoGestor->email, EMAIL_LENGHT, gestor->email);
+		strcpy_s(novoGestor->password, PASSWORD_LENGHT, gestor->password);
+		novoGestor->ativo = gestor->ativo;
+		novoGestor->proximo = NULL;
+
+		if (primeiroGestor == NULL) {
+			primeiroGestor = novoGestor;
 		}
+		else {
+			Gestor* gestorAtual = primeiroGestor;
 
-		char* contexto = NULL;
-		char* campo = strtok_s(linha, ";", &contexto);
-		gestor->id = atoi(campo);
+			while (gestorAtual->proximo != NULL) {
+				gestorAtual = gestorAtual->proximo;
+			}
 
-		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(gestor->nome, NOME_LENGHT, campo);
-
-		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(gestor->email, EMAIL_LENGHT, campo);
-
-		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(gestor->password, PASSWORD_LENGHT, campo);
-
-		campo = strtok_s(NULL, ";", &contexto);
-		gestor->ativo = (bool)atoi(campo);
-
-		gestor->proximo = ultimoGestor;
-		ultimoGestor = gestor;
+			gestorAtual->proximo = novoGestor;
+		}
+		
+		bytesLidos = fread(&gestor, sizeof(Gestor), 1, file);
 	}
 
-	fclose(fp);
-
-	return ultimoGestor;
+	fclose(file);
+	return primeiroGestor;
 }
 
 
@@ -154,28 +167,23 @@ Gestor* LerGestores() {
  * \author A. Cerqueira
  *
  */
-void GuardarGestores(Gestor* ultimoGestor) {
-	FILE* fp;
-	Gestor* gestor = ultimoGestor;
+bool GuardarGestores(Gestor* primeiroGestor) {
+	FILE* file;
+	file = fopen(SAVE_FILE_NAME, "wb");
 
-	if (fopen_s(&fp, SAVE_FILE_NAME, "wb") != 0) {
-		printf("Erro ao abrir ficheiro\n");
-		return 1;
+	if (file == NULL)
+		return false;
+
+	Gestor* gestorAtual = primeiroGestor;
+
+	while (gestorAtual != NULL) {
+		fwrite(gestorAtual, sizeof(Gestor), 1, file);
+		gestorAtual = gestorAtual->proximo;
 	}
 
-	if (ultimoGestor == NULL) {
-		printf("Lista vazia\n");
-		return;
-	}
+	fclose(file);
 
-	while (gestor != NULL) {
-		fprintf(fp, "%d;%s;%s;%s;%d;\n", gestor->id, gestor->nome, gestor->email, gestor->password, gestor->ativo);
-		gestor = gestor->proximo;
-	}
-
-	fclose(fp);
-
-	return 0;
+	return true;
 }
 
 
@@ -186,24 +194,28 @@ void GuardarGestores(Gestor* ultimoGestor) {
 * \author A. Cerqueira
 *
 */
-void AdicionarGestor(Gestor* ultimoGestor, char* nome, char* email, char* password) {
+bool AdicionarGestor(Gestor* primeiroGestor, Gestor* novoGestor) {
 
-	Gestor* gestor = (Gestor*)malloc(sizeof(Gestor));
+	if (novoGestor == NULL)
+		return false;
 
-	if (gestor == NULL) {
-		printf("Erro ao alocar memoria\n");
-		return;
+	if (primeiroGestor == NULL) {
+		primeiroGestor = novoGestor;
+		return true;
 	}
 
-	gestor->id = ultimoGestor->id + 1;
-	strcpy_s(gestor->nome, NOME_LENGHT, nome);
-	strcpy_s(gestor->email, EMAIL_LENGHT, email);
-	strcpy_s(gestor->password, PASSWORD_LENGHT, password);
-	gestor->ativo = true;
-	gestor->proximo = NULL;
+	Gestor* gestorAtual = primeiroGestor;
 
-	gestor->proximo = ultimoGestor;
-	ultimoGestor = gestor;
+	while (gestorAtual->proximo != NULL) {
+		gestorAtual = gestorAtual->proximo;
+	}
+
+	novoGestor->id = primeiroGestor->id + 1;;
+	novoGestor->ativo = true;
+	novoGestor->proximo = NULL;
+	gestorAtual->proximo = novoGestor;
+
+	return true;
 }
 
 
@@ -214,9 +226,9 @@ void AdicionarGestor(Gestor* ultimoGestor, char* nome, char* email, char* passwo
 * \author A. Cerqueira
 *
 */
-void RemoverGestor(Gestor* ultimoGestor, int id) {
+bool RemoverGestor(Gestor* primeiroGestor, int id) {
 
-	Gestor* gestor = ultimoGestor;
+	Gestor* gestor = primeiroGestor;
 
 	while (gestor->proximo != NULL) {
 		
@@ -227,6 +239,8 @@ void RemoverGestor(Gestor* ultimoGestor, int id) {
 
 		gestor = gestor->proximo;
 	}
+
+	return true;
 }
 
 
@@ -237,17 +251,21 @@ void RemoverGestor(Gestor* ultimoGestor, int id) {
 * \author A. Cerqueira
 *
 */
-void EditarGestor(Gestor* ultimoGestor, int id, char* nome, char* email, char* password) {
+bool EditarGestor(Gestor* primeiroGestor, Gestor* gestorSelecionado) {
 
-	Gestor* gestor = ultimoGestor;
+	Gestor* gestor = primeiroGestor;
 
 	while (gestor != NULL) {
-		if (gestor->id == id) {
-			strcpy_s(gestor->nome, NOME_LENGHT, nome);
-			strcpy_s(gestor->email, EMAIL_LENGHT, email);
-			strcpy_s(gestor->password, PASSWORD_LENGHT, password);
+		
+		if (gestor->id == gestorSelecionado->id) {
+			strcpy_s(gestor->nome, NOME_LENGHT, gestorSelecionado->nome);
+			strcpy_s(gestor->email, EMAIL_LENGHT, gestorSelecionado->email);
+			strcpy_s(gestor->password, PASSWORD_LENGHT, gestorSelecionado->password);
 			return;
 		}
+		
 		gestor = gestor->proximo;
 	}
+
+	return true;
 }

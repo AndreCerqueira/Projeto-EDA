@@ -41,7 +41,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void ResetarGestores(Gestor* ultimoGestor);
+	bool ResetarGestores(Gestor* primeiroGestor);
 
 
 	/**
@@ -51,7 +51,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void CarregarGestoresIniciais(Gestor* ultimoGestor);
+	bool CarregarGestoresIniciais(Gestor** primeiroGestor);
 
 
 	/**
@@ -81,7 +81,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void GuardarGestores(Gestor* ultimoGestor);
+	bool GuardarGestores(Gestor* primeiroGestor);
 
 
 	/**
@@ -91,7 +91,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void AdicionarGestor(Gestor** ultimoGestor, char* nome, char* email, char* password);
+	bool AdicionarGestor(Gestor* primeiroGestor, Gestor* novoGestor);
 
 
 	/**
@@ -101,7 +101,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void RemoverGestor(Gestor* ultimoGestor, int id);
+	bool RemoverGestor(Gestor* primeiroGestor, int id);
 
 
 	/**
@@ -111,7 +111,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void EditarGestor(Gestor* ultimoGestor, int id, char* nome, char* email, char* password);
+	bool EditarGestor(Gestor* primeiroGestor, Gestor* gestorSelecionado);
 	
 
 #endif

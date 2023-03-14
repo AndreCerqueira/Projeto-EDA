@@ -49,7 +49,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void ResetarMeiosMobilidade(MeioMobilidade* ultimoMeioMobilidade);
+	bool ResetarMeiosMobilidade(MeioMobilidade* primeiroMeio);
 
 
 	/**
@@ -59,7 +59,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void CarregarMeiosMobilidadeIniciais(MeioMobilidade* ultimoMeio);
+	bool CarregarMeiosMobilidadeIniciais(MeioMobilidade** ultimoMeio);
 
 	
 	/**
@@ -89,7 +89,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void GuardarMeiosMobilidade(MeioMobilidade* ultimoMeioMobilidade);
+	bool GuardarMeiosMobilidade(MeioMobilidade* primeiroMeio);
 
 
 	/**
@@ -99,7 +99,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void AdicionarMeioMobilidade(MeioMobilidade** ultimoMeioMobilidade, TipoMeioMobilidade tipo, float cargaBateria, float custoAluguer, char* localizacao);
+	bool AdicionarMeioMobilidade(MeioMobilidade* primeiroMeio, MeioMobilidade* novoMeio);
 
 
 	/**
@@ -109,7 +109,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void RemoverMeioMobilidade(MeioMobilidade* ultimoMeioMobilidade, int id);
+	bool RemoverMeioMobilidade(MeioMobilidade* primeiroMeio, int id);
 
 
 	/**
@@ -119,7 +119,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void EditarMeioMobilidade(MeioMobilidade* ultimoMeioMobilidade, int id, TipoMeioMobilidade tipo, float cargaBateria, float custoAluguer, char* localizacao);
+	bool EditarMeioMobilidade(MeioMobilidade* primeiroMeio, MeioMobilidade* meioSelecionado);
 	
 
 	/**

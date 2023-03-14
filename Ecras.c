@@ -100,7 +100,7 @@ void MostrarMenuPrincipal(int* op) {
 
 
 // Apaga os dados nos ficheiros binarios e carrega os dados iniciais
-void CarregarDadosIniciais(Cliente** primeiroCliente, MeioMobilidade* ultimoMeio, Gestor* ultimoGestor) {
+void CarregarDadosIniciais(Cliente** primeiroCliente, MeioMobilidade** primeiroMeio, Gestor** ultimoGestor) {
 	
 	// Variaveis
 	int op = -1;
@@ -111,9 +111,9 @@ void CarregarDadosIniciais(Cliente** primeiroCliente, MeioMobilidade* ultimoMeio
 	if (Confirmar() == IS_CANCELED)
 		return;
 	
-	// CarregarMeiosMobilidadeIniciais(ultimoMeio);
+	CarregarMeiosMobilidadeIniciais(primeiroMeio);
 	CarregarClientesIniciais(primeiroCliente);
-	// CarregarGestoresIniciais(ultimoGestor);
+	CarregarGestoresIniciais(ultimoGestor);
 }
 
 
@@ -298,13 +298,18 @@ void MostrarMenuListaClientes(Cliente* primeiroCliente) {
 
 
 // Adicionar Meio de mobilidade
-void MostrarMenuAdicionarMeioMobilidade(MeioMobilidade* ultimoMeio) {
+void MostrarMenuAdicionarMeioMobilidade(MeioMobilidade* primeiroMeio) {
 	
 	// Variaveis
 	TipoMeioMobilidade tipo;
 	float cargaBateria;
 	float custoAluguer;
 	char localizacao[LOCALIZACAO_LENGHT];
+	MeioMobilidade* novoMeio = (MeioMobilidade*)malloc(sizeof(MeioMobilidade));
+
+	// Verificar se houve problema a alocar memoria
+	if (novoMeio == NULL)
+		return;
 	
 	// Inserir os dados da clinica
 	system("cls");
@@ -332,14 +337,24 @@ void MostrarMenuAdicionarMeioMobilidade(MeioMobilidade* ultimoMeio) {
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
 		return;
+
+	// Colocar o terminador de string
+	localizacao[LOCALIZACAO_LENGHT - 1] = '\0';
 	
 	// Atribuição de dados
-	AdicionarMeioMobilidade(ultimoMeio, tipo, cargaBateria, custoAluguer, localizacao);
+	novoMeio->tipo = tipo;
+	novoMeio->cargaBateria = cargaBateria;
+	novoMeio->custoAluguer = custoAluguer;
+	strcpy_s(novoMeio->localizacao, LOCALIZACAO_LENGHT, localizacao);
+
+	AdicionarMeioMobilidade(primeiroMeio, novoMeio);
+
+	GuardarMeiosMobilidade(primeiroMeio);
 }
 
 
 // Editar Meio de mobilidade
-void MostrarMenuEditarMeioMobilidade(MeioMobilidade* ultimoMeio) {
+void MostrarMenuEditarMeioMobilidade(MeioMobilidade* primeiroMeio) {
 
 	// Variaveis
 	int id;
@@ -347,6 +362,11 @@ void MostrarMenuEditarMeioMobilidade(MeioMobilidade* ultimoMeio) {
 	float cargaBateria;
 	float custoAluguer;
 	char localizacao[LOCALIZACAO_LENGHT];
+	MeioMobilidade* novoMeio = (MeioMobilidade*)malloc(sizeof(MeioMobilidade));
+
+	// Verificar se houve problema a alocar memoria
+	if (novoMeio == NULL)
+		return;
 	
 	// Inserir os dados da clinica
 	system("cls");
@@ -378,15 +398,25 @@ void MostrarMenuEditarMeioMobilidade(MeioMobilidade* ultimoMeio) {
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
 		return;
+
+	// Colocar o terminador de string
+	localizacao[LOCALIZACAO_LENGHT - 1] = '\0';
 	
 	// Atribuição de dados
-	EditarMeioMobilidade(ultimoMeio, id, tipo, cargaBateria, custoAluguer, localizacao);
+	novoMeio->id = id;
+	novoMeio->tipo = tipo;
+	novoMeio->cargaBateria = cargaBateria;
+	novoMeio->custoAluguer = custoAluguer;
+	strcpy_s(novoMeio->localizacao, LOCALIZACAO_LENGHT, localizacao);
 	
+	EditarMeioMobilidade(primeiroMeio, novoMeio);
+	
+	GuardarMeiosMobilidade(primeiroMeio);
 }
 
 
 // Remover Meio de mobilidade
-void MostrarMenuRemoverMeioMobilidade(MeioMobilidade* ultimoMeio) {
+void MostrarMenuRemoverMeioMobilidade(MeioMobilidade* primeiroMeio) {
 
 	// Variaveis
 	int id;
@@ -406,13 +436,14 @@ void MostrarMenuRemoverMeioMobilidade(MeioMobilidade* ultimoMeio) {
 		return;
 
 	// Atribuição de dados
-	RemoverMeioMobilidade(ultimoMeio, id);
+	RemoverMeioMobilidade(primeiroMeio, id);
 
+	GuardarMeiosMobilidade(primeiroMeio);
 }
 
 
 // Lista de Meios de mobilidade
-void MostrarMenuListaMeiosMobilidade(MeioMobilidade* ultimoMeio) {
+void MostrarMenuListaMeiosMobilidade(MeioMobilidade* primeiroMeio) {
 	
 	// Variaveis
 	int i;
@@ -426,7 +457,7 @@ void MostrarMenuListaMeiosMobilidade(MeioMobilidade* ultimoMeio) {
 	puts("+----------------------------------------------------------------------------------+");
 
 	// Mostrar os dados dos clientes
-	MeioMobilidade* meio = ultimoMeio;
+	MeioMobilidade* meio = primeiroMeio;
 	while (meio != NULL) {
 		if (meio->ativo == true)
 		{
@@ -451,6 +482,11 @@ void MostrarMenuAdicionarGestor(Gestor* ultimoGestor) {
 	char nome[NOME_LENGHT];
 	char email[EMAIL_LENGHT];
 	char password[PASSWORD_LENGHT];
+	Gestor* novoGestor = (Gestor*)malloc(sizeof(Gestor));
+
+	// Verificar se houve problema a alocar memoria
+	if (novoGestor == NULL)
+		return;
 
 	// Inserir os dados da clinica
 	system("cls");
@@ -474,9 +510,19 @@ void MostrarMenuAdicionarGestor(Gestor* ultimoGestor) {
 	if (Confirmar() == IS_CANCELED)
 		return;
 
-	// Atribuição de dados
-	AdicionarGestor(ultimoGestor, nome, email, password);
+	// Colocar o terminador de string
+	nome[NOME_LENGHT - 1] = '\0';
+	email[EMAIL_LENGHT - 1] = '\0';
+	password[PASSWORD_LENGHT - 1] = '\0';
 
+	// Atribuição de dados
+	strcpy_s(novoGestor->nome, NOME_LENGHT, nome);
+	strcpy_s(novoGestor->email, EMAIL_LENGHT, email);
+	strcpy_s(novoGestor->password, PASSWORD_LENGHT, password);
+	
+	AdicionarGestor(ultimoGestor, novoGestor);
+
+	GuardarGestores(ultimoGestor);
 }
 
 
@@ -488,6 +534,11 @@ void MostrarMenuEditarGestor(Gestor* ultimoGestor) {
 	char nome[NOME_LENGHT];
 	char email[EMAIL_LENGHT];
 	char password[PASSWORD_LENGHT];
+	Gestor* novoGestor = (Gestor*)malloc(sizeof(Gestor));
+
+	// Verificar se houve problema a alocar memoria
+	if (novoGestor == NULL)
+		return;
 	
 	// Inserir os dados da clinica
 	system("cls");
@@ -515,8 +566,20 @@ void MostrarMenuEditarGestor(Gestor* ultimoGestor) {
 	if (Confirmar() == IS_CANCELED)
 		return;
 
+	// Colocar o terminador de string
+	nome[NOME_LENGHT - 1] = '\0';
+	email[EMAIL_LENGHT - 1] = '\0';
+	password[PASSWORD_LENGHT - 1] = '\0';
+
 	// Atribuição de dados
+	novoGestor->id = id;
+	strcpy_s(novoGestor->nome, NOME_LENGHT, nome);
+	strcpy_s(novoGestor->email, EMAIL_LENGHT, email);
+	strcpy_s(novoGestor->password, PASSWORD_LENGHT, password);
+	
 	EditarGestor(ultimoGestor, id, nome, email, password);
+
+	GuardarGestores(ultimoGestor);
 }
 
 
@@ -543,6 +606,7 @@ void MostrarMenuRemoverGestor(Gestor* ultimoGestor) {
 	// Atribuição de dados
 	RemoverGestor(ultimoGestor, id);
 
+	GuardarGestores(ultimoGestor);
 }
 
 

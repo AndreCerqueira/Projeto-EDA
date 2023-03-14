@@ -9,22 +9,16 @@
 // include
 #include "Ecras.h"
 
-// main
 
 
-
-/**
- * .
- * 
- */
 void main() {
 	setlocale(LC_ALL, "Portuguese");
 	
 	// Variables
 	int op = -1;
 	Cliente* primeiroCliente = LerClientes();
-	MeioMobilidade* meiosMobilidade = LerMeiosMobilidade();
-	Gestor* gestores = LerGestores();
+	MeioMobilidade* primeiroMeio = LerMeiosMobilidade();
+	Gestor* primeiroGestor = LerGestores();
 	
 	// Program loop
 	while (op != 0) {
@@ -44,16 +38,16 @@ void main() {
 				MostrarMenuListaClientes(primeiroCliente);
 				break;
 			case 5:
-				MostrarMenuAdicionarMeioMobilidade(meiosMobilidade);
+				MostrarMenuAdicionarMeioMobilidade(primeiroMeio);
 				break;
 			case 6:
-				MostrarMenuEditarMeioMobilidade(meiosMobilidade);
+				MostrarMenuEditarMeioMobilidade(primeiroMeio);
 				break;
 			case 7:
-				MostrarMenuRemoverMeioMobilidade(meiosMobilidade);
+				MostrarMenuRemoverMeioMobilidade(primeiroMeio);
 				break;
 			case 8:
-				MostrarMenuListaMeiosMobilidade(meiosMobilidade);
+				MostrarMenuListaMeiosMobilidade(primeiroMeio);
 				break;
 			case 9:
 				// TO DO
@@ -62,19 +56,19 @@ void main() {
 				// TO DO
 				break;
 			case 11:
-				MostrarMenuAdicionarGestor(gestores);
+				MostrarMenuAdicionarGestor(primeiroGestor);
 				break;
 			case 12:
-				MostrarMenuEditarGestor(gestores);
+				MostrarMenuEditarGestor(primeiroGestor);
 				break;
 			case 13:
-				MostrarMenuRemoverGestor(gestores);
+				MostrarMenuRemoverGestor(primeiroGestor);
 				break;
 			case 14:
-				MostrarMenuListaGestores(gestores);
+				MostrarMenuListaGestores(primeiroGestor);
 				break;
 			case 15:
-				CarregarDadosIniciais(&primeiroCliente, meiosMobilidade, gestores);
+				CarregarDadosIniciais(&primeiroCliente, &primeiroMeio, &primeiroGestor);
 				break;
 			case 0:
 				op = 0;

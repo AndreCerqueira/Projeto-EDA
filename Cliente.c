@@ -57,14 +57,14 @@ bool CarregarClientesIniciais(Cliente** primeiroCliente) {
 *
 */
 Cliente* LerClientesIniciais() {
-	FILE* fp;
+	FILE* file;
 	Cliente* primeiroCliente = NULL;
 	char linha[MAX_SIZE];
 
-	if (fopen_s(&fp, HARDDATA_FILE_NAME, "r") != 0)
+	if (fopen_s(&file, HARDDATA_FILE_NAME, "r") != 0)
 		return NULL;
 
-	while (fgets(linha, MAX_SIZE, fp)) {
+	while (fgets(linha, MAX_SIZE, file)) {
 		Cliente* novoCliente = (Cliente*)malloc(sizeof(Cliente));
 
 		if (novoCliente == NULL)
@@ -105,7 +105,7 @@ Cliente* LerClientesIniciais() {
 		}
 	}
 
-	fclose(fp);
+	fclose(file);
 
 	return primeiroCliente;
 }
@@ -119,16 +119,16 @@ Cliente* LerClientesIniciais() {
 *
 */
 Cliente* LerClientes() {
-	FILE* arquivo;
+	FILE* file;
 	Cliente* primeiroCliente = NULL;
 
-	arquivo = fopen(SAVE_FILE_NAME, "rb");
+	file = fopen(SAVE_FILE_NAME, "rb");
 
-	if (arquivo == NULL)
+	if (file == NULL)
 		return NULL;
 
 	Cliente cliente;
-	size_t bytesLidos = fread(&cliente, sizeof(Cliente), 1, arquivo);
+	size_t bytesLidos = fread(&cliente, sizeof(Cliente), 1, file);
 
 	while (bytesLidos > 0) {
 		Cliente* novoCliente = (Cliente*)malloc(sizeof(Cliente));
@@ -157,10 +157,10 @@ Cliente* LerClientes() {
 			clienteAtual->proximo = novoCliente;
 		}
 		
-		bytesLidos = fread(&cliente, sizeof(Cliente), 1, arquivo);
+		bytesLidos = fread(&cliente, sizeof(Cliente), 1, file);
 	}
 
-	fclose(arquivo);
+	fclose(file);
 	return primeiroCliente;
 }
 
@@ -174,20 +174,20 @@ Cliente* LerClientes() {
 *
 */
 bool GuardarClientes(Cliente* primeiroCliente) {
-	FILE* arquivo;
-	arquivo = fopen(SAVE_FILE_NAME, "wb");
+	FILE* file;
+	file = fopen(SAVE_FILE_NAME, "wb");
 
-	if (arquivo == NULL)
+	if (file == NULL)
 		return false;
 
 	Cliente* clienteAtual = primeiroCliente;
 
 	while (clienteAtual != NULL) {
-		fwrite(clienteAtual, sizeof(Cliente), 1, arquivo);
+		fwrite(clienteAtual, sizeof(Cliente), 1, file);
 		clienteAtual = clienteAtual->proximo;
 	}
 
-	fclose(arquivo);
+	fclose(file);
 	
 	return true;
 }
