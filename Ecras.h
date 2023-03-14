@@ -20,7 +20,7 @@
 
 	void MostrarMenuLogin();
 	void MostrarMenuPrincipal(int* op);
-	void CarregarDadosIniciais(Cliente* ultimoCliente, MeioMobilidade* ultimoMeio, Gestor* ultimoGestor);
+	void CarregarDadosIniciais(Cliente** ultimoCliente, MeioMobilidade* ultimoMeio, Gestor* ultimoGestor);
 	
 	void MostrarMenuAdicionarCliente(Cliente* ultimoCliente);
 	void MostrarMenuEditarCliente(Cliente* ultimoCliente);

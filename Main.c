@@ -22,7 +22,7 @@ void main() {
 	
 	// Variables
 	int op = -1;
-	Cliente* clientes = LerClientes();
+	Cliente* primeiroCliente = LerClientes();
 	MeioMobilidade* meiosMobilidade = LerMeiosMobilidade();
 	Gestor* gestores = LerGestores();
 	
@@ -32,16 +32,16 @@ void main() {
 		
 		switch (op) {
 			case 1:
-				MostrarMenuAdicionarCliente(clientes);
+				MostrarMenuAdicionarCliente(primeiroCliente);
 				break;
 			case 2:
-				MostrarMenuEditarCliente(clientes);
+				MostrarMenuEditarCliente(primeiroCliente);
 				break;
 			case 3:
-				MostrarMenuRemoverCliente(clientes);
+				MostrarMenuRemoverCliente(primeiroCliente);
 				break;
 			case 4:
-				MostrarMenuListaClientes(clientes);
+				MostrarMenuListaClientes(primeiroCliente);
 				break;
 			case 5:
 				MostrarMenuAdicionarMeioMobilidade(meiosMobilidade);
@@ -74,7 +74,7 @@ void main() {
 				MostrarMenuListaGestores(gestores);
 				break;
 			case 15:
-				CarregarDadosIniciais(clientes, meiosMobilidade, gestores);
+				CarregarDadosIniciais(&primeiroCliente, meiosMobilidade, gestores);
 				break;
 			case 0:
 				op = 0;

@@ -100,7 +100,7 @@ void MostrarMenuPrincipal(int* op) {
 
 
 // Apaga os dados nos ficheiros binarios e carrega os dados iniciais
-void CarregarDadosIniciais(Cliente* ultimoCliente, MeioMobilidade* ultimoMeio, Gestor* ultimoGestor) {
+void CarregarDadosIniciais(Cliente** primeiroCliente, MeioMobilidade* ultimoMeio, Gestor* ultimoGestor) {
 	
 	// Variaveis
 	int op = -1;
@@ -112,20 +112,25 @@ void CarregarDadosIniciais(Cliente* ultimoCliente, MeioMobilidade* ultimoMeio, G
 		return;
 	
 	// CarregarMeiosMobilidadeIniciais(ultimoMeio);
-	CarregarClientesIniciais(ultimoCliente);
+	CarregarClientesIniciais(primeiroCliente);
 	// CarregarGestoresIniciais(ultimoGestor);
 }
 
 
 // Adicionar Cliente
-void MostrarMenuAdicionarCliente(Cliente* ultimoCliente) {
+void MostrarMenuAdicionarCliente(Cliente* primeiroCliente) {
 	
 	// Variaveis
 	char nome[NOME_LENGHT];
 	char nif[NIF_LENGHT];
 	char morada[MORADA_LENGHT];
 	float saldo;
+	Cliente* novoCliente = (Cliente*)malloc(sizeof(Cliente));
 
+	// Verificar se houve problema a alocar memoria
+	if (novoCliente == NULL)
+		return;
+	
 	// Inserir os dados da clinica
 	system("cls");
 	puts("+-------------------------------+");
@@ -152,15 +157,24 @@ void MostrarMenuAdicionarCliente(Cliente* ultimoCliente) {
 	if (Confirmar() == IS_CANCELED)
 		return;
 
-	// Atribuição de dados
-	AdicionarCliente(ultimoCliente, nome, nif, morada, saldo);
+	// Colocar o terminador de string
+	nome[NOME_LENGHT - 1] = '\0';
+	nif[NIF_LENGHT - 1] = '\0';
+	morada[MORADA_LENGHT - 1] = '\0';
 
-	GuardarClientes(ultimoCliente);
+	// Atribuição de dados
+	strcpy_s(novoCliente->nome, NOME_CLIENTE_LENGHT, nome);
+	strcpy_s(novoCliente->nif, NIF_LENGHT, nif);
+	strcpy_s(novoCliente->morada, MORADA_LENGHT, morada);
+	novoCliente->saldo = saldo;
+	AdicionarCliente(primeiroCliente, novoCliente);
+
+	GuardarClientes(primeiroCliente);
 }
 
 
 // Editar Cliente
-void MostrarMenuEditarCliente(Cliente* ultimoCliente) {
+void MostrarMenuEditarCliente(Cliente* primeiroCliente) {
 
 	// Variaveis
 	int id;
@@ -168,7 +182,12 @@ void MostrarMenuEditarCliente(Cliente* ultimoCliente) {
 	char nif[NIF_LENGHT];
 	char morada[MORADA_LENGHT];
 	float saldo;
+	Cliente* novoCliente = (Cliente*)malloc(sizeof(Cliente));
 
+	// Verificar se houve problema a alocar memoria
+	if (novoCliente == NULL)
+		return;
+	
 	// Inserir os dados da clinica
 	system("cls");
 	puts("+-------------------------------+");
@@ -199,15 +218,27 @@ void MostrarMenuEditarCliente(Cliente* ultimoCliente) {
 	if (Confirmar() == IS_CANCELED)
 		return;
 
-	// Atribuição de dados
-	EditarCliente(ultimoCliente, id, nome, nif, morada, saldo);
+	// Colocar o terminador de string
+	nome[NOME_LENGHT - 1] = '\0';
+	nif[NIF_LENGHT - 1] = '\0';
+	morada[MORADA_LENGHT - 1] = '\0';
 
-	GuardarClientes(ultimoCliente);
+	// Atribuição de dados
+	novoCliente->id = id;
+	strcpy_s(novoCliente->nome, NOME_CLIENTE_LENGHT, nome);
+	strcpy_s(novoCliente->nif, NIF_LENGHT, nif);
+	strcpy_s(novoCliente->morada, MORADA_LENGHT, morada);
+	novoCliente->saldo = saldo;
+
+	// Atribuição de dados
+	EditarCliente(primeiroCliente, novoCliente);
+
+	GuardarClientes(primeiroCliente);
 }
 
 
 // Remover Cliente
-void MostrarMenuRemoverCliente(Cliente* ultimoCliente) {
+void MostrarMenuRemoverCliente(Cliente* primeiroCliente) {
 
 	// Variaveis
 	int id;
@@ -227,14 +258,14 @@ void MostrarMenuRemoverCliente(Cliente* ultimoCliente) {
 		return;
 
 	// Atribuição de dados
-	RemoverCliente(ultimoCliente, id);
+	RemoverCliente(primeiroCliente, id);
 
-	GuardarClientes(ultimoCliente);
+	GuardarClientes(primeiroCliente);
 }
 
 
 // Lista de Clientes
-void MostrarMenuListaClientes(Cliente* ultimoCliente) {
+void MostrarMenuListaClientes(Cliente* primeiroCliente) {
 
 	// Variaveis
 	int i;
@@ -247,7 +278,7 @@ void MostrarMenuListaClientes(Cliente* ultimoCliente) {
 	puts("|  ID  |          Nome          |      Nif     |       Morada       |    Saldo    |");
 	puts("+---------------------------------------------------------------------------------+");
 
-	Cliente* cliente = ultimoCliente;
+	Cliente* cliente = primeiroCliente;
 	while (cliente != NULL) {
 		if (cliente->ativo == true)
 		{

@@ -17,8 +17,8 @@
 	// Constants
 	#define LOCALIZACAO_LENGHT 20
 
-	#define HARDDATA_FILE_NAME "D:/IPCA/Projeto-EDA/data/simulacao/MeiosMobilidade.txt"
-	#define SAVE_FILE_NAME "D:/IPCA/Projeto-EDA/data/save/MeiosMobilidade.dat"
+	#define HARDDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/MeiosMobilidade.txt"
+	#define SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/MeiosMobilidade.dat"
 
 	// Enums
 	typedef enum {

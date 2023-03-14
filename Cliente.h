@@ -19,8 +19,8 @@
 	#define NIF_LENGHT 20
 	#define MORADA_LENGHT 50
 
-	#define HARDDATA_FILE_NAME "D:/IPCA/Projeto-EDA/data/simulacao/Clientes.txt"
-	#define SAVE_FILE_NAME "D:/IPCA/Projeto-EDA/data/save/Clientes.dat"
+	#define HARDDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/Clientes.txt"
+	#define SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/Clientes.dat"
 
 	// Structs
 	typedef struct Cliente Cliente;
@@ -42,7 +42,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void ResetarClientes(Cliente* ultimoCliente);
+	bool ResetarClientes(Cliente* primeiroCliente);
 
 
 	/**
@@ -52,7 +52,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void CarregarClientesIniciais(Cliente* ultimoCliente);
+	bool CarregarClientesIniciais(Cliente** primeiroCliente);
 
 
 	/**
@@ -83,7 +83,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void GuardarClientes(Cliente* ultimoCliente);
+	bool GuardarClientes(Cliente* primeiroCliente);
 
 
 	/**
@@ -93,7 +93,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void AdicionarCliente(Cliente* ultimoCliente, char* nome, char* nif, char* morada, float saldo);
+	bool AdicionarCliente(Cliente* primeiroCliente, Cliente* novoCliente);
 
 	
 	/**
@@ -103,7 +103,7 @@
 	* \author A. Cerqueira
 	* 
 	*/
-	void RemoverCliente(Cliente* ultimoCliente, int id);
+	bool RemoverCliente(Cliente* primeiroCliente, int id);
 
 
 	/**
@@ -113,7 +113,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	void EditarCliente(Cliente* ultimoCliente, int id, char* nome, char* nif, char* morada, float saldo);
+	bool EditarCliente(Cliente* primeiroCliente, Cliente* clienteSelecionado);
 	
 	
 #endif
