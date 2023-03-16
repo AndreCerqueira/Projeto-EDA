@@ -20,21 +20,22 @@
 
 	void MostrarMenuLogin();
 	void MostrarMenuPrincipal(int* op);
-	void CarregarDadosIniciais(ClienteLista** ultimoCliente, MeioMobilidadeLista** ultimoMeio, GestorLista** ultimoGestor);
+	void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidadeLista** primeiroMeio, GestorLista** primeiroGestor);
 	
-	void MostrarMenuAdicionarCliente(ClienteLista** ultimoCliente);
-	void MostrarMenuEditarCliente(ClienteLista* ultimoCliente);
-	void MostrarMenuRemoverCliente(ClienteLista* ultimoCliente);
-	void MostrarMenuListaClientes(ClienteLista* ultimoCliente);
+	void MostrarMenuAdicionarCliente(ClienteLista** primeiroCliente);
+	void MostrarMenuEditarCliente(ClienteLista* primeiroCliente);
+	void MostrarMenuRemoverCliente(ClienteLista* primeiroCliente);
+	void MostrarMenuListaClientes(ClienteLista* primeiroCliente);
 	
-	void MostrarMenuAdicionarMeioMobilidade(MeioMobilidadeLista** ultimoMeio);
-	void MostrarMenuEditarMeioMobilidade(MeioMobilidadeLista* ultimoMeio);
-	void MostrarMenuRemoverMeioMobilidade(MeioMobilidadeLista* ultimoMeio);
-	void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* ultimoMeio);
+	void MostrarMenuAdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio);
+	void MostrarMenuEditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio);
+	void MostrarMenuRemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio);
+	void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio);
+	void MostrarMenuListaMeiosMobilidadePorAutonomia(MeioMobilidadeLista* primeiroMeio);
 	
-	void MostrarMenuAdicionarGestor(GestorLista** ultimoGestor);
-	void MostrarMenuEditarGestor(GestorLista* ultimoGestor);
-	void MostrarMenuRemoverGestor(GestorLista* ultimoGestor);
-	void MostrarMenuListaGestores(GestorLista* ultimoGestor);
+	void MostrarMenuAdicionarGestor(GestorLista** primeiroGestor);
+	void MostrarMenuEditarGestor(GestorLista* primeiroGestor);
+	void MostrarMenuRemoverGestor(GestorLista* primeiroGestor);
+	void MostrarMenuListaGestores(GestorLista* primeiroGestor);
 
 #endif

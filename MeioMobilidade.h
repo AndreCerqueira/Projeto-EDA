@@ -144,5 +144,23 @@
 	 * \return
 	 */
 	bool OrdenarMeiosMobilidadePorId(MeioMobilidadeLista** primeiroMeio);
+
+
+	/**
+	 * \brief Ordenar meios de mobilidade por ordem decrescente de autonomia
+	 *
+	 * \param primeiroMeio
+	 * \return
+	 */
+	bool OrdenarMeiosMobilidadePorAutonomia(MeioMobilidadeLista** primeiroMeio);
+
+	
+	/**
+	 * \brief Procurar meios de mobilidade em localização
+	 *
+	 * \param primeiroMeio
+	 * \return
+	 */
+	MeioMobilidadeLista* ProcurarMeiosMobilidadePorLocalizacao(MeioMobilidadeLista* primeiroMeio, char* localizacao);
 	
 #endif

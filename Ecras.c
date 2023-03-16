@@ -23,7 +23,7 @@ void MostrarMenuLogin() {
 	char email[EMAIL_LENGHT];
 	char password[PASSWORD_LENGHT];
 
-	// Inserir os dados da clinica
+	// Inserir os dados 
 	system("cls");
 	puts("+-------------------------------+");
 	puts("|             Login             |");
@@ -78,7 +78,7 @@ void MostrarMenuPrincipal(int* op) {
 	puts("|\t\t\t\t\t   |");
 	puts("| 9- Listar ordem decrescente de autonomia |");
 	puts("|\t\t\t\t\t   |");
-	puts("| 10- Listar por localização\t\t   |");
+	puts("| 10- Procurar Meios em localização\t   |");
 	puts("+------------------------------------------+");
 	puts("| 11- Adicionar Gestores\t\t   |");
 	puts("|\t\t\t\t\t   |");
@@ -131,7 +131,7 @@ void MostrarMenuAdicionarCliente(ClienteLista** primeiroCliente) {
 	if (novoCliente == NULL)
 		return;
 	
-	// Inserir os dados da clinica
+	// Inserir os dados 
 	system("cls");
 	puts("+-------------------------------+");
 	puts("|        Adicionar Cliente      |");
@@ -188,7 +188,7 @@ void MostrarMenuEditarCliente(ClienteLista* primeiroCliente) {
 	if (novoCliente == NULL)
 		return;
 	
-	// Inserir os dados da clinica
+	// Inserir os dados 
 	system("cls");
 	puts("+-------------------------------+");
 	puts("|         Editar Cliente        |");
@@ -243,7 +243,7 @@ void MostrarMenuRemoverCliente(ClienteLista* primeiroCliente) {
 	// Variaveis
 	int id;
 
-	// Inserir os dados da clinica
+	// Inserir os dados 
 	system("cls");
 	puts("+-------------------------------+");
 	puts("|        Remover Cliente        |");
@@ -270,7 +270,7 @@ void MostrarMenuListaClientes(ClienteLista* primeiroCliente) {
 	// Variaveis
 	int i;
 
-	// Mostrar os dados da clinica
+	// Mostrar os dados 
 	system("cls");
 	puts("+---------------------------------------------------------------------------------+");
 	puts("|                                   Lista de Clientes                             |");
@@ -311,7 +311,7 @@ void MostrarMenuAdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio) {
 	if (novoMeio == NULL)
 		return;
 	
-	// Inserir os dados da clinica
+	// Inserir os dados 
 	system("cls");
 	puts("+----------------------------------------+");
 	puts("|      Adicionar Meio de Mobilidade      |");
@@ -368,7 +368,7 @@ void MostrarMenuEditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
 	if (novoMeio == NULL)
 		return;
 	
-	// Inserir os dados da clinica
+	// Inserir os dados 
 	system("cls");
 	puts("+----------------------------------------+");
 	puts("|       Editar Meio de Mobilidade        |");
@@ -421,7 +421,7 @@ void MostrarMenuRemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
 	// Variaveis
 	int id;
 
-	// Inserir os dados da clinica
+	// Inserir os dados 
 	system("cls");
 	puts("+----------------------------------------+");
 	puts("|      Remover Meio de Mobilidade        |");
@@ -448,7 +448,7 @@ void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio) {
 	// Variaveis
 	int i;
 
-	// Mostrar os dados da clinica
+	// Mostrar os dados 
 	system("cls");
 	puts("+----------------------------------------------------------------------------------+");
 	puts("|                             Lista de Meios de Mobilidade                         |");
@@ -475,6 +475,39 @@ void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio) {
 }
 
 
+// Lista de Meios de mobilidade por autonomia
+void MostrarMenuListaMeiosMobilidadePorAutonomia(MeioMobilidadeLista* primeiroMeio) {
+	OrdenarMeiosMobilidadePorAutonomia(&primeiroMeio);
+	MostrarMenuListaMeiosMobilidade(primeiroMeio);
+	OrdenarMeiosMobilidadePorId(&primeiroMeio);
+}
+
+
+// Lista de Meios de mobilidade de uma localizacao
+void MostrarMenuListaMeiosMobilidadeLocalizacao(MeioMobilidadeLista* primeiroMeio) {
+
+	// Variaveis
+	char localizacao[LOCALIZACAO_LENGHT];
+
+	// Inserir os dados 
+	system("cls");
+	puts("+----------------------------------------+");
+	puts("|       Procurar por localização         |");
+	puts("+----------------------------------------+");
+
+	printf("Insira o geocódigo da localização: ");
+	scanf_s("%s", localizacao, LOCALIZACAO_LENGHT);
+	fflush(stdin);
+
+	// ProcurarMeiosMobilidadePorLocalizacao
+	MeioMobilidadeLista* primeiroMeioLocalizacao = ProcurarMeiosMobilidadePorLocalizacao(primeiroMeio, localizacao);
+	
+	// Mostrar os dados
+	MostrarMenuListaMeiosMobilidade(primeiroMeioLocalizacao);
+
+}
+
+
 // Adicionar Gestor
 void MostrarMenuAdicionarGestor(GestorLista** primeiroGestor) {
 	
@@ -488,7 +521,7 @@ void MostrarMenuAdicionarGestor(GestorLista** primeiroGestor) {
 	if (novoGestor == NULL)
 		return;
 
-	// Inserir os dados da clinica
+	// Inserir os dados 
 	system("cls");
 	puts("+----------------------------------------+");
 	puts("|          Adicionar Gestor              |");
@@ -540,7 +573,7 @@ void MostrarMenuEditarGestor(GestorLista* primeiroGestor) {
 	if (novoGestor == NULL)
 		return;
 	
-	// Inserir os dados da clinica
+	// Inserir os dados 
 	system("cls");
 	puts("+----------------------------------------+");
 	puts("|          Editar Gestor                 |");
@@ -589,7 +622,7 @@ void MostrarMenuRemoverGestor(GestorLista* primeiroGestor) {
 	// Variaveis
 	int id;
 
-	// Inserir os dados da clinica
+	// Inserir os dados 
 	system("cls");
 	puts("+----------------------------------------+");
 	puts("|          Remover Gestor                |");
@@ -616,7 +649,7 @@ void MostrarMenuListaGestores(GestorLista* primeiroGestor) {
 	// Variaveis
 	int i;
 
-	// Mostrar os dados da clinica
+	// Mostrar os dados 
 	system("cls");
 	puts("+---------------------------------------------------------------+");
 	puts("|                          Lista de Gestores                    |");

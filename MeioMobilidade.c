@@ -307,3 +307,53 @@ bool OrdenarMeiosMobilidadePorId(MeioMobilidadeLista** primeiroMeio) {
 
 	return true;
 }
+
+
+/**
+ * \brief Ordenar meios de mobilidade por ordem decrescente de autonomia
+ *
+ * \param primeiroMeio
+ * \return
+ */
+bool OrdenarMeiosMobilidadePorAutonomia(MeioMobilidadeLista** primeiroMeio) {
+	MeioMobilidadeLista* atual;
+	MeioMobilidadeLista* proximo;
+	MeioMobilidade temp;
+
+	for (atual = *primeiroMeio; atual != NULL; atual = atual->proximo) {
+		for (proximo = atual->proximo; proximo != NULL; proximo = proximo->proximo) {
+
+			if (atual->m.cargaBateria < proximo->m.cargaBateria) {
+				temp = atual->m;
+				atual->m = proximo->m;
+				proximo->m = temp;
+			}
+
+		}
+	}
+
+	return true;
+}
+
+
+/**
+* \brief Procurar meios de mobilidade em localização
+*
+* \param primeiroMeio
+* \return
+*/
+MeioMobilidadeLista* ProcurarMeiosMobilidadePorLocalizacao(MeioMobilidadeLista* primeiroMeio, char* localizacao) {
+	MeioMobilidadeLista* meiosMobilidadeLocalizacao = NULL;
+	MeioMobilidadeLista* meioAtual = primeiroMeio;
+
+	while (meioAtual != NULL) {
+
+		if (strcmp(meioAtual->m.localizacao, localizacao) == 0) {
+			AdicionarMeioMobilidade(&meiosMobilidadeLocalizacao, &meioAtual->m);
+		}
+
+		meioAtual = meioAtual->proximo;
+	}
+
+	return meiosMobilidadeLocalizacao;
+}

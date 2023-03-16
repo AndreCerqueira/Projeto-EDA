@@ -49,10 +49,10 @@ void main() {
 				MostrarMenuListaMeiosMobilidade(primeiroMeio);
 				break;
 			case 9:
-				// TO DO
+				MostrarMenuListaMeiosMobilidadePorAutonomia(primeiroMeio);
 				break;
 			case 10:
-				// TO DO
+				MostrarMenuListaMeiosMobilidadeLocalizacao(primeiroMeio);
 				break;
 			case 11:
 				MostrarMenuAdicionarGestor(&primeiroGestor);
