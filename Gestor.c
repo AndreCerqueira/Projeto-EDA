@@ -177,7 +177,7 @@ bool GuardarGestores(char* filePath, Gestor* primeiroGestor) {
 	Gestor* gestorAtual = primeiroGestor;
 
 	while (gestorAtual != NULL) {
-		fwrite(gestorAtual, sizeof(Gestor), 1, file);
+		// fwrite(gestorAtual, sizeof(Gestor), 1, file);
 		gestorAtual = gestorAtual->proximo;
 	}
 

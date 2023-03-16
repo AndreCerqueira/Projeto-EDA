@@ -18,12 +18,12 @@
 * \author A. Cerqueira
 *
 */
-bool ResetarClientes(Cliente* primeiroCliente) {
-	Cliente* cliente = primeiroCliente;
+bool ResetarClientes(ClienteLista* primeiroCliente) {
+	ClienteLista* clienteAtual = primeiroCliente;
 
-	while (cliente != NULL) {
-		Cliente* clienteAnterior = cliente;
-		cliente = cliente->proximo;
+	while (clienteAtual != NULL) {
+		ClienteLista* clienteAnterior = clienteAtual;
+		clienteAtual = clienteAtual->proximo;
 		free(clienteAnterior);
 	}
 
@@ -40,7 +40,7 @@ bool ResetarClientes(Cliente* primeiroCliente) {
 * \author A. Cerqueira
 *
 */
-bool CarregarClientesIniciais(Cliente** primeiroCliente, char* filePathInicial, char* saveFilePath) {
+bool CarregarClientesIniciais(ClienteLista** primeiroCliente, char* filePathInicial, char* saveFilePath) {
 	ResetarClientes(*primeiroCliente);
 	*primeiroCliente = LerClientesIniciais(filePathInicial);
 	GuardarClientes(saveFilePath , *primeiroCliente);
@@ -56,53 +56,41 @@ bool CarregarClientesIniciais(Cliente** primeiroCliente, char* filePathInicial, 
 * \author A. Cerqueira
 *
 */
-Cliente* LerClientesIniciais(char* filePath) {
+ClienteLista* LerClientesIniciais(char* filePath) {
 	FILE* file;
-	Cliente* primeiroCliente = NULL;
+	ClienteLista* primeiroCliente = NULL;
 	char linha[MAX_SIZE];
 
 	if (fopen_s(&file, filePath, "r") != 0)
 		return NULL;
 
 	while (fgets(linha, MAX_SIZE, file)) {
-		Cliente* novoCliente = (Cliente*)malloc(sizeof(Cliente));
+		ClienteLista* novoCliente = (ClienteLista*)malloc(sizeof(ClienteLista));
 
 		if (novoCliente == NULL)
 			return NULL;
 
 		char* contexto = NULL;
 		char* campo = strtok_s(linha, ";", &contexto);
-		novoCliente->id = atoi(campo);
+		novoCliente->c.id = atoi(campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(novoCliente->nome, NOME_CLIENTE_LENGHT, campo);
+		strcpy_s(novoCliente->c.nome, NOME_CLIENTE_LENGHT, campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(novoCliente->nif, NIF_LENGHT, campo);
+		strcpy_s(novoCliente->c.nif, NIF_LENGHT, campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(novoCliente->morada, MORADA_LENGHT, campo);
+		strcpy_s(novoCliente->c.morada, MORADA_LENGHT, campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		novoCliente->saldo = atof(campo);
+		novoCliente->c.saldo = atof(campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		novoCliente->ativo = (bool)atoi(campo);
+		novoCliente->c.ativo = (bool)atoi(campo);
 
-		novoCliente->proximo = NULL;
-
-		if (primeiroCliente == NULL) {
-			primeiroCliente = novoCliente;
-		}
-		else {
-			Cliente* clienteAtual = primeiroCliente;
-
-			while (clienteAtual->proximo != NULL) {
-				clienteAtual = clienteAtual->proximo;
-			}
-
-			clienteAtual->proximo = novoCliente;
-		}
+		novoCliente->proximo = primeiroCliente;
+		primeiroCliente = novoCliente;
 	}
 
 	fclose(file);
@@ -118,9 +106,9 @@ Cliente* LerClientesIniciais(char* filePath) {
 * \author A. Cerqueira
 *
 */
-Cliente* LerClientes(char* filePath) {
+ClienteLista* LerClientes(char* filePath) {
 	FILE* file;
-	Cliente* primeiroCliente = NULL;
+	ClienteLista* primeiroCliente = NULL;
 
 	file = fopen(filePath, "rb");
 
@@ -131,36 +119,27 @@ Cliente* LerClientes(char* filePath) {
 	size_t bytesLidos = fread(&cliente, sizeof(Cliente), 1, file);
 
 	while (bytesLidos > 0) {
-		Cliente* novoCliente = (Cliente*)malloc(sizeof(Cliente));
+		ClienteLista* novoCliente = (ClienteLista*)malloc(sizeof(ClienteLista));
 
 		if (novoCliente == NULL)
 			return NULL;
-	
-		novoCliente->id = cliente.id;
-		strcpy(novoCliente->nome, cliente.nome);
-		strcpy(novoCliente->nif, cliente.nif);
-		strcpy(novoCliente->morada, cliente.morada);
-		novoCliente->saldo = cliente.saldo;
-		novoCliente->ativo = cliente.ativo;
-		novoCliente->proximo = NULL;
 
-		if (primeiroCliente == NULL) {
-			primeiroCliente = novoCliente;
-		}
-		else {
-			Cliente* clienteAtual = primeiroCliente;
+		novoCliente->c.id = cliente.id;
+		strcpy(novoCliente->c.nome, cliente.nome);
+		strcpy(novoCliente->c.nif, cliente.nif);
+		strcpy(novoCliente->c.morada, cliente.morada);
+		novoCliente->c.saldo = cliente.saldo;
+		novoCliente->c.ativo = cliente.ativo;
+		novoCliente->proximo = primeiroCliente;
+		primeiroCliente = novoCliente;
 
-			while (clienteAtual->proximo != NULL) {
-				clienteAtual = clienteAtual->proximo;
-			}
-
-			clienteAtual->proximo = novoCliente;
-		}
-		
 		bytesLidos = fread(&cliente, sizeof(Cliente), 1, file);
 	}
 
 	fclose(file);
+
+	OrdenarClientesPorId(&primeiroCliente);
+
 	return primeiroCliente;
 }
 
@@ -173,22 +152,22 @@ Cliente* LerClientes(char* filePath) {
 * \author A. Cerqueira
 *
 */
-bool GuardarClientes(char* filePath, Cliente* primeiroCliente) {
+bool GuardarClientes(char* filePath, ClienteLista* primeiroCliente) {
 	FILE* file;
 	file = fopen(filePath, "wb");
 
 	if (file == NULL)
 		return false;
 
-	Cliente* clienteAtual = primeiroCliente;
+	ClienteLista* clienteAtual = primeiroCliente;
 
 	while (clienteAtual != NULL) {
-		fwrite(clienteAtual, sizeof(Cliente), 1, file);
+		fwrite(&clienteAtual->c, sizeof(Cliente), 1, file);
 		clienteAtual = clienteAtual->proximo;
 	}
 
 	fclose(file);
-	
+
 	return true;
 }
 
@@ -200,27 +179,27 @@ bool GuardarClientes(char* filePath, Cliente* primeiroCliente) {
 * \author A. Cerqueira
 *
 */
-bool AdicionarCliente(Cliente* primeiroCliente, Cliente* novoCliente) {
-	
+bool AdicionarCliente(ClienteLista** primeiroCliente, Cliente* novoCliente) {
 	if (novoCliente == NULL)
 		return false;
 
-	if (primeiroCliente == NULL) {
-		primeiroCliente = novoCliente;
-		return true;
-	}
-	
-	Cliente* clienteAtual = primeiroCliente;
-	
-	while (clienteAtual->proximo != NULL) {
-		clienteAtual = clienteAtual->proximo;
-	}
-	
-	novoCliente->id = clienteAtual->id + 1;
+	ClienteLista* novoNode = (ClienteLista*)malloc(sizeof(ClienteLista));
+	if (novoNode == NULL)
+		return false;
+
 	novoCliente->ativo = true;
-	novoCliente->proximo = NULL;
-	clienteAtual->proximo = novoCliente;
 	
+	if (*primeiroCliente != NULL) {
+		novoCliente->id = (*primeiroCliente)->c.id + 1;
+		novoNode->proximo = *primeiroCliente;
+	}
+	else {
+		novoCliente->id = 1;
+		novoNode->proximo = NULL;
+	}
+	
+	novoNode->c = *novoCliente;
+	*primeiroCliente = novoNode;
 	return true;
 }
 
@@ -233,21 +212,21 @@ bool AdicionarCliente(Cliente* primeiroCliente, Cliente* novoCliente) {
 * \author A. Cerqueira
 *
 */
-bool RemoverCliente(Cliente* primeiroCliente, int id) {
+bool RemoverCliente(ClienteLista* primeiroCliente, int id) {
 
-	Cliente* cliente = primeiroCliente;
+	ClienteLista* clienteAtual = primeiroCliente;
 
-	while (cliente != NULL) {
-		
-		if (cliente->id == id) {
-			cliente->ativo = false;
-			return;
+	while (clienteAtual != NULL) {
+
+		if (clienteAtual->c.id == id) {
+			clienteAtual->c.ativo = false;
+			return true;
 		}
-		
-		cliente = cliente->proximo;
+
+		clienteAtual = clienteAtual->proximo;
 	}
 
-	return true;
+	return false;
 }
 
 
@@ -258,22 +237,42 @@ bool RemoverCliente(Cliente* primeiroCliente, int id) {
 * \author A. Cerqueira
 *
 */
-bool EditarCliente(Cliente* primeiroCliente, Cliente* clienteSelecionado) {
+bool EditarCliente(ClienteLista* primeiroCliente, Cliente* clienteSelecionado) {
 
-	Cliente* cliente = primeiroCliente;
+	ClienteLista* cliente = primeiroCliente;
 
 	while (cliente != NULL) {
 
-		if (cliente->id == clienteSelecionado->id) {
-			strcpy_s(cliente->nome, NOME_CLIENTE_LENGHT, clienteSelecionado->nome);
-			strcpy_s(cliente->nif, NIF_LENGHT, clienteSelecionado->nif);
-			strcpy_s(cliente->morada, MORADA_LENGHT, clienteSelecionado->morada);
-			cliente->saldo = clienteSelecionado->saldo;
-			return;
+		if (cliente->c.id == clienteSelecionado->id) {
+			strcpy_s(cliente->c.nome, NOME_CLIENTE_LENGHT, clienteSelecionado->nome);
+			strcpy_s(cliente->c.nif, NIF_LENGHT, clienteSelecionado->nif);
+			strcpy_s(cliente->c.morada, MORADA_LENGHT, clienteSelecionado->morada);
+			cliente->c.saldo = clienteSelecionado->saldo;
+			return true;
 		}
 
 		cliente = cliente->proximo;
 	}
-	
+
+	return false;
+}
+
+
+bool OrdenarClientesPorId(ClienteLista** primeiroCliente) {
+	ClienteLista* atual, * proximo;
+	Cliente temp;
+
+	for (atual = *primeiroCliente; atual != NULL; atual = atual->proximo) {
+		for (proximo = atual->proximo; proximo != NULL; proximo = proximo->proximo) {
+			
+			if (atual->c.id < proximo->c.id) {
+				temp = atual->c;
+				atual->c = proximo->c;
+				proximo->c = temp;
+			}
+			
+		}
+	}
+
 	return true;
 }

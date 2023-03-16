@@ -15,7 +15,7 @@ void main() {
 	
 	// Variables
 	int op = -1;
-	Cliente* primeiroCliente = LerClientes(CLIENTE_SAVE_FILE_NAME);
+	ClienteLista* primeiroCliente = LerClientes(CLIENTE_SAVE_FILE_NAME);
 	MeioMobilidade* primeiroMeio = LerMeiosMobilidade(MEIO_SAVE_FILE_NAME);
 	Gestor* primeiroGestor = LerGestores(GESTOR_SAVE_FILE_NAME);
 	
@@ -25,7 +25,7 @@ void main() {
 		
 		switch (op) {
 			case 1:
-				MostrarMenuAdicionarCliente(primeiroCliente);
+				MostrarMenuAdicionarCliente(&primeiroCliente);
 				break;
 			case 2:
 				MostrarMenuEditarCliente(primeiroCliente);

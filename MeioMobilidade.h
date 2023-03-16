@@ -41,6 +41,11 @@
 		MeioMobilidade* proximo;
 	};
 
+	/*typedef struct MeioMobilidadeLista MeioMobilidadeLista;
+	typedef struct MeioMobilidadeLista {
+		MeioMobilidade m;
+		MeioMobilidadeLista* proximo;
+	};*/
 
 	/**
 	* \brief Resetar lista ligada de Meios de Mobilidade, reescreve o ficheiro .dat com a lista vazia

@@ -31,7 +31,12 @@
 		char morada[MORADA_LENGHT];
 		float saldo;
 		bool ativo;
-		Cliente* proximo;
+	};
+
+	typedef struct ClienteLista ClienteLista;
+	typedef struct ClienteLista {
+		Cliente c;
+		ClienteLista* proximo;
 	};
 
 	
@@ -42,7 +47,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool ResetarClientes(Cliente* primeiroCliente);
+	bool ResetarClientes(ClienteLista* primeiroCliente);
 
 
 	/**
@@ -52,7 +57,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool CarregarClientesIniciais(Cliente** primeiroCliente, char* filePathInicial, char* saveFilePath);
+	bool CarregarClientesIniciais(ClienteLista** primeiroCliente, char* filePathInicial, char* saveFilePath);
 
 
 	/**
@@ -62,7 +67,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	Cliente* LerClientesIniciais(char* filePath);
+	ClienteLista* LerClientesIniciais(char* filePath);
 
 	
 	/**
@@ -72,7 +77,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	Cliente* LerClientes(char* filePath);
+	ClienteLista* LerClientes(char* filePath);
 	
 
 	/**
@@ -83,7 +88,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool GuardarClientes(char* filePath, Cliente* primeiroCliente);
+	bool GuardarClientes(char* filePath, ClienteLista* primeiroCliente);
 
 
 	/**
@@ -93,7 +98,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool AdicionarCliente(Cliente* primeiroCliente, Cliente* novoCliente);
+	bool AdicionarCliente(ClienteLista** primeiroCliente, Cliente* novoCliente);
 
 	
 	/**
@@ -103,7 +108,7 @@
 	* \author A. Cerqueira
 	* 
 	*/
-	bool RemoverCliente(Cliente* primeiroCliente, int id);
+	bool RemoverCliente(ClienteLista* primeiroCliente, int id);
 
 
 	/**
@@ -113,7 +118,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool EditarCliente(Cliente* primeiroCliente, Cliente* clienteSelecionado);
+	bool EditarCliente(ClienteLista* primeiroCliente, Cliente* clienteSelecionado);
 	
 	
 #endif

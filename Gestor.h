@@ -32,6 +32,12 @@
 		bool ativo;
 		Gestor* proximo;
 	};
+
+	/*typedef struct GestorLista GestorLista;
+	typedef struct GestorLista {
+		Gestor g;
+		GestorLista* proximo;
+	};*/
 	
 
 	/**

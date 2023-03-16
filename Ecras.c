@@ -100,7 +100,7 @@ void MostrarMenuPrincipal(int* op) {
 
 
 // Apaga os dados nos ficheiros binarios e carrega os dados iniciais
-void CarregarDadosIniciais(Cliente** primeiroCliente, MeioMobilidade** primeiroMeio, Gestor** ultimoGestor) {
+void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidade** primeiroMeio, Gestor** ultimoGestor) {
 	
 	// Variaveis
 	int op = -1;
@@ -118,7 +118,7 @@ void CarregarDadosIniciais(Cliente** primeiroCliente, MeioMobilidade** primeiroM
 
 
 // Adicionar Cliente
-void MostrarMenuAdicionarCliente(Cliente* primeiroCliente) {
+void MostrarMenuAdicionarCliente(ClienteLista** primeiroCliente) {
 	
 	// Variaveis
 	char nome[NOME_LENGHT];
@@ -169,12 +169,12 @@ void MostrarMenuAdicionarCliente(Cliente* primeiroCliente) {
 	novoCliente->saldo = saldo;
 	AdicionarCliente(primeiroCliente, novoCliente);
 
-	GuardarClientes(CLIENTE_SAVE_FILE_NAME, primeiroCliente);
+	GuardarClientes(CLIENTE_SAVE_FILE_NAME, *primeiroCliente);
 }
 
 
 // Editar Cliente
-void MostrarMenuEditarCliente(Cliente* primeiroCliente) {
+void MostrarMenuEditarCliente(ClienteLista* primeiroCliente) {
 
 	// Variaveis
 	int id;
@@ -238,7 +238,7 @@ void MostrarMenuEditarCliente(Cliente* primeiroCliente) {
 
 
 // Remover Cliente
-void MostrarMenuRemoverCliente(Cliente* primeiroCliente) {
+void MostrarMenuRemoverCliente(ClienteLista* primeiroCliente) {
 
 	// Variaveis
 	int id;
@@ -265,7 +265,7 @@ void MostrarMenuRemoverCliente(Cliente* primeiroCliente) {
 
 
 // Lista de Clientes
-void MostrarMenuListaClientes(Cliente* primeiroCliente) {
+void MostrarMenuListaClientes(ClienteLista* primeiroCliente) {
 
 	// Variaveis
 	int i;
@@ -278,11 +278,11 @@ void MostrarMenuListaClientes(Cliente* primeiroCliente) {
 	puts("|  ID  |          Nome          |      Nif     |       Morada       |    Saldo    |");
 	puts("+---------------------------------------------------------------------------------+");
 
-	Cliente* cliente = primeiroCliente;
+	ClienteLista* cliente = primeiroCliente;
 	while (cliente != NULL) {
-		if (cliente->ativo == true)
+		if (cliente->c.ativo == true)
 		{
-			printf("| %-4d | %-22s | %-12s | %-18s | %-11.2f |\n", cliente->id, cliente->nome, cliente->nif, cliente->morada, cliente->saldo);
+			printf("| %-4d | %-22s | %-12s | %-18s | %-11.2f |\n", cliente->c.id, cliente->c.nome, cliente->c.nif, cliente->c.morada, cliente->c.saldo);
 		}
 
 		cliente = cliente->proximo;
