@@ -100,7 +100,7 @@ void MostrarMenuPrincipal(int* op) {
 
 
 // Apaga os dados nos ficheiros binarios e carrega os dados iniciais
-void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidade** primeiroMeio, GestorLista** primeiroGestor) {
+void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidadeLista** primeiroMeio, GestorLista** primeiroGestor) {
 	
 	// Variaveis
 	int op = -1;
@@ -298,7 +298,7 @@ void MostrarMenuListaClientes(ClienteLista* primeiroCliente) {
 
 
 // Adicionar Meio de mobilidade
-void MostrarMenuAdicionarMeioMobilidade(MeioMobilidade* primeiroMeio) {
+void MostrarMenuAdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio) {
 	
 	// Variaveis
 	TipoMeioMobilidade tipo;
@@ -317,7 +317,7 @@ void MostrarMenuAdicionarMeioMobilidade(MeioMobilidade* primeiroMeio) {
 	puts("|      Adicionar Meio de Mobilidade      |");
 	puts("+----------------------------------------+");
 
-	printf("\n0 - Bicibleta | 1 - Trotinente | 2 - Scooter | 3 - Segway | 4 - Skate Eletrico | 5 - Outro |\n");
+	printf("\n0 - Bicibleta | 1 - Trotinente | 2 - Scooter | 3 - Skate Eletrico | 4 - Outro |\n");
 	printf("Insira o tipo do meio de mobilidade: ");
 	scanf_s("%d", &tipo);
 	fflush(stdin);
@@ -349,12 +349,12 @@ void MostrarMenuAdicionarMeioMobilidade(MeioMobilidade* primeiroMeio) {
 
 	AdicionarMeioMobilidade(primeiroMeio, novoMeio);
 
-	GuardarMeiosMobilidade(MEIO_SAVE_FILE_NAME, primeiroMeio);
+	GuardarMeiosMobilidade(MEIO_SAVE_FILE_NAME, *primeiroMeio);
 }
 
 
 // Editar Meio de mobilidade
-void MostrarMenuEditarMeioMobilidade(MeioMobilidade* primeiroMeio) {
+void MostrarMenuEditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
 
 	// Variaveis
 	int id;
@@ -416,7 +416,7 @@ void MostrarMenuEditarMeioMobilidade(MeioMobilidade* primeiroMeio) {
 
 
 // Remover Meio de mobilidade
-void MostrarMenuRemoverMeioMobilidade(MeioMobilidade* primeiroMeio) {
+void MostrarMenuRemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
 
 	// Variaveis
 	int id;
@@ -443,7 +443,7 @@ void MostrarMenuRemoverMeioMobilidade(MeioMobilidade* primeiroMeio) {
 
 
 // Lista de Meios de mobilidade
-void MostrarMenuListaMeiosMobilidade(MeioMobilidade* primeiroMeio) {
+void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio) {
 	
 	// Variaveis
 	int i;
@@ -457,14 +457,14 @@ void MostrarMenuListaMeiosMobilidade(MeioMobilidade* primeiroMeio) {
 	puts("+----------------------------------------------------------------------------------+");
 
 	// Mostrar os dados dos clientes
-	MeioMobilidade* meio = primeiroMeio;
-	while (meio != NULL) {
-		if (meio->ativo == true)
+	MeioMobilidadeLista* meioAtual = primeiroMeio;
+	while (meioAtual != NULL) {
+		if (meioAtual->m.ativo == true)
 		{
-			printf("| %-4d | %-18s | %13.2f | %13.2f | %-20s |\n", meio->id, TipoMeioMobilidadeToString(meio->tipo), meio->cargaBateria, meio->custoAluguer, meio->localizacao);
+			printf("| %-4d | %-18s | %13.2f | %13.2f | %-20s |\n", meioAtual->m.id, TipoMeioMobilidadeToString(meioAtual->m.tipo), meioAtual->m.cargaBateria, meioAtual->m.custoAluguer, meioAtual->m.localizacao);
 		}
 
-		meio = meio->proximo;
+		meioAtual = meioAtual->proximo;
 	}
 
 	puts("+----------------------------------------------------------------------------------+");

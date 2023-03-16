@@ -37,7 +37,7 @@ void main() {
 				MostrarMenuListaClientes(primeiroCliente);
 				break;
 			case 5:
-				MostrarMenuAdicionarMeioMobilidade(primeiroMeio);
+				MostrarMenuAdicionarMeioMobilidade(&primeiroMeio);
 				break;
 			case 6:
 				MostrarMenuEditarMeioMobilidade(primeiroMeio);

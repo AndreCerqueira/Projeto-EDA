@@ -6,6 +6,7 @@
  * \date   March 2023
  *********************************************************************/
 
+ // Includes
 #include "MeioMobilidade.h"
 
 
@@ -16,17 +17,17 @@
 * \author A. Cerqueira
 *
 */
-bool ResetarMeiosMobilidade(MeioMobilidade* primeiroMeio) {
-	MeioMobilidade* gestor = primeiroMeio;
+bool ResetarMeiosMobilidade(MeioMobilidadeLista* primeiroMeio) {
+	MeioMobilidadeLista* meioAtual = primeiroMeio;
 
-	while (gestor != NULL) {
-		MeioMobilidade* meioAnterior = gestor;
-		gestor = gestor->proximo;
+	while (meioAtual != NULL) {
+		MeioMobilidadeLista* meioAnterior = meioAtual;
+		meioAtual = meioAtual->proximo;
 		free(meioAnterior);
 	}
 
 	primeiroMeio = NULL;
-	
+
 	return true;
 }
 
@@ -38,10 +39,10 @@ bool ResetarMeiosMobilidade(MeioMobilidade* primeiroMeio) {
 * \author A. Cerqueira
 *
 */
-bool CarregarMeiosMobilidadeIniciais(MeioMobilidade** primeiroMeio, char* filePathInicial, char* saveFilePath) {
+bool CarregarMeiosMobilidadeIniciais(MeioMobilidadeLista** primeiroMeio, char* filePathInicial, char* saveFilePath) {
 	ResetarMeiosMobilidade(*primeiroMeio);
 	*primeiroMeio = LerMeiosMobilidadeIniciais(filePathInicial);
-	GuardarMeiosMobilidade(saveFilePath , *primeiroMeio);
+	GuardarMeiosMobilidade(saveFilePath, *primeiroMeio);
 
 	return true;
 }
@@ -54,53 +55,41 @@ bool CarregarMeiosMobilidadeIniciais(MeioMobilidade** primeiroMeio, char* filePa
 * \author A. Cerqueira
 *
 */
-MeioMobilidade* LerMeiosMobilidadeIniciais(char* filePath) {
+MeioMobilidadeLista* LerMeiosMobilidadeIniciais(char* filePath) {
 	FILE* file;
-	MeioMobilidade* primeiroMeio = NULL;
+	MeioMobilidadeLista* primeiroMeio = NULL;
 	char linha[MAX_SIZE];
-	
+
 	if (fopen_s(&file, filePath, "r") != 0)
 		return NULL;
-	
+
 	while (fgets(linha, MAX_SIZE, file)) {
-		MeioMobilidade* novoMeio = (MeioMobilidade*)malloc(sizeof(MeioMobilidade));
+		MeioMobilidadeLista* novoMeio = (MeioMobilidadeLista*)malloc(sizeof(MeioMobilidadeLista));
 
 		if (novoMeio == NULL)
 			return NULL;
 
 		char* contexto = NULL;
 		char* campo = strtok_s(linha, ";", &contexto);
-		novoMeio->id = atoi(campo);
+		novoMeio->m.id = atoi(campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		novoMeio->tipo = (TipoMeioMobilidade)atoi(campo);
+		novoMeio->m.tipo = (TipoMeioMobilidade)atoi(campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		novoMeio->cargaBateria = atof(campo);
+		novoMeio->m.cargaBateria = atoi(campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		novoMeio->custoAluguer = atof(campo);
+		novoMeio->m.custoAluguer = atof(campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(novoMeio->localizacao, LOCALIZACAO_LENGHT, campo);
+		strcpy_s(novoMeio->m.localizacao, LOCALIZACAO_LENGHT, campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		novoMeio->ativo = (bool)atoi(campo);
+		novoMeio->m.ativo = (bool)atoi(campo);
 
-		novoMeio->proximo = NULL;
-
-		if (primeiroMeio == NULL) {
-			primeiroMeio = novoMeio;
-		}
-		else {
-			MeioMobilidade* meioAtual = primeiroMeio;
-
-			while (meioAtual->proximo != NULL) {
-				meioAtual = meioAtual->proximo;
-			}
-
-			meioAtual->proximo = novoMeio;
-		}
+		novoMeio->proximo = primeiroMeio;
+		primeiroMeio = novoMeio;
 	}
 
 	fclose(file);
@@ -116,50 +105,40 @@ MeioMobilidade* LerMeiosMobilidadeIniciais(char* filePath) {
 * \author A. Cerqueira
 *
 */
-MeioMobilidade* LerMeiosMobilidade(char* filePath) {
+MeioMobilidadeLista* LerMeiosMobilidade(char* filePath) {
 	FILE* file;
-	MeioMobilidade* primeiroMeio = NULL;
+	MeioMobilidadeLista* primeiroMeio = NULL;
 
 	file = fopen(filePath, "rb");
 
 	if (file == NULL)
 		return NULL;
-
+	
 	MeioMobilidade meio;
 	size_t bytesLidos = fread(&meio, sizeof(MeioMobilidade), 1, file);
-
+	
 	while (bytesLidos > 0) {
-		MeioMobilidade* novoMeio = (MeioMobilidade*)malloc(sizeof(MeioMobilidade));
+		MeioMobilidadeLista* novoMeio = (MeioMobilidadeLista*)malloc(sizeof(MeioMobilidadeLista));
 
 		if (novoMeio == NULL)
 			return NULL;
 
-		novoMeio->id = meio.id;
-		novoMeio->tipo = meio.tipo;
-		novoMeio->cargaBateria = meio.cargaBateria;
-		novoMeio->custoAluguer = meio.custoAluguer;
-		strcpy_s(novoMeio->localizacao, LOCALIZACAO_LENGHT, meio.localizacao);
-		novoMeio->ativo = meio.ativo;
-		novoMeio->proximo = NULL;
+		novoMeio->m.id = meio.id;
+		novoMeio->m.tipo = meio.tipo;
+		novoMeio->m.cargaBateria = meio.cargaBateria;
+		novoMeio->m.custoAluguer = meio.custoAluguer;
+		strcpy(novoMeio->m.localizacao, meio.localizacao);
+		novoMeio->m.ativo = meio.ativo;
+		novoMeio->proximo = primeiroMeio;
+		primeiroMeio = novoMeio;
 
-		if (primeiroMeio == NULL) {
-			primeiroMeio = novoMeio;
-		}
-		else {
-			MeioMobilidade* meioAtual = primeiroMeio;
-
-			while (meioAtual->proximo != NULL) {
-				meioAtual = meioAtual->proximo;
-			}
-
-			meioAtual->proximo = novoMeio;
-		}
-		
 		bytesLidos = fread(&meio, sizeof(MeioMobilidade), 1, file);
 	}
 	
 	fclose(file);
-
+	
+	OrdenarMeiosMobilidadePorId(&primeiroMeio);
+	
 	return primeiroMeio;
 }
 
@@ -172,17 +151,17 @@ MeioMobilidade* LerMeiosMobilidade(char* filePath) {
 * \author A. Cerqueira
 *
 */
-bool GuardarMeiosMobilidade(char* filePath, MeioMobilidade* primeiroMeio) {
+bool GuardarMeiosMobilidade(char* filePath, MeioMobilidadeLista* primeiroMeio) {
 	FILE* file;
 	file = fopen(filePath, "wb");
 
 	if (file == NULL)
 		return false;
 	
-	MeioMobilidade* meioAtual = primeiroMeio;
+	MeioMobilidadeLista* meioAtual = primeiroMeio;
 
 	while (meioAtual != NULL) {
-		fwrite(meioAtual, sizeof(MeioMobilidade), 1, file);
+		fwrite(&meioAtual->m, sizeof(MeioMobilidade), 1, file);
 		meioAtual = meioAtual->proximo;
 	}
 
@@ -199,27 +178,27 @@ bool GuardarMeiosMobilidade(char* filePath, MeioMobilidade* primeiroMeio) {
 * \author A. Cerqueira
 *
 */
-bool AdicionarMeioMobilidade(MeioMobilidade* primeiroMeio, MeioMobilidade* novoMeio) {
-
+bool AdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio, MeioMobilidade* novoMeio) {
 	if (novoMeio == NULL)
 		return false;
 
-	if (primeiroMeio == NULL) {
-		primeiroMeio = novoMeio;
-		return true;
-	}
+	MeioMobilidadeLista* novoNode = (MeioMobilidadeLista*)malloc(sizeof(MeioMobilidadeLista));
+	if (novoNode == NULL)
+		return false;
 
-	MeioMobilidade* meioAtual = primeiroMeio;
-
-	while (meioAtual->proximo != NULL) {
-		meioAtual = meioAtual->proximo;
-	}
-
-	novoMeio->id = meioAtual->id + 1;
 	novoMeio->ativo = true;
-	novoMeio->proximo = NULL;
-	meioAtual->proximo = novoMeio;
 
+	if (*primeiroMeio != NULL) {
+		novoMeio->id = (*primeiroMeio)->m.id + 1;
+		novoNode->proximo = *primeiroMeio;
+	}
+	else {
+		novoMeio->id = 1;
+		novoNode->proximo = NULL;
+	}
+
+	novoNode->m = *novoMeio;
+	*primeiroMeio = novoNode;
 	return true;
 }
 
@@ -231,18 +210,18 @@ bool AdicionarMeioMobilidade(MeioMobilidade* primeiroMeio, MeioMobilidade* novoM
 * \author A. Cerqueira
 *
 */
-bool RemoverMeioMobilidade(MeioMobilidade* primeiroMeio, int id) {
+bool RemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio, int id) {
 
-	MeioMobilidade* meio = primeiroMeio;
+	MeioMobilidadeLista* meioAtual = primeiroMeio;
 
-	while (meio->proximo != NULL) {
+	while (meioAtual != NULL) {
 
-		if (meio->id == id) {
-			meio->ativo = false;
+		if (meioAtual->m.id == id) {
+			meioAtual->m.ativo = false;
 			return;
 		}
 
-		meio = meio->proximo;
+		meioAtual = meioAtual->proximo;
 	}
 	
 	return true;
@@ -256,24 +235,24 @@ bool RemoverMeioMobilidade(MeioMobilidade* primeiroMeio, int id) {
 * \author A. Cerqueira
 *
 */
-bool EditarMeioMobilidade(MeioMobilidade* primeiroMeio, MeioMobilidade* meioSelecionado) {
+bool EditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, MeioMobilidade* meioSelecionado) {
 
-	MeioMobilidade* meio = primeiroMeio;
+	MeioMobilidadeLista* meioAtual = primeiroMeio;
 
-	while (meio->proximo != NULL) {
+	while (meioAtual != NULL) {
 
-		if (meio->id == meioSelecionado->id) {
-			meio->tipo = meioSelecionado->tipo;
-			meio->cargaBateria = meioSelecionado->cargaBateria;
-			meio->custoAluguer = meioSelecionado->custoAluguer;
-			strcpy_s(meio->localizacao, LOCALIZACAO_LENGHT, meioSelecionado->localizacao);
-			return;
+		if (meioAtual->m.id == meioSelecionado->id) {
+			meioAtual->m.tipo = meioSelecionado->tipo;
+			meioAtual->m.cargaBateria = meioSelecionado->cargaBateria;
+			meioAtual->m.custoAluguer = meioSelecionado->custoAluguer;
+			strcpy(meioAtual->m.localizacao, meioSelecionado->localizacao);
+			return true;
 		}
 
-		meio = meio->proximo;
+		meioAtual = meioAtual->proximo;
 	}
 
-	return true;
+	return false;
 }
 
 
@@ -300,4 +279,31 @@ char* TipoMeioMobilidadeToString(TipoMeioMobilidade tipoMeioMobilidade) {
 		default:
 			return "Desconhecido";
 	}
+}
+
+
+/**
+ * \brief Ordenar meios de mobilidade por id
+ *
+ * \param primeiroMeio
+ * \return
+ */
+bool OrdenarMeiosMobilidadePorId(MeioMobilidadeLista** primeiroMeio) {
+	MeioMobilidadeLista* atual;
+	MeioMobilidadeLista* proximo;
+	MeioMobilidade temp;
+
+	for (atual = *primeiroMeio; atual != NULL; atual = atual->proximo) {
+		for (proximo = atual->proximo; proximo != NULL; proximo = proximo->proximo) {
+
+			if (atual->m.id < proximo->m.id) {
+				temp = atual->m;
+				atual->m = proximo->m;
+				proximo->m = temp;
+			}
+
+		}
+	}
+
+	return true;
 }

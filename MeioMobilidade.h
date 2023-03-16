@@ -41,11 +41,11 @@
 		MeioMobilidade* proximo;
 	};
 
-	/*typedef struct MeioMobilidadeLista MeioMobilidadeLista;
+	typedef struct MeioMobilidadeLista MeioMobilidadeLista;
 	typedef struct MeioMobilidadeLista {
 		MeioMobilidade m;
 		MeioMobilidadeLista* proximo;
-	};*/
+	};
 
 	/**
 	* \brief Resetar lista ligada de Meios de Mobilidade, reescreve o ficheiro .dat com a lista vazia
@@ -54,7 +54,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool ResetarMeiosMobilidade(MeioMobilidade* primeiroMeio);
+	bool ResetarMeiosMobilidade(MeioMobilidadeLista* primeiroMeio);
 
 
 	/**
@@ -64,7 +64,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool CarregarMeiosMobilidadeIniciais(MeioMobilidade** ultimoMeio, char* filePathInicial, char* saveFilePath);
+	bool CarregarMeiosMobilidadeIniciais(MeioMobilidadeLista** primeiroMeio, char* filePathInicial, char* saveFilePath);
 
 	
 	/**
@@ -74,7 +74,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	MeioMobilidade* LerMeiosMobilidadeIniciais(char* filePath);
+	MeioMobilidadeLista* LerMeiosMobilidadeIniciais(char* filePath);
 
 
 	/**
@@ -84,7 +84,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	MeioMobilidade* LerMeiosMobilidade(char* filePath);
+	MeioMobilidadeLista* LerMeiosMobilidade(char* filePath);
 
 
 	/**
@@ -94,7 +94,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool GuardarMeiosMobilidade(char* filePath, MeioMobilidade* primeiroMeio);
+	bool GuardarMeiosMobilidade(char* filePath, MeioMobilidadeLista* primeiroMeio);
 
 
 	/**
@@ -104,7 +104,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool AdicionarMeioMobilidade(MeioMobilidade* primeiroMeio, MeioMobilidade* novoMeio);
+	bool AdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio, MeioMobilidade* novoMeio);
 
 
 	/**
@@ -114,7 +114,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool RemoverMeioMobilidade(MeioMobilidade* primeiroMeio, int id);
+	bool RemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio, int id);
 
 
 	/**
@@ -124,7 +124,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool EditarMeioMobilidade(MeioMobilidade* primeiroMeio, MeioMobilidade* meioSelecionado);
+	bool EditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, MeioMobilidade* meioSelecionado);
 	
 
 	/**
@@ -136,5 +136,13 @@
 	*/
 	char* TipoMeioMobilidadeToString(TipoMeioMobilidade tipoMeioMobilidade);
 	
+
+	/**
+	 * \brief Ordenar meios de mobilidade por id
+	 *
+	 * \param primeiroMeio
+	 * \return
+	 */
+	bool OrdenarMeiosMobilidadePorId(MeioMobilidadeLista** primeiroMeio);
 	
 #endif

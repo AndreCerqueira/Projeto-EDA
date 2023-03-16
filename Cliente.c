@@ -6,7 +6,6 @@
  * \date   March 2023
  *********************************************************************/
 
-
  // Includes
 #include "Cliente.h"
 
@@ -43,7 +42,7 @@ bool ResetarClientes(ClienteLista* primeiroCliente) {
 bool CarregarClientesIniciais(ClienteLista** primeiroCliente, char* filePathInicial, char* saveFilePath) {
 	ResetarClientes(*primeiroCliente);
 	*primeiroCliente = LerClientesIniciais(filePathInicial);
-	GuardarClientes(saveFilePath , *primeiroCliente);
+	GuardarClientes(saveFilePath, *primeiroCliente);
 
 	return true;
 }

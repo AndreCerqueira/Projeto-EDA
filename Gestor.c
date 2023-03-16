@@ -210,7 +210,7 @@ bool RemoverGestor(GestorLista* primeiroGestor, int id) {
 
 	GestorLista* gestorAtual = primeiroGestor;
 
-	while (gestorAtual->proximo != NULL) {
+	while (gestorAtual != NULL) {
 		
 		if (gestorAtual->g.id == id) {
 			gestorAtual->g.ativo = false;

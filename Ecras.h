@@ -20,17 +20,17 @@
 
 	void MostrarMenuLogin();
 	void MostrarMenuPrincipal(int* op);
-	void CarregarDadosIniciais(ClienteLista** ultimoCliente, MeioMobilidade** ultimoMeio, GestorLista** ultimoGestor);
+	void CarregarDadosIniciais(ClienteLista** ultimoCliente, MeioMobilidadeLista** ultimoMeio, GestorLista** ultimoGestor);
 	
 	void MostrarMenuAdicionarCliente(ClienteLista** ultimoCliente);
 	void MostrarMenuEditarCliente(ClienteLista* ultimoCliente);
 	void MostrarMenuRemoverCliente(ClienteLista* ultimoCliente);
 	void MostrarMenuListaClientes(ClienteLista* ultimoCliente);
 	
-	void MostrarMenuAdicionarMeioMobilidade(MeioMobilidade* ultimoMeio);
-	void MostrarMenuEditarMeioMobilidade(MeioMobilidade* ultimoMeio);
-	void MostrarMenuRemoverMeioMobilidade(MeioMobilidade* ultimoMeio);
-	void MostrarMenuListaMeiosMobilidade(MeioMobilidade* ultimoMeio);
+	void MostrarMenuAdicionarMeioMobilidade(MeioMobilidadeLista** ultimoMeio);
+	void MostrarMenuEditarMeioMobilidade(MeioMobilidadeLista* ultimoMeio);
+	void MostrarMenuRemoverMeioMobilidade(MeioMobilidadeLista* ultimoMeio);
+	void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* ultimoMeio);
 	
 	void MostrarMenuAdicionarGestor(GestorLista** ultimoGestor);
 	void MostrarMenuEditarGestor(GestorLista* ultimoGestor);
