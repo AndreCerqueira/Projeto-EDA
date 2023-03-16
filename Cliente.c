@@ -239,27 +239,34 @@ bool RemoverCliente(ClienteLista* primeiroCliente, int id) {
 */
 bool EditarCliente(ClienteLista* primeiroCliente, Cliente* clienteSelecionado) {
 
-	ClienteLista* cliente = primeiroCliente;
+	ClienteLista* clienteAtual = primeiroCliente;
 
-	while (cliente != NULL) {
+	while (clienteAtual != NULL) {
 
-		if (cliente->c.id == clienteSelecionado->id) {
-			strcpy_s(cliente->c.nome, NOME_CLIENTE_LENGHT, clienteSelecionado->nome);
-			strcpy_s(cliente->c.nif, NIF_LENGHT, clienteSelecionado->nif);
-			strcpy_s(cliente->c.morada, MORADA_LENGHT, clienteSelecionado->morada);
-			cliente->c.saldo = clienteSelecionado->saldo;
+		if (clienteAtual->c.id == clienteSelecionado->id) {
+			strcpy_s(clienteAtual->c.nome, NOME_CLIENTE_LENGHT, clienteSelecionado->nome);
+			strcpy_s(clienteAtual->c.nif, NIF_LENGHT, clienteSelecionado->nif);
+			strcpy_s(clienteAtual->c.morada, MORADA_LENGHT, clienteSelecionado->morada);
+			clienteAtual->c.saldo = clienteSelecionado->saldo;
 			return true;
 		}
 
-		cliente = cliente->proximo;
+		clienteAtual = clienteAtual->proximo;
 	}
 
 	return false;
 }
 
 
+/**
+ * \brief Ordenar clientes por id
+ * 
+ * \param primeiroCliente
+ * \return 
+ */
 bool OrdenarClientesPorId(ClienteLista** primeiroCliente) {
-	ClienteLista* atual, * proximo;
+	ClienteLista* atual;
+	ClienteLista* proximo;
 	Cliente temp;
 
 	for (atual = *primeiroCliente; atual != NULL; atual = atual->proximo) {

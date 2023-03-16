@@ -24,21 +24,20 @@
 
 	// Structs
 	typedef struct Gestor Gestor;
-	struct Gestor {
+	typedef struct Gestor {
 		int id;
 		char nome[NOME_LENGHT];
 		char email[EMAIL_LENGHT];
 		char password[PASSWORD_LENGHT];
 		bool ativo;
-		Gestor* proximo;
 	};
 
-	/*typedef struct GestorLista GestorLista;
+	typedef struct GestorLista GestorLista;
 	typedef struct GestorLista {
 		Gestor g;
 		GestorLista* proximo;
-	};*/
-	
+	};
+
 
 	/**
 	* \brief Resetar lista ligada de Gestores, reescreve o ficheiro .dat com a lista vazia
@@ -47,7 +46,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool ResetarGestores(Gestor* primeiroGestor);
+	bool ResetarGestores(GestorLista* primeiroGestor);
 
 
 	/**
@@ -57,7 +56,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool CarregarGestoresIniciais(Gestor** primeiroGestor, char* filePathInicial, char* saveFilePath);
+	bool CarregarGestoresIniciais(GestorLista** primeiroGestor, char* filePathInicial, char* saveFilePath);
 
 
 	/**
@@ -67,8 +66,8 @@
 	* \author A. Cerqueira
 	*
 	*/
-	Gestor* LerGestoresIniciais(char* filePath);
-	
+	GestorLista* LerGestoresIniciais(char* filePath);
+
 
 	/**
 	* \brief Ler dados de um ficheiro de .dat e guardar numa lista ligada
@@ -77,7 +76,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	Gestor* LerGestores(char* filePath);
+	GestorLista* LerGestores(char* filePath);
 
 
 	/**
@@ -87,17 +86,17 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool GuardarGestores(char* filePath, Gestor* primeiroGestor);
+	bool GuardarGestores(char* filePath, GestorLista* primeiroGestor);
 
 
 	/**
-	* \brief Adicionar um Gestor à lista ligada
+	* \brief Adicionar um Gestor Ã  lista ligada
 	*
 	* \return
 	* \author A. Cerqueira
 	*
 	*/
-	bool AdicionarGestor(Gestor* primeiroGestor, Gestor* novoGestor);
+	bool AdicionarGestor(GestorLista** primeiroGestor, Gestor* novoGestor);
 
 
 	/**
@@ -107,7 +106,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool RemoverGestor(Gestor* primeiroGestor, int id);
+	bool RemoverGestor(GestorLista* primeiroGestor, int id);
 
 
 	/**
@@ -117,8 +116,16 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool EditarGestor(Gestor* primeiroGestor, Gestor* gestorSelecionado);
+	bool EditarGestor(GestorLista* primeiroGestor, Gestor* gestorSelecionado);
 	
+	
+	/**
+	 * \brief Ordenar gestores por id
+	 *
+	 * \param primeiroCliente
+	 * \return
+	 */
+	bool OrdenarGestoresPorId(GestorLista** primeiroGestor);
 
 #endif
 

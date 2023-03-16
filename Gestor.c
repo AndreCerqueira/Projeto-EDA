@@ -16,11 +16,11 @@
 * \author A. Cerqueira
 *
 */
-bool ResetarGestores(Gestor* primeiroGestor) {
-	Gestor* gestor = primeiroGestor;
+bool ResetarGestores(GestorLista* primeiroGestor) {
+	GestorLista* gestor = primeiroGestor;
 
 	while (gestor != NULL) {
-		Gestor* gestorAnterior = gestor;
+		GestorLista* gestorAnterior = gestor;
 		gestor = gestor->proximo;
 		free(gestorAnterior);
 	}
@@ -38,11 +38,11 @@ bool ResetarGestores(Gestor* primeiroGestor) {
 * \author A. Cerqueira
 *
 */
-bool CarregarGestoresIniciais(Gestor** primeiroGestor, char* filePathInicial, char* saveFilePath) {
+bool CarregarGestoresIniciais(GestorLista** primeiroGestor, char* filePathInicial, char* saveFilePath) {
 	ResetarGestores(*primeiroGestor);
 	*primeiroGestor = LerGestoresIniciais(filePathInicial);
-	GuardarGestores(saveFilePath , *primeiroGestor);
-	
+	GuardarGestores(saveFilePath, *primeiroGestor);
+
 	return true;
 }
 
@@ -54,50 +54,39 @@ bool CarregarGestoresIniciais(Gestor** primeiroGestor, char* filePathInicial, ch
 * \author A. Cerqueira
 *
 */
-Gestor* LerGestoresIniciais(char* filePath) {
+
+GestorLista* LerGestoresIniciais(char* filePath) {
 	FILE* file;
-	Gestor* primeiroGestor = NULL;
+	GestorLista* primeiroGestor = NULL;
 	char linha[MAX_SIZE];
 
 	if (fopen_s(&file, filePath, "r") != 0)
 		return NULL;
 
 	while (fgets(linha, MAX_SIZE, file)) {
-		Gestor* novoGestor = (Gestor*)malloc(sizeof(Gestor));
+		GestorLista* novoGestor = (GestorLista*)malloc(sizeof(GestorLista));
 
 		if (novoGestor == NULL)
 			return NULL;
 
 		char* contexto = NULL;
 		char* campo = strtok_s(linha, ";", &contexto);
-		novoGestor->id = atoi(campo);
+		novoGestor->g.id = atoi(campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(novoGestor->nome, NOME_LENGHT, campo);
+		strcpy_s(novoGestor->g.nome, NOME_LENGHT, campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(novoGestor->email, EMAIL_LENGHT, campo);
+		strcpy_s(novoGestor->g.email, EMAIL_LENGHT, campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(novoGestor->password, PASSWORD_LENGHT, campo);
+		strcpy_s(novoGestor->g.password, PASSWORD_LENGHT, campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		novoGestor->ativo = (bool)atoi(campo);
+		novoGestor->g.ativo = (bool)atoi(campo);
 
-		novoGestor->proximo = NULL;
-
-		if (primeiroGestor == NULL) {
-			primeiroGestor = novoGestor;
-		}
-		else {
-			Gestor* gestorAtual = primeiroGestor;
-
-			while (gestorAtual->proximo != NULL) {
-				gestorAtual = gestorAtual->proximo;
-			}
-
-			gestorAtual->proximo = novoGestor;
-		}
+		novoGestor->proximo = primeiroGestor;
+		primeiroGestor = novoGestor;
 	}
 
 	fclose(file);
@@ -113,48 +102,39 @@ Gestor* LerGestoresIniciais(char* filePath) {
  * \author A. Cerqueira
  *
  */
-Gestor* LerGestores(char* filePath) {
+GestorLista* LerGestores(char* filePath) {
 	FILE* file;
-	Gestor* primeiroGestor = NULL;
+	GestorLista* primeiroGestor = NULL;
 
 	file = fopen(filePath, "rb");
 
 	if (file == NULL)
 		return NULL;
 
-	Gestor* gestor = NULL;
+	Gestor gestor;
 	size_t bytesLidos = fread(&gestor, sizeof(Gestor), 1, file);
 	
 	while (bytesLidos > 0) {
-		Gestor* novoGestor = (Gestor*)malloc(sizeof(Gestor));
-		
+		GestorLista* novoGestor = (GestorLista*)malloc(sizeof(GestorLista));
+
 		if (novoGestor == NULL)
 			return NULL;
 
-		novoGestor->id = gestor->id;
-		strcpy_s(novoGestor->nome, NOME_LENGHT, gestor->nome);
-		strcpy_s(novoGestor->email, EMAIL_LENGHT, gestor->email);
-		strcpy_s(novoGestor->password, PASSWORD_LENGHT, gestor->password);
-		novoGestor->ativo = gestor->ativo;
-		novoGestor->proximo = NULL;
+		novoGestor->g.id = gestor.id;
+		strcpy_s(novoGestor->g.nome, NOME_LENGHT, gestor.nome);
+		strcpy_s(novoGestor->g.email, EMAIL_LENGHT, gestor.email);
+		strcpy_s(novoGestor->g.password, PASSWORD_LENGHT, gestor.password);
+		novoGestor->g.ativo = gestor.ativo;
+		novoGestor->proximo = primeiroGestor;
+		primeiroGestor = novoGestor;
 
-		if (primeiroGestor == NULL) {
-			primeiroGestor = novoGestor;
-		}
-		else {
-			Gestor* gestorAtual = primeiroGestor;
-
-			while (gestorAtual->proximo != NULL) {
-				gestorAtual = gestorAtual->proximo;
-			}
-
-			gestorAtual->proximo = novoGestor;
-		}
-		
 		bytesLidos = fread(&gestor, sizeof(Gestor), 1, file);
 	}
 
 	fclose(file);
+
+	OrdenarGestoresPorId(&primeiroGestor);
+	
 	return primeiroGestor;
 }
 
@@ -167,17 +147,17 @@ Gestor* LerGestores(char* filePath) {
  * \author A. Cerqueira
  *
  */
-bool GuardarGestores(char* filePath, Gestor* primeiroGestor) {
+bool GuardarGestores(char* filePath, GestorLista* primeiroGestor) {
 	FILE* file;
 	file = fopen(filePath, "wb");
 
 	if (file == NULL)
 		return false;
 
-	Gestor* gestorAtual = primeiroGestor;
+	GestorLista* gestorAtual = primeiroGestor;
 
 	while (gestorAtual != NULL) {
-		// fwrite(gestorAtual, sizeof(Gestor), 1, file);
+		fwrite(&gestorAtual->g, sizeof(Gestor), 1, file);
 		gestorAtual = gestorAtual->proximo;
 	}
 
@@ -194,27 +174,27 @@ bool GuardarGestores(char* filePath, Gestor* primeiroGestor) {
 * \author A. Cerqueira
 *
 */
-bool AdicionarGestor(Gestor* primeiroGestor, Gestor* novoGestor) {
-
+bool AdicionarGestor(GestorLista** primeiroGestor, Gestor* novoGestor) {
 	if (novoGestor == NULL)
 		return false;
 
-	if (primeiroGestor == NULL) {
-		primeiroGestor = novoGestor;
-		return true;
-	}
+	GestorLista* novoNode = (GestorLista*)malloc(sizeof(GestorLista));
+	if (novoNode == NULL)
+		return false;
 
-	Gestor* gestorAtual = primeiroGestor;
-
-	while (gestorAtual->proximo != NULL) {
-		gestorAtual = gestorAtual->proximo;
-	}
-
-	novoGestor->id = gestorAtual->id + 1;
 	novoGestor->ativo = true;
-	novoGestor->proximo = NULL;
-	gestorAtual->proximo = novoGestor;
 
+	if (*primeiroGestor != NULL) {
+		novoGestor->id = (*primeiroGestor)->g.id + 1;
+		novoNode->proximo = *primeiroGestor;
+	}
+	else {
+		novoGestor->id = 1;
+		novoNode->proximo = NULL;
+	}
+
+	novoNode->g = *novoGestor;
+	*primeiroGestor = novoNode;
 	return true;
 }
 
@@ -226,21 +206,21 @@ bool AdicionarGestor(Gestor* primeiroGestor, Gestor* novoGestor) {
 * \author A. Cerqueira
 *
 */
-bool RemoverGestor(Gestor* primeiroGestor, int id) {
+bool RemoverGestor(GestorLista* primeiroGestor, int id) {
 
-	Gestor* gestor = primeiroGestor;
+	GestorLista* gestorAtual = primeiroGestor;
 
-	while (gestor->proximo != NULL) {
+	while (gestorAtual->proximo != NULL) {
 		
-		if (gestor->id == id) {
-			gestor->ativo = false;
-			return;
+		if (gestorAtual->g.id == id) {
+			gestorAtual->g.ativo = false;
+			return true;
 		}
 
-		gestor = gestor->proximo;
+		gestorAtual = gestorAtual->proximo;
 	}
 
-	return true;
+	return false;
 }
 
 
@@ -251,20 +231,47 @@ bool RemoverGestor(Gestor* primeiroGestor, int id) {
 * \author A. Cerqueira
 *
 */
-bool EditarGestor(Gestor* primeiroGestor, Gestor* gestorSelecionado) {
+bool EditarGestor(GestorLista* primeiroGestor, Gestor* gestorSelecionado) {
 
-	Gestor* gestor = primeiroGestor;
+	GestorLista* gestorAtual = primeiroGestor;
 
-	while (gestor != NULL) {
+	while (gestorAtual != NULL) {
 		
-		if (gestor->id == gestorSelecionado->id) {
-			strcpy_s(gestor->nome, NOME_LENGHT, gestorSelecionado->nome);
-			strcpy_s(gestor->email, EMAIL_LENGHT, gestorSelecionado->email);
-			strcpy_s(gestor->password, PASSWORD_LENGHT, gestorSelecionado->password);
-			return;
+		if (gestorAtual->g.id == gestorSelecionado->id) {
+			strcpy_s(gestorAtual->g.nome, NOME_LENGHT, gestorSelecionado->nome);
+			strcpy_s(gestorAtual->g.email, EMAIL_LENGHT, gestorSelecionado->email);
+			strcpy_s(gestorAtual->g.password, PASSWORD_LENGHT, gestorSelecionado->password);
+			return true;
 		}
 		
-		gestor = gestor->proximo;
+		gestorAtual = gestorAtual->proximo;
+	}
+
+	return false;
+}
+
+
+/**
+ * \brief Ordenar gestores por id
+ *
+ * \param primeiroCliente
+ * \return
+ */
+bool OrdenarGestoresPorId(GestorLista** primeiroGestor) {
+	GestorLista* atual;
+	GestorLista* proximo;
+	Gestor temp;
+
+	for (atual = *primeiroGestor; atual != NULL; atual = atual->proximo) {
+		for (proximo = atual->proximo; proximo != NULL; proximo = proximo->proximo) {
+			
+			if (atual->g.id < proximo->g.id) {
+				temp = atual->g;
+				atual->g = proximo->g;
+				proximo->g = temp;
+			}
+			
+		}
 	}
 
 	return true;

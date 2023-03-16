@@ -100,7 +100,7 @@ void MostrarMenuPrincipal(int* op) {
 
 
 // Apaga os dados nos ficheiros binarios e carrega os dados iniciais
-void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidade** primeiroMeio, Gestor** ultimoGestor) {
+void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidade** primeiroMeio, GestorLista** primeiroGestor) {
 	
 	// Variaveis
 	int op = -1;
@@ -113,7 +113,7 @@ void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidade** prim
 	
 	CarregarMeiosMobilidadeIniciais(primeiroMeio, MEIO_INITDATA_FILE_NAME, MEIO_SAVE_FILE_NAME);
 	CarregarClientesIniciais(primeiroCliente, CLIENTE_INITDATA_FILE_NAME, CLIENTE_SAVE_FILE_NAME);
-	CarregarGestoresIniciais(ultimoGestor, GESTOR_INITDATA_FILE_NAME, GESTOR_SAVE_FILE_NAME);
+	CarregarGestoresIniciais(primeiroGestor, GESTOR_INITDATA_FILE_NAME, GESTOR_SAVE_FILE_NAME);
 }
 
 
@@ -476,7 +476,7 @@ void MostrarMenuListaMeiosMobilidade(MeioMobilidade* primeiroMeio) {
 
 
 // Adicionar Gestor
-void MostrarMenuAdicionarGestor(Gestor* ultimoGestor) {
+void MostrarMenuAdicionarGestor(GestorLista** primeiroGestor) {
 	
 	// Variaveis
 	char nome[NOME_LENGHT];
@@ -520,14 +520,14 @@ void MostrarMenuAdicionarGestor(Gestor* ultimoGestor) {
 	strcpy_s(novoGestor->email, EMAIL_LENGHT, email);
 	strcpy_s(novoGestor->password, PASSWORD_LENGHT, password);
 	
-	AdicionarGestor(ultimoGestor, novoGestor);
+	AdicionarGestor(primeiroGestor, novoGestor);
 
-	GuardarGestores(GESTOR_SAVE_FILE_NAME, ultimoGestor);
+	GuardarGestores(GESTOR_SAVE_FILE_NAME, *primeiroGestor);
 }
 
 
 // Editar Gestor
-void MostrarMenuEditarGestor(Gestor* ultimoGestor) {
+void MostrarMenuEditarGestor(GestorLista* primeiroGestor) {
 	
 	// Variaveis
 	int id;
@@ -577,14 +577,14 @@ void MostrarMenuEditarGestor(Gestor* ultimoGestor) {
 	strcpy_s(novoGestor->email, EMAIL_LENGHT, email);
 	strcpy_s(novoGestor->password, PASSWORD_LENGHT, password);
 	
-	EditarGestor(ultimoGestor, id, nome, email, password);
+	EditarGestor(primeiroGestor, novoGestor);
 
-	GuardarGestores(GESTOR_SAVE_FILE_NAME, ultimoGestor);
+	GuardarGestores(GESTOR_SAVE_FILE_NAME, primeiroGestor);
 }
 
 
 // Remover Gestor
-void MostrarMenuRemoverGestor(Gestor* ultimoGestor) {
+void MostrarMenuRemoverGestor(GestorLista* primeiroGestor) {
 	
 	// Variaveis
 	int id;
@@ -604,14 +604,14 @@ void MostrarMenuRemoverGestor(Gestor* ultimoGestor) {
 		return;
 
 	// Atribuição de dados
-	RemoverGestor(ultimoGestor, id);
+	RemoverGestor(primeiroGestor, id);
 
-	GuardarGestores(GESTOR_SAVE_FILE_NAME, ultimoGestor);
+	GuardarGestores(GESTOR_SAVE_FILE_NAME, primeiroGestor);
 }
 
 
 // Lista de Gestores
-void MostrarMenuListaGestores(Gestor* ultimoGestor) {
+void MostrarMenuListaGestores(GestorLista* primeiroGestor) {
 
 	// Variaveis
 	int i;
@@ -625,14 +625,14 @@ void MostrarMenuListaGestores(Gestor* ultimoGestor) {
 	puts("+---------------------------------------------------------------+");
 
 	// Mostrar os dados dos clientes
-	Gestor* gestor = ultimoGestor;
-	while (gestor != NULL) {
-		if (gestor->ativo == true)
+	GestorLista* gestorAtual = primeiroGestor;
+	while (gestorAtual != NULL) {
+		if (gestorAtual->g.ativo == true)
 		{
-			printf("| %-4d | %-22s | %-29s |\n", gestor->id, gestor->nome, gestor->email);
+			printf("| %-4d | %-22s | %-29s |\n", gestorAtual->g.id, gestorAtual->g.nome, gestorAtual->g.email);
 		}
 
-		gestor = gestor->proximo;
+		gestorAtual = gestorAtual->proximo;
 	}
 
 	puts("+---------------------------------------------------------------+");
@@ -640,7 +640,6 @@ void MostrarMenuListaGestores(Gestor* ultimoGestor) {
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
 		return;
-
 }
 
 

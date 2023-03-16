@@ -17,7 +17,7 @@ void main() {
 	int op = -1;
 	ClienteLista* primeiroCliente = LerClientes(CLIENTE_SAVE_FILE_NAME);
 	MeioMobilidade* primeiroMeio = LerMeiosMobilidade(MEIO_SAVE_FILE_NAME);
-	Gestor* primeiroGestor = LerGestores(GESTOR_SAVE_FILE_NAME);
+	GestorLista* primeiroGestor = LerGestores(GESTOR_SAVE_FILE_NAME);
 	
 	// Program loop
 	while (op != 0) {
@@ -55,7 +55,7 @@ void main() {
 				// TO DO
 				break;
 			case 11:
-				MostrarMenuAdicionarGestor(primeiroGestor);
+				MostrarMenuAdicionarGestor(&primeiroGestor);
 				break;
 			case 12:
 				MostrarMenuEditarGestor(primeiroGestor);

@@ -120,6 +120,14 @@
 	*/
 	bool EditarCliente(ClienteLista* primeiroCliente, Cliente* clienteSelecionado);
 	
+
+	/**
+	 * \brief Ordenar clientes por id
+	 *
+	 * \param primeiroCliente
+	 * \return
+	 */
+	bool OrdenarClientesPorId(ClienteLista** primeiroCliente);
 	
 #endif
 
