@@ -38,10 +38,10 @@ bool ResetarGestores(Gestor* primeiroGestor) {
 * \author A. Cerqueira
 *
 */
-bool CarregarGestoresIniciais(Gestor** primeiroGestor) {
+bool CarregarGestoresIniciais(Gestor** primeiroGestor, char* filePathInicial, char* saveFilePath) {
 	ResetarGestores(*primeiroGestor);
-	*primeiroGestor = LerGestoresIniciais();
-	GuardarGestores(*primeiroGestor);
+	*primeiroGestor = LerGestoresIniciais(filePathInicial);
+	GuardarGestores(saveFilePath , *primeiroGestor);
 	
 	return true;
 }
@@ -54,12 +54,12 @@ bool CarregarGestoresIniciais(Gestor** primeiroGestor) {
 * \author A. Cerqueira
 *
 */
-Gestor* LerGestoresIniciais() {
+Gestor* LerGestoresIniciais(char* filePath) {
 	FILE* file;
 	Gestor* primeiroGestor = NULL;
 	char linha[MAX_SIZE];
 
-	if (fopen_s(&file, HARDDATA_FILE_NAME, "r") != 0)
+	if (fopen_s(&file, filePath, "r") != 0)
 		return NULL;
 
 	while (fgets(linha, MAX_SIZE, file)) {
@@ -113,11 +113,11 @@ Gestor* LerGestoresIniciais() {
  * \author A. Cerqueira
  *
  */
-Gestor* LerGestores() {
+Gestor* LerGestores(char* filePath) {
 	FILE* file;
 	Gestor* primeiroGestor = NULL;
 
-	file = fopen(SAVE_FILE_NAME, "rb");
+	file = fopen(filePath, "rb");
 
 	if (file == NULL)
 		return NULL;
@@ -167,9 +167,9 @@ Gestor* LerGestores() {
  * \author A. Cerqueira
  *
  */
-bool GuardarGestores(Gestor* primeiroGestor) {
+bool GuardarGestores(char* filePath, Gestor* primeiroGestor) {
 	FILE* file;
-	file = fopen(SAVE_FILE_NAME, "wb");
+	file = fopen(filePath, "wb");
 
 	if (file == NULL)
 		return false;
@@ -210,7 +210,7 @@ bool AdicionarGestor(Gestor* primeiroGestor, Gestor* novoGestor) {
 		gestorAtual = gestorAtual->proximo;
 	}
 
-	novoGestor->id = primeiroGestor->id + 1;;
+	novoGestor->id = gestorAtual->id + 1;
 	novoGestor->ativo = true;
 	novoGestor->proximo = NULL;
 	gestorAtual->proximo = novoGestor;

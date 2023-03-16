@@ -111,9 +111,9 @@ void CarregarDadosIniciais(Cliente** primeiroCliente, MeioMobilidade** primeiroM
 	if (Confirmar() == IS_CANCELED)
 		return;
 	
-	CarregarMeiosMobilidadeIniciais(primeiroMeio);
-	CarregarClientesIniciais(primeiroCliente);
-	CarregarGestoresIniciais(ultimoGestor);
+	CarregarMeiosMobilidadeIniciais(primeiroMeio, MEIO_INITDATA_FILE_NAME, MEIO_SAVE_FILE_NAME);
+	CarregarClientesIniciais(primeiroCliente, CLIENTE_INITDATA_FILE_NAME, CLIENTE_SAVE_FILE_NAME);
+	CarregarGestoresIniciais(ultimoGestor, GESTOR_INITDATA_FILE_NAME, GESTOR_SAVE_FILE_NAME);
 }
 
 
@@ -169,7 +169,7 @@ void MostrarMenuAdicionarCliente(Cliente* primeiroCliente) {
 	novoCliente->saldo = saldo;
 	AdicionarCliente(primeiroCliente, novoCliente);
 
-	GuardarClientes(primeiroCliente);
+	GuardarClientes(CLIENTE_SAVE_FILE_NAME, primeiroCliente);
 }
 
 
@@ -233,7 +233,7 @@ void MostrarMenuEditarCliente(Cliente* primeiroCliente) {
 	// Atribuição de dados
 	EditarCliente(primeiroCliente, novoCliente);
 
-	GuardarClientes(primeiroCliente);
+	GuardarClientes(CLIENTE_SAVE_FILE_NAME, primeiroCliente);
 }
 
 
@@ -260,7 +260,7 @@ void MostrarMenuRemoverCliente(Cliente* primeiroCliente) {
 	// Atribuição de dados
 	RemoverCliente(primeiroCliente, id);
 
-	GuardarClientes(primeiroCliente);
+	GuardarClientes(CLIENTE_SAVE_FILE_NAME, primeiroCliente);
 }
 
 
@@ -349,7 +349,7 @@ void MostrarMenuAdicionarMeioMobilidade(MeioMobilidade* primeiroMeio) {
 
 	AdicionarMeioMobilidade(primeiroMeio, novoMeio);
 
-	GuardarMeiosMobilidade(primeiroMeio);
+	GuardarMeiosMobilidade(MEIO_SAVE_FILE_NAME, primeiroMeio);
 }
 
 
@@ -378,7 +378,7 @@ void MostrarMenuEditarMeioMobilidade(MeioMobilidade* primeiroMeio) {
 	scanf_s("%d", &id);
 	fflush(stdin);
 	
-	printf("\n0 - Bicibleta | 1 - Trotinente | 2 - Scooter | 3 - Segway | 4 - Skate Eletrico | 5 - Outro |\n");
+	printf("\n0 - Bicibleta | 1 - Trotinente | 2 - Scooter | 3 - Skate Eletrico | 4 - Outro |\n");
 	printf("Insira o tipo do meio de mobilidade: ");
 	scanf_s("%d", &tipo);
 	fflush(stdin);
@@ -411,7 +411,7 @@ void MostrarMenuEditarMeioMobilidade(MeioMobilidade* primeiroMeio) {
 	
 	EditarMeioMobilidade(primeiroMeio, novoMeio);
 	
-	GuardarMeiosMobilidade(primeiroMeio);
+	GuardarMeiosMobilidade(MEIO_SAVE_FILE_NAME, primeiroMeio);
 }
 
 
@@ -438,7 +438,7 @@ void MostrarMenuRemoverMeioMobilidade(MeioMobilidade* primeiroMeio) {
 	// Atribuição de dados
 	RemoverMeioMobilidade(primeiroMeio, id);
 
-	GuardarMeiosMobilidade(primeiroMeio);
+	GuardarMeiosMobilidade(MEIO_SAVE_FILE_NAME, primeiroMeio);
 }
 
 
@@ -522,7 +522,7 @@ void MostrarMenuAdicionarGestor(Gestor* ultimoGestor) {
 	
 	AdicionarGestor(ultimoGestor, novoGestor);
 
-	GuardarGestores(ultimoGestor);
+	GuardarGestores(GESTOR_SAVE_FILE_NAME, ultimoGestor);
 }
 
 
@@ -579,7 +579,7 @@ void MostrarMenuEditarGestor(Gestor* ultimoGestor) {
 	
 	EditarGestor(ultimoGestor, id, nome, email, password);
 
-	GuardarGestores(ultimoGestor);
+	GuardarGestores(GESTOR_SAVE_FILE_NAME, ultimoGestor);
 }
 
 
@@ -606,7 +606,7 @@ void MostrarMenuRemoverGestor(Gestor* ultimoGestor) {
 	// Atribuição de dados
 	RemoverGestor(ultimoGestor, id);
 
-	GuardarGestores(ultimoGestor);
+	GuardarGestores(GESTOR_SAVE_FILE_NAME, ultimoGestor);
 }
 
 

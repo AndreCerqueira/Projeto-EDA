@@ -38,10 +38,10 @@ bool ResetarMeiosMobilidade(MeioMobilidade* primeiroMeio) {
 * \author A. Cerqueira
 *
 */
-bool CarregarMeiosMobilidadeIniciais(MeioMobilidade** primeiroMeio) {
+bool CarregarMeiosMobilidadeIniciais(MeioMobilidade** primeiroMeio, char* filePathInicial, char* saveFilePath) {
 	ResetarMeiosMobilidade(*primeiroMeio);
-	*primeiroMeio = LerMeiosMobilidadeIniciais();
-	GuardarMeiosMobilidade(*primeiroMeio);
+	*primeiroMeio = LerMeiosMobilidadeIniciais(filePathInicial);
+	GuardarMeiosMobilidade(saveFilePath , *primeiroMeio);
 
 	return true;
 }
@@ -54,12 +54,12 @@ bool CarregarMeiosMobilidadeIniciais(MeioMobilidade** primeiroMeio) {
 * \author A. Cerqueira
 *
 */
-MeioMobilidade* LerMeiosMobilidadeIniciais() {
+MeioMobilidade* LerMeiosMobilidadeIniciais(char* filePath) {
 	FILE* file;
 	MeioMobilidade* primeiroMeio = NULL;
 	char linha[MAX_SIZE];
 	
-	if (fopen_s(&file, HARDDATA_FILE_NAME, "r") != 0)
+	if (fopen_s(&file, filePath, "r") != 0)
 		return NULL;
 	
 	while (fgets(linha, MAX_SIZE, file)) {
@@ -116,11 +116,11 @@ MeioMobilidade* LerMeiosMobilidadeIniciais() {
 * \author A. Cerqueira
 *
 */
-MeioMobilidade* LerMeiosMobilidade() {
+MeioMobilidade* LerMeiosMobilidade(char* filePath) {
 	FILE* file;
 	MeioMobilidade* primeiroMeio = NULL;
 
-	file = fopen(SAVE_FILE_NAME, "rb");
+	file = fopen(filePath, "rb");
 
 	if (file == NULL)
 		return NULL;
@@ -172,9 +172,9 @@ MeioMobilidade* LerMeiosMobilidade() {
 * \author A. Cerqueira
 *
 */
-bool GuardarMeiosMobilidade(MeioMobilidade* primeiroMeio) {
+bool GuardarMeiosMobilidade(char* filePath, MeioMobilidade* primeiroMeio) {
 	FILE* file;
-	file = fopen(SAVE_FILE_NAME, "wb");
+	file = fopen(filePath, "wb");
 
 	if (file == NULL)
 		return false;

@@ -40,10 +40,10 @@ bool ResetarClientes(Cliente* primeiroCliente) {
 * \author A. Cerqueira
 *
 */
-bool CarregarClientesIniciais(Cliente** primeiroCliente) {
+bool CarregarClientesIniciais(Cliente** primeiroCliente, char* filePathInicial, char* saveFilePath) {
 	ResetarClientes(*primeiroCliente);
-	*primeiroCliente = LerClientesIniciais();
-	GuardarClientes(*primeiroCliente);
+	*primeiroCliente = LerClientesIniciais(filePathInicial);
+	GuardarClientes(saveFilePath , *primeiroCliente);
 
 	return true;
 }
@@ -56,12 +56,12 @@ bool CarregarClientesIniciais(Cliente** primeiroCliente) {
 * \author A. Cerqueira
 *
 */
-Cliente* LerClientesIniciais() {
+Cliente* LerClientesIniciais(char* filePath) {
 	FILE* file;
 	Cliente* primeiroCliente = NULL;
 	char linha[MAX_SIZE];
 
-	if (fopen_s(&file, HARDDATA_FILE_NAME, "r") != 0)
+	if (fopen_s(&file, filePath, "r") != 0)
 		return NULL;
 
 	while (fgets(linha, MAX_SIZE, file)) {
@@ -118,11 +118,11 @@ Cliente* LerClientesIniciais() {
 * \author A. Cerqueira
 *
 */
-Cliente* LerClientes() {
+Cliente* LerClientes(char* filePath) {
 	FILE* file;
 	Cliente* primeiroCliente = NULL;
 
-	file = fopen(SAVE_FILE_NAME, "rb");
+	file = fopen(filePath, "rb");
 
 	if (file == NULL)
 		return NULL;
@@ -173,9 +173,9 @@ Cliente* LerClientes() {
 * \author A. Cerqueira
 *
 */
-bool GuardarClientes(Cliente* primeiroCliente) {
+bool GuardarClientes(char* filePath, Cliente* primeiroCliente) {
 	FILE* file;
-	file = fopen(SAVE_FILE_NAME, "wb");
+	file = fopen(filePath, "wb");
 
 	if (file == NULL)
 		return false;

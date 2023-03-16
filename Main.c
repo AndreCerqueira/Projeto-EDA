@@ -10,15 +10,14 @@
 #include "Ecras.h"
 
 
-
 void main() {
 	setlocale(LC_ALL, "Portuguese");
 	
 	// Variables
 	int op = -1;
-	Cliente* primeiroCliente = LerClientes();
-	MeioMobilidade* primeiroMeio = LerMeiosMobilidade();
-	Gestor* primeiroGestor = LerGestores();
+	Cliente* primeiroCliente = LerClientes(CLIENTE_SAVE_FILE_NAME);
+	MeioMobilidade* primeiroMeio = LerMeiosMobilidade(MEIO_SAVE_FILE_NAME);
+	Gestor* primeiroGestor = LerGestores(GESTOR_SAVE_FILE_NAME);
 	
 	// Program loop
 	while (op != 0) {

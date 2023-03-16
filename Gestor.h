@@ -19,8 +19,8 @@
 	#define EMAIL_LENGHT 50
 	#define PASSWORD_LENGHT 20
 
-	#define HARDDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/Gestores.txt"
-	#define SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/Gestores.dat"
+	#define GESTOR_INITDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/Gestores.txt"
+	#define GESTOR_SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/Gestores.dat"
 
 	// Structs
 	typedef struct Gestor Gestor;
@@ -51,7 +51,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool CarregarGestoresIniciais(Gestor** primeiroGestor);
+	bool CarregarGestoresIniciais(Gestor** primeiroGestor, char* filePathInicial, char* saveFilePath);
 
 
 	/**
@@ -61,7 +61,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	Gestor* LerGestoresIniciais();
+	Gestor* LerGestoresIniciais(char* filePath);
 	
 
 	/**
@@ -71,7 +71,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	Gestor* LerGestores();
+	Gestor* LerGestores(char* filePath);
 
 
 	/**
@@ -81,7 +81,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool GuardarGestores(Gestor* primeiroGestor);
+	bool GuardarGestores(char* filePath, Gestor* primeiroGestor);
 
 
 	/**

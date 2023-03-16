@@ -17,8 +17,8 @@
 	// Constants
 	#define LOCALIZACAO_LENGHT 20
 
-	#define HARDDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/MeiosMobilidade.txt"
-	#define SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/MeiosMobilidade.dat"
+	#define MEIO_INITDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/MeiosMobilidade.txt"
+	#define MEIO_SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/MeiosMobilidade.dat"
 
 	// Enums
 	typedef enum {
@@ -59,7 +59,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool CarregarMeiosMobilidadeIniciais(MeioMobilidade** ultimoMeio);
+	bool CarregarMeiosMobilidadeIniciais(MeioMobilidade** ultimoMeio, char* filePathInicial, char* saveFilePath);
 
 	
 	/**
@@ -69,7 +69,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	MeioMobilidade* LerMeiosMobilidadeIniciais();
+	MeioMobilidade* LerMeiosMobilidadeIniciais(char* filePath);
 
 
 	/**
@@ -79,7 +79,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	MeioMobilidade* LerMeiosMobilidade();
+	MeioMobilidade* LerMeiosMobilidade(char* filePath);
 
 
 	/**
@@ -89,7 +89,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool GuardarMeiosMobilidade(MeioMobilidade* primeiroMeio);
+	bool GuardarMeiosMobilidade(char* filePath, MeioMobilidade* primeiroMeio);
 
 
 	/**

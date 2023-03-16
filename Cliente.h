@@ -19,8 +19,8 @@
 	#define NIF_LENGHT 20
 	#define MORADA_LENGHT 50
 
-	#define HARDDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/Clientes.txt"
-	#define SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/Clientes.dat"
+	#define CLIENTE_INITDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/Clientes.txt"
+	#define CLIENTE_SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/Clientes.dat"
 
 	// Structs
 	typedef struct Cliente Cliente;
@@ -52,7 +52,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool CarregarClientesIniciais(Cliente** primeiroCliente);
+	bool CarregarClientesIniciais(Cliente** primeiroCliente, char* filePathInicial, char* saveFilePath);
 
 
 	/**
@@ -62,7 +62,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	Cliente* LerClientesIniciais();
+	Cliente* LerClientesIniciais(char* filePath);
 
 	
 	/**
@@ -72,7 +72,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	Cliente* LerClientes();
+	Cliente* LerClientes(char* filePath);
 	
 
 	/**
@@ -83,7 +83,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool GuardarClientes(Cliente* primeiroCliente);
+	bool GuardarClientes(char* filePath, Cliente* primeiroCliente);
 
 
 	/**
