@@ -1,0 +1,39 @@
+\hypertarget{_utils_8h_source}{}\doxysection{Utils.\+h}
+\mbox{\hyperlink{_utils_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*****************************************************************/}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ UTILS\_H\_}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ UTILS\_H\_}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{comment}{//\ Includes}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\ \ \ \ \#include\ <stdio.h>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\ \ \ \ \#include\ <stdlib.h>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\ \ \ \ \#include\ <string.h>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\ \ \ \ \#include\ <time.h>}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{comment}{//\ Constants}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\ \ \ \ \#define\ MAX\_SIZE\ 1024}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\ \ \ \ \#define\ UID\_LENGHT\ 36}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\ \ \ \ \#define\ IS\_CONFIRMED\ 1}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\ \ \ \ \#define\ IS\_CANCELED\ 2}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{comment}{//\ Enums}}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{\ \textcolor{keyword}{false},\ \textcolor{keyword}{true}\ \}\ bool;}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\ Signatures}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ GetFullPath(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ path,\ \textcolor{keywordtype}{char}*\ fullPath);}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ GenerateUID(\textcolor{keywordtype}{char}*\ uid);}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{int}\ Confirmar();}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{int}\ SelectById(\textcolor{keywordtype}{int}\ n);}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ GetDate(\textcolor{keywordtype}{char}*\ date);}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{float}\ Percentage(\textcolor{keywordtype}{int}\ nums,\ \textcolor{keywordtype}{int}\ totalNum);}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{float}\ Average(\textcolor{keywordtype}{int}*\ nums,\ \textcolor{keywordtype}{int}\ n);}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

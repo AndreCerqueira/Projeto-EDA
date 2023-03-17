@@ -10,7 +10,7 @@
 #include "Ecras.h"
 
 
-void main() {
+int main() {
 	setlocale(LC_ALL, "Portuguese");
 	
 	// Variables
@@ -70,11 +70,16 @@ void main() {
 				CarregarDadosIniciais(&primeiroCliente, &primeiroMeio, &primeiroGestor);
 				break;
 			case 0:
+				LibertarClientes(primeiroCliente);
+				LibertarMeiosMobilidade(primeiroMeio);
+				LibertarGestores(primeiroGestor);
 				op = 0;
 			default:
 				break;
 		}
 	}
+
+	return 0;
 }
 
 

@@ -54,7 +54,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool ResetarMeiosMobilidade(MeioMobilidadeLista* primeiroMeio);
+	bool LibertarMeiosMobilidade(MeioMobilidadeLista* primeiroMeio);
 
 
 	/**

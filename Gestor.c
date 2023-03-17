@@ -16,12 +16,12 @@
 * \author A. Cerqueira
 *
 */
-bool ResetarGestores(GestorLista* primeiroGestor) {
-	GestorLista* gestor = primeiroGestor;
+bool LibertarGestores(GestorLista* primeiroGestor) {
+	GestorLista* gestorAtual = primeiroGestor;
 
-	while (gestor != NULL) {
-		GestorLista* gestorAnterior = gestor;
-		gestor = gestor->proximo;
+	while (gestorAtual != NULL) {
+		GestorLista* gestorAnterior = gestorAtual;
+		gestorAtual = gestorAtual->proximo;
 		free(gestorAnterior);
 	}
 
@@ -39,7 +39,7 @@ bool ResetarGestores(GestorLista* primeiroGestor) {
 *
 */
 bool CarregarGestoresIniciais(GestorLista** primeiroGestor, char* filePathInicial, char* saveFilePath) {
-	ResetarGestores(*primeiroGestor);
+	LibertarGestores(*primeiroGestor);
 	*primeiroGestor = LerGestoresIniciais(filePathInicial);
 	GuardarGestores(saveFilePath, *primeiroGestor);
 
@@ -195,6 +195,9 @@ bool AdicionarGestor(GestorLista** primeiroGestor, Gestor* novoGestor) {
 
 	novoNode->g = *novoGestor;
 	*primeiroGestor = novoNode;
+
+	free(novoGestor);
+	
 	return true;
 }
 

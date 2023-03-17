@@ -1,0 +1,84 @@
+\hypertarget{_meio_mobilidade_8h_source}{}\doxysection{Meio\+Mobilidade.\+h}
+\mbox{\hyperlink{_meio_mobilidade_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*****************************************************************/}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#pragma\ warning(disable\ :\ 4996)}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ MEIO\_MOBILIDADE\_H\_}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ MEIO\_MOBILIDADE\_H\_}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{comment}{//\ Includes}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\ \ \ \ \#include\ "{}\mbox{\hyperlink{_utils_8h}{Utils.h}}"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{comment}{//\ Constants}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\ \ \ \ \#define\ LOCALIZACAO\_LENGHT\ 20}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\ \ \ \ \#define\ MEIO\_INITDATA\_FILE\_NAME\ "{}C:/IPCA/Projeto-\/EDA/data/simulacao/MeiosMobilidade.txt"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\ \ \ \ \#define\ MEIO\_SAVE\_FILE\_NAME\ "{}C:/IPCA/Projeto-\/EDA/data/save/MeiosMobilidade.dat"{}}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{comment}{//\ Enums}}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ Bicibleta,}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ Trotinente,}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ Scooter,}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ SkateEletrico,}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ Outro}
+\DoxyCodeLine{00030\ \ \ \ \ \}\ TipoMeioMobilidade;}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\ Structs}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_meio_mobilidade}{MeioMobilidade}}\ \mbox{\hyperlink{struct_meio_mobilidade}{MeioMobilidade}};}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_meio_mobilidade}{MeioMobilidade}}\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ id;}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ TipoMeioMobilidade\ tipo;}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ cargaBateria;}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ custoAluguer;}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ localizacao[LOCALIZACAO\_LENGHT];}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ ativo;}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_meio_mobilidade}{MeioMobilidade}}*\ proximo;}
+\DoxyCodeLine{00042\ \ \ \ \ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_meio_mobilidade_lista}{MeioMobilidadeLista}}\ \mbox{\hyperlink{struct_meio_mobilidade_lista}{MeioMobilidadeLista}};}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_meio_mobilidade_lista}{MeioMobilidadeLista}}\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_meio_mobilidade}{MeioMobilidade}}\ m;}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_meio_mobilidade_lista}{MeioMobilidadeLista}}*\ proximo;}
+\DoxyCodeLine{00048\ \ \ \ \ \};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_meio_mobilidade_8h_a0906f1a231d1b54294c0ffd42ca4613a}{ResetarMeiosMobilidade}}(\mbox{\hyperlink{struct_meio_mobilidade_lista}{MeioMobilidadeLista}}*\ primeiroMeio);}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_meio_mobilidade_8h_a9dbbcd714ca6d01b2d2e50adf0b09b48}{CarregarMeiosMobilidadeIniciais}}(\mbox{\hyperlink{struct_meio_mobilidade_lista}{MeioMobilidadeLista}}**\ primeiroMeio,\ \textcolor{keywordtype}{char}*\ filePathInicial,\ \textcolor{keywordtype}{char}*\ saveFilePath);}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ }
+\DoxyCodeLine{00077\ \ \ \ \ \mbox{\hyperlink{struct_meio_mobilidade_lista}{MeioMobilidadeLista}}*\ \mbox{\hyperlink{_meio_mobilidade_8h_a78560b1a176d50b3a79c15acef4aa275}{LerMeiosMobilidadeIniciais}}(\textcolor{keywordtype}{char}*\ filePath);}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00087\ \ \ \ \ \mbox{\hyperlink{struct_meio_mobilidade_lista}{MeioMobilidadeLista}}*\ \mbox{\hyperlink{_meio_mobilidade_8h_abc721cbba3633c9878e451513df6a594}{LerMeiosMobilidade}}(\textcolor{keywordtype}{char}*\ filePath);}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_meio_mobilidade_8h_ac078f0418427e1591f8f790c58f1d6f7}{GuardarMeiosMobilidade}}(\textcolor{keywordtype}{char}*\ filePath,\ \mbox{\hyperlink{struct_meio_mobilidade_lista}{MeioMobilidadeLista}}*\ primeiroMeio);}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_meio_mobilidade_8h_a477f5124377e8dc0259b391a67cf483f}{AdicionarMeioMobilidade}}(\mbox{\hyperlink{struct_meio_mobilidade_lista}{MeioMobilidadeLista}}**\ primeiroMeio,\ \mbox{\hyperlink{struct_meio_mobilidade}{MeioMobilidade}}*\ novoMeio);}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_meio_mobilidade_8h_a9906ea6a847a88379bed1bffbbb52d81}{RemoverMeioMobilidade}}(\mbox{\hyperlink{struct_meio_mobilidade_lista}{MeioMobilidadeLista}}*\ primeiroMeio,\ \textcolor{keywordtype}{int}\ \textcolor{keywordtype}{id});}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_meio_mobilidade_8h_ae2df865b9cabb5a328aad6cdf2426f95}{EditarMeioMobilidade}}(\mbox{\hyperlink{struct_meio_mobilidade_lista}{MeioMobilidadeLista}}*\ primeiroMeio,\ \mbox{\hyperlink{struct_meio_mobilidade}{MeioMobilidade}}*\ meioSelecionado);}
+\DoxyCodeLine{00128\ \ \ \ \ }
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{_meio_mobilidade_8h_ace71864a124db67b736d2e71d1529a97}{TipoMeioMobilidadeToString}}(TipoMeioMobilidade\ tipoMeioMobilidade);}
+\DoxyCodeLine{00138\ \ \ \ \ }
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_meio_mobilidade_8h_a43f18fd07ba028871eb6df3e26d7c983}{OrdenarMeiosMobilidadePorId}}(\mbox{\hyperlink{struct_meio_mobilidade_lista}{MeioMobilidadeLista}}**\ primeiroMeio);}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_meio_mobilidade_8h_aa58359c604251877d99cb065f2fda427}{OrdenarMeiosMobilidadePorAutonomia}}(\mbox{\hyperlink{struct_meio_mobilidade_lista}{MeioMobilidadeLista}}**\ primeiroMeio);}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \ \ \ \ }
+\DoxyCodeLine{00164\ \ \ \ \ \mbox{\hyperlink{struct_meio_mobilidade_lista}{MeioMobilidadeLista}}*\ \mbox{\hyperlink{_meio_mobilidade_8h_a1712b11ea9a7690c0e9483463e3862e0}{ProcurarMeiosMobilidadePorLocalizacao}}(\mbox{\hyperlink{struct_meio_mobilidade_lista}{MeioMobilidadeLista}}*\ primeiroMeio,\ \textcolor{keywordtype}{char}*\ localizacao);}
+\DoxyCodeLine{00165\ \ \ \ \ }
+\DoxyCodeLine{00166\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

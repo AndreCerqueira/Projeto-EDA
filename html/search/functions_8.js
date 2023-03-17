@@ -1,0 +1,9 @@
+var searchData=
+[
+  ['removercliente_0',['RemoverCliente',['../_cliente_8c.html#aaa7bf48bd4b30b6b10a39e160c0e1838',1,'RemoverCliente(ClienteLista *primeiroCliente, int id):&#160;Cliente.c'],['../_cliente_8h.html#aaa7bf48bd4b30b6b10a39e160c0e1838',1,'RemoverCliente(ClienteLista *primeiroCliente, int id):&#160;Cliente.c']]],
+  ['removergestor_1',['RemoverGestor',['../_gestor_8c.html#a82a9c3952953f80dbf182ff8ee93f669',1,'RemoverGestor(GestorLista *primeiroGestor, int id):&#160;Gestor.c'],['../_gestor_8h.html#a82a9c3952953f80dbf182ff8ee93f669',1,'RemoverGestor(GestorLista *primeiroGestor, int id):&#160;Gestor.c']]],
+  ['removermeiomobilidade_2',['RemoverMeioMobilidade',['../_meio_mobilidade_8c.html#a9906ea6a847a88379bed1bffbbb52d81',1,'RemoverMeioMobilidade(MeioMobilidadeLista *primeiroMeio, int id):&#160;MeioMobilidade.c'],['../_meio_mobilidade_8h.html#a9906ea6a847a88379bed1bffbbb52d81',1,'RemoverMeioMobilidade(MeioMobilidadeLista *primeiroMeio, int id):&#160;MeioMobilidade.c']]],
+  ['resetarclientes_3',['ResetarClientes',['../_cliente_8c.html#ae04190d007a67cd8537067b75df556da',1,'ResetarClientes(ClienteLista *primeiroCliente):&#160;Cliente.c'],['../_cliente_8h.html#ae04190d007a67cd8537067b75df556da',1,'ResetarClientes(ClienteLista *primeiroCliente):&#160;Cliente.c']]],
+  ['resetargestores_4',['ResetarGestores',['../_gestor_8c.html#aabc1d42a0eb44dd9afe3c0b5bc68404a',1,'ResetarGestores(GestorLista *primeiroGestor):&#160;Gestor.c'],['../_gestor_8h.html#aabc1d42a0eb44dd9afe3c0b5bc68404a',1,'ResetarGestores(GestorLista *primeiroGestor):&#160;Gestor.c']]],
+  ['resetarmeiosmobilidade_5',['ResetarMeiosMobilidade',['../_meio_mobilidade_8c.html#a0906f1a231d1b54294c0ffd42ca4613a',1,'ResetarMeiosMobilidade(MeioMobilidadeLista *primeiroMeio):&#160;MeioMobilidade.c'],['../_meio_mobilidade_8h.html#a0906f1a231d1b54294c0ffd42ca4613a',1,'ResetarMeiosMobilidade(MeioMobilidadeLista *primeiroMeio):&#160;MeioMobilidade.c']]]
+];

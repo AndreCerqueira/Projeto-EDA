@@ -17,7 +17,7 @@
 * \author A. Cerqueira
 *
 */
-bool ResetarClientes(ClienteLista* primeiroCliente) {
+bool LibertarClientes(ClienteLista* primeiroCliente) {
 	ClienteLista* clienteAtual = primeiroCliente;
 
 	while (clienteAtual != NULL) {
@@ -40,7 +40,7 @@ bool ResetarClientes(ClienteLista* primeiroCliente) {
 *
 */
 bool CarregarClientesIniciais(ClienteLista** primeiroCliente, char* filePathInicial, char* saveFilePath) {
-	ResetarClientes(*primeiroCliente);
+	LibertarClientes(*primeiroCliente);
 	*primeiroCliente = LerClientesIniciais(filePathInicial);
 	GuardarClientes(saveFilePath, *primeiroCliente);
 
@@ -199,9 +199,11 @@ bool AdicionarCliente(ClienteLista** primeiroCliente, Cliente* novoCliente) {
 	
 	novoNode->c = *novoCliente;
 	*primeiroCliente = novoNode;
+	
+	free(novoCliente);
+	
 	return true;
 }
-
 
 
 /**
@@ -252,6 +254,8 @@ bool EditarCliente(ClienteLista* primeiroCliente, Cliente* clienteSelecionado) {
 
 		clienteAtual = clienteAtual->proximo;
 	}
+
+	free(clienteSelecionado);
 
 	return false;
 }

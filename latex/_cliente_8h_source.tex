@@ -1,0 +1,70 @@
+\hypertarget{_cliente_8h_source}{}\doxysection{Cliente.\+h}
+\mbox{\hyperlink{_cliente_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*****************************************************************/}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#pragma\ warning(disable\ :\ 4996)}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ CLIENTE\_H\_}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ CLIENTE\_H\_}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{comment}{//\ Includes}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\ \ \ \ \#include\ "{}\mbox{\hyperlink{_utils_8h}{Utils.h}}"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{comment}{//\ Constants}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\ \ \ \ \#define\ NOME\_CLIENTE\_LENGHT\ 50}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\ \ \ \ \#define\ NIF\_LENGHT\ 20}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\ \ \ \ \#define\ MORADA\_LENGHT\ 50}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\ \ \ \ \#define\ CLIENTE\_INITDATA\_FILE\_NAME\ "{}C:/IPCA/Projeto-\/EDA/data/simulacao/Clientes.txt"{}}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\ \ \ \ \#define\ CLIENTE\_SAVE\_FILE\_NAME\ "{}C:/IPCA/Projeto-\/EDA/data/save/Clientes.dat"{}}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{comment}{//\ Structs}}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_cliente}{Cliente}}\ \mbox{\hyperlink{struct_cliente}{Cliente}};}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_cliente}{Cliente}}\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ id;}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ nome[NOME\_CLIENTE\_LENGHT];}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ nif[NIF\_LENGHT];}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ morada[MORADA\_LENGHT];}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ saldo;}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ ativo;}
+\DoxyCodeLine{00034\ \ \ \ \ \};}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_cliente_lista}{ClienteLista}}\ \mbox{\hyperlink{struct_cliente_lista}{ClienteLista}};}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_cliente_lista}{ClienteLista}}\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_cliente}{Cliente}}\ c;}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_cliente_lista}{ClienteLista}}*\ proximo;}
+\DoxyCodeLine{00040\ \ \ \ \ \};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_cliente_8h_ae04190d007a67cd8537067b75df556da}{ResetarClientes}}(\mbox{\hyperlink{struct_cliente_lista}{ClienteLista}}*\ primeiroCliente);}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_cliente_8h_a4e1130d8e756dcabca2e6c6c614b2fad}{CarregarClientesIniciais}}(\mbox{\hyperlink{struct_cliente_lista}{ClienteLista}}**\ primeiroCliente,\ \textcolor{keywordtype}{char}*\ filePathInicial,\ \textcolor{keywordtype}{char}*\ saveFilePath);}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00070\ \ \ \ \ \mbox{\hyperlink{struct_cliente_lista}{ClienteLista}}*\ \mbox{\hyperlink{_cliente_8h_ab008be90e0af6019b8cd711597b95ef1}{LerClientesIniciais}}(\textcolor{keywordtype}{char}*\ filePath);}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ }
+\DoxyCodeLine{00080\ \ \ \ \ \mbox{\hyperlink{struct_cliente_lista}{ClienteLista}}*\ \mbox{\hyperlink{_cliente_8h_a045073d4a86b1aa4e30e06c5c866e89d}{LerClientes}}(\textcolor{keywordtype}{char}*\ filePath);}
+\DoxyCodeLine{00081\ \ \ \ \ }
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_cliente_8h_ad2b306d03c6d2ec8b4ae13b73dc3778a}{GuardarClientes}}(\textcolor{keywordtype}{char}*\ filePath,\ \mbox{\hyperlink{struct_cliente_lista}{ClienteLista}}*\ primeiroCliente);}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_cliente_8h_a5184873c8797a7fe82b8ee9f8358376e}{AdicionarCliente}}(\mbox{\hyperlink{struct_cliente_lista}{ClienteLista}}**\ primeiroCliente,\ \mbox{\hyperlink{struct_cliente}{Cliente}}*\ novoCliente);}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \ \ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_cliente_8h_aaa7bf48bd4b30b6b10a39e160c0e1838}{RemoverCliente}}(\mbox{\hyperlink{struct_cliente_lista}{ClienteLista}}*\ primeiroCliente,\ \textcolor{keywordtype}{int}\ \textcolor{keywordtype}{id});}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_cliente_8h_a6dc5c0080e7fa743306e5de8cf438ad8}{EditarCliente}}(\mbox{\hyperlink{struct_cliente_lista}{ClienteLista}}*\ primeiroCliente,\ \mbox{\hyperlink{struct_cliente}{Cliente}}*\ clienteSelecionado);}
+\DoxyCodeLine{00122\ \ \ \ \ }
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_cliente_8h_a6f055cce51c13a0d470a8859b4a51f67}{OrdenarClientesPorId}}(\mbox{\hyperlink{struct_cliente_lista}{ClienteLista}}**\ primeiroCliente);}
+\DoxyCodeLine{00131\ \ \ \ \ }
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ }
+
+\end{DoxyCode}

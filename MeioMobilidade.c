@@ -17,7 +17,7 @@
 * \author A. Cerqueira
 *
 */
-bool ResetarMeiosMobilidade(MeioMobilidadeLista* primeiroMeio) {
+bool LibertarMeiosMobilidade(MeioMobilidadeLista* primeiroMeio) {
 	MeioMobilidadeLista* meioAtual = primeiroMeio;
 
 	while (meioAtual != NULL) {
@@ -40,7 +40,7 @@ bool ResetarMeiosMobilidade(MeioMobilidadeLista* primeiroMeio) {
 *
 */
 bool CarregarMeiosMobilidadeIniciais(MeioMobilidadeLista** primeiroMeio, char* filePathInicial, char* saveFilePath) {
-	ResetarMeiosMobilidade(*primeiroMeio);
+	LibertarMeiosMobilidade(*primeiroMeio);
 	*primeiroMeio = LerMeiosMobilidadeIniciais(filePathInicial);
 	GuardarMeiosMobilidade(saveFilePath, *primeiroMeio);
 
@@ -199,6 +199,9 @@ bool AdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio, MeioMobilidade*
 
 	novoNode->m = *novoMeio;
 	*primeiroMeio = novoNode;
+
+	free(novoMeio);
+	
 	return true;
 }
 

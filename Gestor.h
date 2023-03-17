@@ -46,7 +46,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool ResetarGestores(GestorLista* primeiroGestor);
+	bool LibertarGestores(GestorLista* primeiroGestor);
 
 
 	/**

@@ -1,0 +1,72 @@
+\hypertarget{_utils_8h}{}\doxysection{Utils.\+h File Reference}
+\label{_utils_8h}\index{Utils.h@{Utils.h}}
+
+
+\char`\"{}\+Utilis\char`\"{} é uma biblioteca composta por varias funções utilizados várias vezes no decorrer de um programa em c.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_utils_8h_a28d514637769271118e598b6cc484a07}\label{_utils_8h_a28d514637769271118e598b6cc484a07}} 
+\#define {\bfseries UTILS\+\_\+\+H\+\_\+}
+\item 
+\mbox{\Hypertarget{_utils_8h_a0592dba56693fad79136250c11e5a7fe}\label{_utils_8h_a0592dba56693fad79136250c11e5a7fe}} 
+\#define {\bfseries MAX\+\_\+\+SIZE}~1024
+\item 
+\mbox{\Hypertarget{_utils_8h_ae6d9a05a20c58abbc76bfea3081cf1f1}\label{_utils_8h_ae6d9a05a20c58abbc76bfea3081cf1f1}} 
+\#define {\bfseries UID\+\_\+\+LENGHT}~36
+\item 
+\mbox{\Hypertarget{_utils_8h_acf7450ad1a6871effc7bbc061da83ffd}\label{_utils_8h_acf7450ad1a6871effc7bbc061da83ffd}} 
+\#define {\bfseries IS\+\_\+\+CONFIRMED}~1
+\item 
+\mbox{\Hypertarget{_utils_8h_a8e497b7d07222ac6fb525f9aa1d8da09}\label{_utils_8h_a8e497b7d07222ac6fb525f9aa1d8da09}} 
+\#define {\bfseries IS\+\_\+\+CANCELED}~2
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_utils_8h_af6a258d8f3ee5206d682d799316314b1}\label{_utils_8h_af6a258d8f3ee5206d682d799316314b1}} 
+enum {\bfseries bool} \{ {\bfseries false}
+, {\bfseries true}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_utils_8h_a19cec7773e968fc5ffcca03902b4e3bc}\label{_utils_8h_a19cec7773e968fc5ffcca03902b4e3bc}} 
+void {\bfseries Get\+Full\+Path} (const char $\ast$path, char $\ast$full\+Path)
+\item 
+\mbox{\Hypertarget{_utils_8h_a8dedb09734add24cdeecc977a580a083}\label{_utils_8h_a8dedb09734add24cdeecc977a580a083}} 
+void {\bfseries Generate\+UID} (char $\ast$uid)
+\item 
+\mbox{\Hypertarget{_utils_8h_a2935c05062f9ad626372c55381c3943c}\label{_utils_8h_a2935c05062f9ad626372c55381c3943c}} 
+int {\bfseries Confirmar} ()
+\item 
+\mbox{\Hypertarget{_utils_8h_aa994164c041283827e3c0faa438cf52d}\label{_utils_8h_aa994164c041283827e3c0faa438cf52d}} 
+int {\bfseries Select\+By\+Id} (int n)
+\item 
+\mbox{\Hypertarget{_utils_8h_a0fca674df691fb6e853a02cd5bc9f663}\label{_utils_8h_a0fca674df691fb6e853a02cd5bc9f663}} 
+void {\bfseries Get\+Date} (char $\ast$date)
+\item 
+\mbox{\Hypertarget{_utils_8h_ae4ee131a96b7fad143e55da8acafd9b7}\label{_utils_8h_ae4ee131a96b7fad143e55da8acafd9b7}} 
+float {\bfseries Percentage} (int nums, int total\+Num)
+\item 
+\mbox{\Hypertarget{_utils_8h_ad40ccf65350f9e9d38cc3f62b45e964f}\label{_utils_8h_ad40ccf65350f9e9d38cc3f62b45e964f}} 
+float {\bfseries Average} (int $\ast$nums, int n)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\char`\"{}\+Utilis\char`\"{} é uma biblioteca composta por varias funções utilizados várias vezes no decorrer de um programa em c. 
+
+\begin{DoxyAuthor}{Author}
+A. Cerqueira 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+March 2023 
+\end{DoxyDate}

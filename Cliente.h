@@ -47,7 +47,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool ResetarClientes(ClienteLista* primeiroCliente);
+	bool LibertarClientes(ClienteLista* primeiroCliente);
 
 
 	/**
