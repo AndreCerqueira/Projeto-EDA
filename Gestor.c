@@ -38,12 +38,12 @@ bool LibertarGestores(GestorLista* primeiroGestor) {
 * \author A. Cerqueira
 *
 */
-bool CarregarGestoresIniciais(GestorLista** primeiroGestor, char* filePathInicial, char* saveFilePath) {
-	LibertarGestores(*primeiroGestor);
-	*primeiroGestor = LerGestoresIniciais(filePathInicial);
-	GuardarGestores(saveFilePath, *primeiroGestor);
+GestorLista* CarregarGestoresIniciais(GestorLista* primeiroGestor, char* filePathInicial, char* saveFilePath) {
+	LibertarGestores(primeiroGestor);
+	primeiroGestor = LerGestoresIniciais(filePathInicial);
+	GuardarGestores(saveFilePath, primeiroGestor);
 
-	return true;
+	return primeiroGestor;
 }
 
 
@@ -54,7 +54,6 @@ bool CarregarGestoresIniciais(GestorLista** primeiroGestor, char* filePathInicia
 * \author A. Cerqueira
 *
 */
-
 GestorLista* LerGestoresIniciais(char* filePath) {
 	FILE* file;
 	GestorLista* primeiroGestor = NULL;
@@ -133,7 +132,7 @@ GestorLista* LerGestores(char* filePath) {
 
 	fclose(file);
 
-	OrdenarGestoresPorId(&primeiroGestor);
+	primeiroGestor = OrdenarGestoresPorId(primeiroGestor);
 	
 	return primeiroGestor;
 }
@@ -174,22 +173,20 @@ bool GuardarGestores(char* filePath, GestorLista* primeiroGestor) {
 * \author A. Cerqueira
 *
 */
-bool AdicionarGestor(GestorLista** primeiroGestor, Gestor* novoGestor) {
-	if (novoGestor == NULL)
-		return false;
-
+GestorLista* AdicionarGestor(GestorLista* primeiroGestor, Gestor novoGestor) {
 	GestorLista* novoNode = (GestorLista*)malloc(sizeof(GestorLista));
-	if (novoNode == NULL)
-		return false;
-
-	novoGestor->ativo = true;
-	novoGestor->id = ProcurarProximoIdGestor(*primeiroGestor);
-	novoNode->proximo = (*primeiroGestor != NULL) ? *primeiroGestor : NULL;
-
-	novoNode->g = *novoGestor;
-	*primeiroGestor = novoNode;
 	
-	return true;
+	if (novoNode == NULL)
+		return primeiroGestor;
+
+	novoGestor.ativo = true;
+	novoGestor.id = ProcurarProximoIdGestor(primeiroGestor);
+	novoNode->proximo = (primeiroGestor != NULL) ? primeiroGestor : NULL;
+
+	novoNode->g = novoGestor;
+	primeiroGestor = novoNode;
+	
+	return primeiroGestor;
 }
 
 
@@ -225,15 +222,15 @@ bool RemoverGestor(GestorLista* primeiroGestor, int id) {
 * \author A. Cerqueira
 *
 */
-bool EditarGestor(GestorLista* primeiroGestor, Gestor* gestorSelecionado) {
+bool EditarGestor(GestorLista* primeiroGestor, Gestor gestorSelecionado) {
 	GestorLista* gestorAtual = primeiroGestor;
 
 	while (gestorAtual != NULL) {
 		
-		if (gestorAtual->g.id == gestorSelecionado->id) {
-			strcpy_s(gestorAtual->g.nome, NOME_LENGHT, gestorSelecionado->nome);
-			strcpy_s(gestorAtual->g.email, EMAIL_LENGHT, gestorSelecionado->email);
-			strcpy_s(gestorAtual->g.password, PASSWORD_LENGHT, gestorSelecionado->password);
+		if (gestorAtual->g.id == gestorSelecionado.id) {
+			strcpy_s(gestorAtual->g.nome, NOME_LENGHT, gestorSelecionado.nome);
+			strcpy_s(gestorAtual->g.email, EMAIL_LENGHT, gestorSelecionado.email);
+			strcpy_s(gestorAtual->g.password, PASSWORD_LENGHT, gestorSelecionado.password);
 			return true;
 		}
 		
@@ -250,12 +247,12 @@ bool EditarGestor(GestorLista* primeiroGestor, Gestor* gestorSelecionado) {
  * \param primeiroCliente
  * \return
  */
-bool OrdenarGestoresPorId(GestorLista** primeiroGestor) {
+GestorLista* OrdenarGestoresPorId(GestorLista* primeiroGestor) {
 	GestorLista* atual;
 	GestorLista* proximo;
 	Gestor temp;
 
-	for (atual = *primeiroGestor; atual != NULL; atual = atual->proximo) {
+	for (atual = primeiroGestor; atual != NULL; atual = atual->proximo) {
 		for (proximo = atual->proximo; proximo != NULL; proximo = proximo->proximo) {
 			
 			if (atual->g.id < proximo->g.id) {
@@ -267,7 +264,7 @@ bool OrdenarGestoresPorId(GestorLista** primeiroGestor) {
 		}
 	}
 
-	return true;
+	return primeiroGestor;
 }
 
 

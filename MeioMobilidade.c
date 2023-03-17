@@ -39,12 +39,12 @@ bool LibertarMeiosMobilidade(MeioMobilidadeLista* primeiroMeio) {
 * \author A. Cerqueira
 *
 */
-bool CarregarMeiosMobilidadeIniciais(MeioMobilidadeLista** primeiroMeio, char* filePathInicial, char* saveFilePath) {
-	LibertarMeiosMobilidade(*primeiroMeio);
-	*primeiroMeio = LerMeiosMobilidadeIniciais(filePathInicial);
-	GuardarMeiosMobilidade(saveFilePath, *primeiroMeio);
+MeioMobilidadeLista* CarregarMeiosMobilidadeIniciais(MeioMobilidadeLista* primeiroMeio, char* filePathInicial, char* saveFilePath) {
+	LibertarMeiosMobilidade(primeiroMeio);
+	primeiroMeio = LerMeiosMobilidadeIniciais(filePathInicial);
+	GuardarMeiosMobilidade(saveFilePath, primeiroMeio);
 
-	return true;
+	return primeiroMeio;
 }
 
 
@@ -60,7 +60,8 @@ MeioMobilidadeLista* LerMeiosMobilidadeIniciais(char* filePath) {
 	MeioMobilidadeLista* primeiroMeio = NULL;
 	char linha[MAX_SIZE];
 
-	if (fopen_s(&file, filePath, "r") != 0)
+	file = fopen(filePath, "r");
+	if (file == NULL)
 		return NULL;
 
 	while (fgets(linha, MAX_SIZE, file)) {
@@ -70,25 +71,25 @@ MeioMobilidadeLista* LerMeiosMobilidadeIniciais(char* filePath) {
 			return NULL;
 
 		char* contexto = NULL;
-		char* campo = strtok_s(linha, ";", &contexto);
+		char* campo = strtok(linha, ";");
 		novoMeio->m.id = atoi(campo);
 
-		campo = strtok_s(NULL, ";", &contexto);
+		campo = strtok(NULL, ";");
 		novoMeio->m.tipo = (TipoMeioMobilidade)atoi(campo);
 
-		campo = strtok_s(NULL, ";", &contexto);
+		campo = strtok(NULL, ";");
 		novoMeio->m.cargaBateria = atof(campo);
 
-		campo = strtok_s(NULL, ";", &contexto);
+		campo = strtok(NULL, ";");
 		novoMeio->m.custoAluguer = atof(campo);
 
-		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(novoMeio->m.localizacao, LOCALIZACAO_LENGHT, campo);
-		
-		campo = strtok_s(NULL, ";", &contexto);
+		campo = strtok(NULL, ";");
+		strncpy(novoMeio->m.localizacao, campo, LOCALIZACAO_LENGHT);
+
+		campo = strtok(NULL, ";");
 		novoMeio->m.alugadoPorId = atoi(campo);
-		
-		campo = strtok_s(NULL, ";", &contexto);
+
+		campo = strtok(NULL, ";");
 		novoMeio->m.ativo = (bool)atoi(campo);
 
 		novoMeio->proximo = primeiroMeio;
@@ -141,7 +142,7 @@ MeioMobilidadeLista* LerMeiosMobilidade(char* filePath) {
 	
 	fclose(file);
 	
-	OrdenarMeiosMobilidadePorId(&primeiroMeio);
+	primeiroMeio = OrdenarMeiosMobilidadePorId(primeiroMeio);
 	
 	return primeiroMeio;
 }
@@ -182,22 +183,20 @@ bool GuardarMeiosMobilidade(char* filePath, MeioMobilidadeLista* primeiroMeio) {
 * \author A. Cerqueira
 *
 */
-bool AdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio, MeioMobilidade* novoMeio) {
-	if (novoMeio == NULL)
-		return false;
-
+MeioMobilidadeLista* AdicionarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, MeioMobilidade novoMeio) {
 	MeioMobilidadeLista* novoNode = (MeioMobilidadeLista*)malloc(sizeof(MeioMobilidadeLista));
+	
 	if (novoNode == NULL)
 		return false;
 
-	novoMeio->ativo = true;
-	novoMeio->id = ProcurarProximoIdMeioMobilidade(*primeiroMeio);
-	novoNode->proximo = (*primeiroMeio != NULL) ? *primeiroMeio : NULL;
+	novoMeio.ativo = true;
+	novoMeio.id = ProcurarProximoIdMeioMobilidade(primeiroMeio);
+	novoNode->proximo = (primeiroMeio != NULL) ? primeiroMeio : NULL;
 
-	novoNode->m = *novoMeio;
-	*primeiroMeio = novoNode;
+	novoNode->m = novoMeio;
+	primeiroMeio = novoNode;
 	
-	return true;
+	return primeiroMeio;
 }
 
 
@@ -233,17 +232,17 @@ bool RemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio, int id) {
 * \author A. Cerqueira
 *
 */
-bool EditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, MeioMobilidade* meioSelecionado) {
+bool EditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, MeioMobilidade meioSelecionado) {
 
 	MeioMobilidadeLista* meioAtual = primeiroMeio;
 
 	while (meioAtual != NULL) {
 
-		if (meioAtual->m.id == meioSelecionado->id) {
-			meioAtual->m.tipo = meioSelecionado->tipo;
-			meioAtual->m.cargaBateria = meioSelecionado->cargaBateria;
-			meioAtual->m.custoAluguer = meioSelecionado->custoAluguer;
-			strcpy(meioAtual->m.localizacao, meioSelecionado->localizacao);
+		if (meioAtual->m.id == meioSelecionado.id) {
+			meioAtual->m.tipo = meioSelecionado.tipo;
+			meioAtual->m.cargaBateria = meioSelecionado.cargaBateria;
+			meioAtual->m.custoAluguer = meioSelecionado.custoAluguer;
+			strcpy(meioAtual->m.localizacao, meioSelecionado.localizacao);
 			return true;
 		}
 
@@ -286,12 +285,12 @@ char* TipoMeioMobilidadeToString(TipoMeioMobilidade tipoMeioMobilidade) {
  * \param primeiroMeio
  * \return
  */
-bool OrdenarMeiosMobilidadePorId(MeioMobilidadeLista** primeiroMeio) {
+MeioMobilidadeLista* OrdenarMeiosMobilidadePorId(MeioMobilidadeLista* primeiroMeio) {
 	MeioMobilidadeLista* atual;
 	MeioMobilidadeLista* proximo;
 	MeioMobilidade temp;
 
-	for (atual = *primeiroMeio; atual != NULL; atual = atual->proximo) {
+	for (atual = primeiroMeio; atual != NULL; atual = atual->proximo) {
 		for (proximo = atual->proximo; proximo != NULL; proximo = proximo->proximo) {
 
 			if (atual->m.id < proximo->m.id) {
@@ -303,7 +302,7 @@ bool OrdenarMeiosMobilidadePorId(MeioMobilidadeLista** primeiroMeio) {
 		}
 	}
 
-	return true;
+	return primeiroMeio;
 }
 
 
@@ -313,12 +312,12 @@ bool OrdenarMeiosMobilidadePorId(MeioMobilidadeLista** primeiroMeio) {
  * \param primeiroMeio
  * \return
  */
-bool OrdenarMeiosMobilidadePorAutonomia(MeioMobilidadeLista** primeiroMeio) {
+MeioMobilidadeLista* OrdenarMeiosMobilidadePorAutonomia(MeioMobilidadeLista* primeiroMeio) {
 	MeioMobilidadeLista* atual;
 	MeioMobilidadeLista* proximo;
 	MeioMobilidade temp;
 
-	for (atual = *primeiroMeio; atual != NULL; atual = atual->proximo) {
+	for (atual = primeiroMeio; atual != NULL; atual = atual->proximo) {
 		for (proximo = atual->proximo; proximo != NULL; proximo = proximo->proximo) {
 
 			if (atual->m.cargaBateria < proximo->m.cargaBateria) {
@@ -330,7 +329,7 @@ bool OrdenarMeiosMobilidadePorAutonomia(MeioMobilidadeLista** primeiroMeio) {
 		}
 	}
 
-	return true;
+	return primeiroMeio;
 }
 
 
@@ -347,7 +346,7 @@ MeioMobilidadeLista* ProcurarMeiosMobilidadePorLocalizacao(MeioMobilidadeLista* 
 	while (meioAtual != NULL) {
 
 		if (strcmp(meioAtual->m.localizacao, localizacao) == 0) {
-			AdicionarMeioMobilidade(&meiosMobilidadeLocalizacao, &meioAtual->m);
+			meiosMobilidadeLocalizacao = AdicionarMeioMobilidade(meiosMobilidadeLocalizacao, meioAtual->m);
 		}
 
 		meioAtual = meioAtual->proximo;

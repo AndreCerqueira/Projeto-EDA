@@ -39,12 +39,12 @@ bool LibertarClientes(ClienteLista* primeiroCliente) {
 * \author A. Cerqueira
 *
 */
-bool CarregarClientesIniciais(ClienteLista** primeiroCliente, char* filePathInicial, char* saveFilePath) {
-	LibertarClientes(*primeiroCliente);
-	*primeiroCliente = LerClientesIniciais(filePathInicial);
-	GuardarClientes(saveFilePath, *primeiroCliente);
+ClienteLista* CarregarClientesIniciais(ClienteLista* primeiroCliente, char* filePathInicial, char* saveFilePath) {
+	LibertarClientes(primeiroCliente);
+	primeiroCliente = LerClientesIniciais(filePathInicial);
+	GuardarClientes(saveFilePath, primeiroCliente);
 
-	return true;
+	return primeiroCliente;
 }
 
 
@@ -137,7 +137,7 @@ ClienteLista* LerClientes(char* filePath) {
 
 	fclose(file);
 
-	OrdenarClientesPorId(&primeiroCliente);
+	primeiroCliente = OrdenarClientesPorId(primeiroCliente);
 
 	return primeiroCliente;
 }
@@ -178,22 +178,20 @@ bool GuardarClientes(char* filePath, ClienteLista* primeiroCliente) {
 * \author A. Cerqueira
 *
 */
-bool AdicionarCliente(ClienteLista** primeiroCliente, Cliente* novoCliente) {
-	if (novoCliente == NULL)
-		return false;
-
+ClienteLista* AdicionarCliente(ClienteLista* primeiroCliente, Cliente novoCliente) {
 	ClienteLista* novoNode = (ClienteLista*)malloc(sizeof(ClienteLista));
+	
 	if (novoNode == NULL)
-		return false;
+		return primeiroCliente;
 
-	novoCliente->ativo = true;
-	novoCliente->id = ProcurarProximoIdCliente(*primeiroCliente);
-	novoNode->proximo = (*primeiroCliente != NULL) ? *primeiroCliente : NULL;
+	novoCliente.ativo = true;
+	novoCliente.id = ProcurarProximoIdCliente(primeiroCliente);
+	novoNode->proximo = (primeiroCliente != NULL) ? primeiroCliente : NULL;
 	
-	novoNode->c = *novoCliente;
-	*primeiroCliente = novoNode;
+	novoNode->c = novoCliente;
+	primeiroCliente = novoNode;
 	
-	return true;
+	return primeiroCliente;
 }
 
 
@@ -229,17 +227,17 @@ bool RemoverCliente(ClienteLista* primeiroCliente, int id) {
 * \author A. Cerqueira
 *
 */
-bool EditarCliente(ClienteLista* primeiroCliente, Cliente* clienteSelecionado) {
+bool EditarCliente(ClienteLista* primeiroCliente, Cliente clienteSelecionado) {
 
 	ClienteLista* clienteAtual = primeiroCliente;
 
 	while (clienteAtual != NULL) {
 
-		if (clienteAtual->c.id == clienteSelecionado->id) {
-			strcpy_s(clienteAtual->c.nome, NOME_CLIENTE_LENGHT, clienteSelecionado->nome);
-			strcpy_s(clienteAtual->c.nif, NIF_LENGHT, clienteSelecionado->nif);
-			strcpy_s(clienteAtual->c.morada, MORADA_LENGHT, clienteSelecionado->morada);
-			clienteAtual->c.saldo = clienteSelecionado->saldo;
+		if (clienteAtual->c.id == clienteSelecionado.id) {
+			strcpy_s(clienteAtual->c.nome, NOME_CLIENTE_LENGHT, clienteSelecionado.nome);
+			strcpy_s(clienteAtual->c.nif, NIF_LENGHT, clienteSelecionado.nif);
+			strcpy_s(clienteAtual->c.morada, MORADA_LENGHT, clienteSelecionado.morada);
+			clienteAtual->c.saldo = clienteSelecionado.saldo;
 			return true;
 		}
 
@@ -256,12 +254,12 @@ bool EditarCliente(ClienteLista* primeiroCliente, Cliente* clienteSelecionado) {
  * \param primeiroCliente
  * \return 
  */
-bool OrdenarClientesPorId(ClienteLista** primeiroCliente) {
+ClienteLista* OrdenarClientesPorId(ClienteLista* primeiroCliente) {
 	ClienteLista* atual;
 	ClienteLista* proximo;
 	Cliente temp;
 
-	for (atual = *primeiroCliente; atual != NULL; atual = atual->proximo) {
+	for (atual = primeiroCliente; atual != NULL; atual = atual->proximo) {
 		for (proximo = atual->proximo; proximo != NULL; proximo = proximo->proximo) {
 			
 			if (atual->c.id < proximo->c.id) {
@@ -273,7 +271,7 @@ bool OrdenarClientesPorId(ClienteLista** primeiroCliente) {
 		}
 	}
 
-	return true;
+	return primeiroCliente;
 }
 
 

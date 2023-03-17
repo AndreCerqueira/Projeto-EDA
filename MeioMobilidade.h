@@ -66,7 +66,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool CarregarMeiosMobilidadeIniciais(MeioMobilidadeLista** primeiroMeio, char* filePathInicial, char* saveFilePath);
+	MeioMobilidadeLista* CarregarMeiosMobilidadeIniciais(MeioMobilidadeLista* primeiroMeio, char* filePathInicial, char* saveFilePath);
 
 	
 	/**
@@ -106,7 +106,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool AdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio, MeioMobilidade* novoMeio);
+	MeioMobilidadeLista* AdicionarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, MeioMobilidade novoMeio);
 
 
 	/**
@@ -126,7 +126,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool EditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, MeioMobilidade* meioSelecionado);
+	bool EditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, MeioMobilidade meioSelecionado);
 	
 
 	/**
@@ -145,7 +145,7 @@
 	 * \param primeiroMeio
 	 * \return
 	 */
-	bool OrdenarMeiosMobilidadePorId(MeioMobilidadeLista** primeiroMeio);
+	MeioMobilidadeLista* OrdenarMeiosMobilidadePorId(MeioMobilidadeLista* primeiroMeio);
 
 
 	/**
@@ -154,7 +154,7 @@
 	 * \param primeiroMeio
 	 * \return
 	 */
-	bool OrdenarMeiosMobilidadePorAutonomia(MeioMobilidadeLista** primeiroMeio);
+	MeioMobilidadeLista* OrdenarMeiosMobilidadePorAutonomia(MeioMobilidadeLista* primeiroMeio);
 
 	
 	/**

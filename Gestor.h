@@ -56,7 +56,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool CarregarGestoresIniciais(GestorLista** primeiroGestor, char* filePathInicial, char* saveFilePath);
+	GestorLista* CarregarGestoresIniciais(GestorLista* primeiroGestor, char* filePathInicial, char* saveFilePath);
 
 
 	/**
@@ -96,7 +96,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool AdicionarGestor(GestorLista** primeiroGestor, Gestor* novoGestor);
+	GestorLista* AdicionarGestor(GestorLista* primeiroGestor, Gestor novoGestor);
 
 
 	/**
@@ -116,7 +116,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool EditarGestor(GestorLista* primeiroGestor, Gestor* gestorSelecionado);
+	bool EditarGestor(GestorLista* primeiroGestor, Gestor gestorSelecionado);
 	
 	
 	/**
@@ -125,7 +125,7 @@
 	 * \param primeiroCliente
 	 * \return
 	 */
-	bool OrdenarGestoresPorId(GestorLista** primeiroGestor);
+	GestorLista* OrdenarGestoresPorId(GestorLista* primeiroGestor);
 
 	
 	/**

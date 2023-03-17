@@ -113,9 +113,9 @@ void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidadeLista**
 	if (Confirmar() == IS_CANCELED)
 		return;
 	
-	CarregarMeiosMobilidadeIniciais(primeiroMeio, MEIO_INITDATA_FILE_NAME, MEIO_SAVE_FILE_NAME);
-	CarregarClientesIniciais(primeiroCliente, CLIENTE_INITDATA_FILE_NAME, CLIENTE_SAVE_FILE_NAME);
-	CarregarGestoresIniciais(primeiroGestor, GESTOR_INITDATA_FILE_NAME, GESTOR_SAVE_FILE_NAME);
+	*primeiroMeio = CarregarMeiosMobilidadeIniciais(*primeiroMeio, MEIO_INITDATA_FILE_NAME, MEIO_SAVE_FILE_NAME);
+	*primeiroCliente = CarregarClientesIniciais(*primeiroCliente, CLIENTE_INITDATA_FILE_NAME, CLIENTE_SAVE_FILE_NAME);
+	*primeiroGestor = CarregarGestoresIniciais(*primeiroGestor, GESTOR_INITDATA_FILE_NAME, GESTOR_SAVE_FILE_NAME);
 }
 
 
@@ -123,15 +123,7 @@ void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidadeLista**
 void MostrarMenuAdicionarCliente(ClienteLista** primeiroCliente) {
 	
 	// Variaveis
-	char nome[NOME_LENGHT];
-	char nif[NIF_LENGHT];
-	char morada[MORADA_LENGHT];
-	float saldo;
-	Cliente* novoCliente = (Cliente*)malloc(sizeof(Cliente));
-
-	// Verificar se houve problema a alocar memoria
-	if (novoCliente == NULL)
-		return;
+	Cliente novoCliente;
 	
 	// Inserir os dados 
 	system("cls");
@@ -140,36 +132,26 @@ void MostrarMenuAdicionarCliente(ClienteLista** primeiroCliente) {
 	puts("+-------------------------------+");
 
 	printf("Insira o nome do cliente: ");
-	scanf_s("%s", nome, NOME_LENGHT);
+	scanf_s("%s", novoCliente.nome, NOME_LENGHT);
 	fflush(stdin);
 
 	printf("Insira o nif do cliente: ");
-	scanf_s("%s", nif, NIF_LENGHT);
+	scanf_s("%s", novoCliente.nif, NIF_LENGHT);
 	fflush(stdin);
 
 	printf("Insira a morada do cliente: ");
-	scanf_s("%s", morada, MORADA_LENGHT);
+	scanf_s("%s", novoCliente.morada, MORADA_LENGHT);
 	fflush(stdin);
 
 	printf("Insira o saldo do cliente: ");
-	scanf_s("%f", &saldo);
+	scanf_s("%f", &novoCliente.saldo);
 	fflush(stdin);
 
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
 		return;
-
-	// Colocar o terminador de string
-	nome[NOME_LENGHT - 1] = '\0';
-	nif[NIF_LENGHT - 1] = '\0';
-	morada[MORADA_LENGHT - 1] = '\0';
-
-	// Atribuição de dados
-	strcpy_s(novoCliente->nome, NOME_CLIENTE_LENGHT, nome);
-	strcpy_s(novoCliente->nif, NIF_LENGHT, nif);
-	strcpy_s(novoCliente->morada, MORADA_LENGHT, morada);
-	novoCliente->saldo = saldo;
-	AdicionarCliente(primeiroCliente, novoCliente);
+	
+	*primeiroCliente = AdicionarCliente(*primeiroCliente, novoCliente);
 
 	GuardarClientes(CLIENTE_SAVE_FILE_NAME, *primeiroCliente);
 }
@@ -179,16 +161,7 @@ void MostrarMenuAdicionarCliente(ClienteLista** primeiroCliente) {
 void MostrarMenuEditarCliente(ClienteLista* primeiroCliente) {
 
 	// Variaveis
-	int id;
-	char nome[NOME_LENGHT];
-	char nif[NIF_LENGHT];
-	char morada[MORADA_LENGHT];
-	float saldo;
-	Cliente* novoCliente = (Cliente*)malloc(sizeof(Cliente));
-
-	// Verificar se houve problema a alocar memoria
-	if (novoCliente == NULL)
-		return;
+	Cliente novoCliente;
 	
 	// Inserir os dados 
 	system("cls");
@@ -197,40 +170,28 @@ void MostrarMenuEditarCliente(ClienteLista* primeiroCliente) {
 	puts("+-------------------------------+");
 
 	printf("Insira o id do cliente: ");
-	scanf_s("%d", &id);
+	scanf_s("%d", &novoCliente.id);
 	fflush(stdin);
 
 	printf("Insira o nome do cliente: ");
-	scanf_s("%s", nome, NOME_LENGHT);
+	scanf_s("%s", novoCliente.nome, NOME_LENGHT);
 	fflush(stdin);
 
 	printf("Insira o nif do cliente: ");
-	scanf_s("%s", nif, NIF_LENGHT);
+	scanf_s("%s", novoCliente.nif, NIF_LENGHT);
 	fflush(stdin);
 
 	printf("Insira a morada do cliente: ");
-	scanf_s("%s", morada, MORADA_LENGHT);
+	scanf_s("%s", novoCliente.morada, MORADA_LENGHT);
 	fflush(stdin);
 
 	printf("Insira o saldo do cliente: ");
-	scanf_s("%f", &saldo);
+	scanf_s("%f", &novoCliente.saldo);
 	fflush(stdin);
 
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
 		return;
-
-	// Colocar o terminador de string
-	nome[NOME_LENGHT - 1] = '\0';
-	nif[NIF_LENGHT - 1] = '\0';
-	morada[MORADA_LENGHT - 1] = '\0';
-
-	// Atribuição de dados
-	novoCliente->id = id;
-	strcpy_s(novoCliente->nome, NOME_CLIENTE_LENGHT, nome);
-	strcpy_s(novoCliente->nif, NIF_LENGHT, nif);
-	strcpy_s(novoCliente->morada, MORADA_LENGHT, morada);
-	novoCliente->saldo = saldo;
 
 	// Atribuição de dados
 	EditarCliente(primeiroCliente, novoCliente);
@@ -303,15 +264,7 @@ void MostrarMenuListaClientes(ClienteLista* primeiroCliente) {
 void MostrarMenuAdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio) {
 	
 	// Variaveis
-	TipoMeioMobilidade tipo;
-	float cargaBateria;
-	float custoAluguer;
-	char localizacao[LOCALIZACAO_LENGHT];
-	MeioMobilidade* novoMeio = (MeioMobilidade*)malloc(sizeof(MeioMobilidade));
-
-	// Verificar se houve problema a alocar memoria
-	if (novoMeio == NULL)
-		return;
+	MeioMobilidade novoMeio;
 	
 	// Inserir os dados 
 	system("cls");
@@ -321,35 +274,26 @@ void MostrarMenuAdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio) {
 
 	printf("\n0 - Bicibleta | 1 - Trotinente | 2 - Scooter | 3 - Skate Eletrico | 4 - Outro |\n");
 	printf("Insira o tipo do meio de mobilidade: ");
-	scanf_s("%d", &tipo);
+	scanf_s("%d", &novoMeio.tipo);
 	fflush(stdin);
 	
 	printf("Insira a carga da bateria do meio de mobilidade: ");
-	scanf_s("%f", &cargaBateria);
+	scanf_s("%f", &novoMeio.cargaBateria);
 	fflush(stdin);
 	
 	printf("Insira o custo de aluguer do meio de mobilidade: ");
-	scanf_s("%f", &custoAluguer);
+	scanf_s("%f", &novoMeio.custoAluguer);
 	fflush(stdin);
 	
 	printf("Insira a localizacao do meio de mobilidade: ");
-	scanf_s("%s", localizacao, LOCALIZACAO_LENGHT);
+	scanf_s("%s", novoMeio.localizacao, LOCALIZACAO_LENGHT);
 	fflush(stdin);
 	
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
 		return;
 
-	// Colocar o terminador de string
-	localizacao[LOCALIZACAO_LENGHT - 1] = '\0';
-	
-	// Atribuição de dados
-	novoMeio->tipo = tipo;
-	novoMeio->cargaBateria = cargaBateria;
-	novoMeio->custoAluguer = custoAluguer;
-	strcpy_s(novoMeio->localizacao, LOCALIZACAO_LENGHT, localizacao);
-
-	AdicionarMeioMobilidade(primeiroMeio, novoMeio);
+	*primeiroMeio = AdicionarMeioMobilidade(*primeiroMeio, novoMeio);
 
 	GuardarMeiosMobilidade(MEIO_SAVE_FILE_NAME, *primeiroMeio);
 }
@@ -359,16 +303,7 @@ void MostrarMenuAdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio) {
 void MostrarMenuEditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
 
 	// Variaveis
-	int id;
-	TipoMeioMobilidade tipo;
-	float cargaBateria;
-	float custoAluguer;
-	char localizacao[LOCALIZACAO_LENGHT];
-	MeioMobilidade* novoMeio = (MeioMobilidade*)malloc(sizeof(MeioMobilidade));
-
-	// Verificar se houve problema a alocar memoria
-	if (novoMeio == NULL)
-		return;
+	MeioMobilidade novoMeio;
 	
 	// Inserir os dados 
 	system("cls");
@@ -377,39 +312,29 @@ void MostrarMenuEditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
 	puts("+----------------------------------------+");
 	
 	printf("Insira o id do meio de mobilidade: ");
-	scanf_s("%d", &id);
+	scanf_s("%d", &novoMeio.id);
 	fflush(stdin);
 	
 	printf("\n0 - Bicibleta | 1 - Trotinente | 2 - Scooter | 3 - Skate Eletrico | 4 - Outro |\n");
 	printf("Insira o tipo do meio de mobilidade: ");
-	scanf_s("%d", &tipo);
+	scanf_s("%d", &novoMeio.tipo);
 	fflush(stdin);
 	
 	printf("Insira a carga da bateria do meio de mobilidade: ");
-	scanf_s("%f", &cargaBateria);
+	scanf_s("%f", &novoMeio.cargaBateria);
 	fflush(stdin);
 	
 	printf("Insira o custo de aluguer do meio de mobilidade: ");
-	scanf_s("%f", &custoAluguer);
+	scanf_s("%f", &novoMeio.custoAluguer);
 	fflush(stdin);
 	
 	printf("Insira a localizacao do meio de mobilidade: ");
-	scanf_s("%s", localizacao, LOCALIZACAO_LENGHT);
+	scanf_s("%s", novoMeio.localizacao, LOCALIZACAO_LENGHT);
 	fflush(stdin);
 	
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
 		return;
-
-	// Colocar o terminador de string
-	localizacao[LOCALIZACAO_LENGHT - 1] = '\0';
-	
-	// Atribuição de dados
-	novoMeio->id = id;
-	novoMeio->tipo = tipo;
-	novoMeio->cargaBateria = cargaBateria;
-	novoMeio->custoAluguer = custoAluguer;
-	strcpy_s(novoMeio->localizacao, LOCALIZACAO_LENGHT, localizacao);
 	
 	EditarMeioMobilidade(primeiroMeio, novoMeio);
 	
@@ -520,9 +445,8 @@ void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteL
 
 // Lista de Meios de mobilidade por autonomia
 void MostrarMenuListaMeiosMobilidadePorAutonomia(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente) {
-	OrdenarMeiosMobilidadePorAutonomia(&primeiroMeio);
+	primeiroMeio = OrdenarMeiosMobilidadePorAutonomia(primeiroMeio);
 	MostrarMenuListaMeiosMobilidade(primeiroMeio, primeiroCliente);
-	OrdenarMeiosMobilidadePorId(&primeiroMeio);
 }
 
 
@@ -557,14 +481,7 @@ void MostrarMenuListaMeiosMobilidadeLocalizacao(MeioMobilidadeLista* primeiroMei
 void MostrarMenuAdicionarGestor(GestorLista** primeiroGestor) {
 	
 	// Variaveis
-	char nome[NOME_LENGHT];
-	char email[EMAIL_LENGHT];
-	char password[PASSWORD_LENGHT];
-	Gestor* novoGestor = (Gestor*)malloc(sizeof(Gestor));
-
-	// Verificar se houve problema a alocar memoria
-	if (novoGestor == NULL)
-		return;
+	Gestor novoGestor;
 
 	// Inserir os dados 
 	system("cls");
@@ -573,32 +490,22 @@ void MostrarMenuAdicionarGestor(GestorLista** primeiroGestor) {
 	puts("+----------------------------------------+");
 
 	printf("Insira o nome do gestor: ");
-	scanf_s("%s", nome, NOME_LENGHT);
+	scanf_s("%s", novoGestor.nome, NOME_LENGHT);
 	fflush(stdin);
 
 	printf("Insira o email do gestor: ");
-	scanf_s("%s", email, EMAIL_LENGHT);
+	scanf_s("%s", novoGestor.email, EMAIL_LENGHT);
 	fflush(stdin);
 
 	printf("Insira a password do gestor: ");
-	scanf_s("%s", password, PASSWORD_LENGHT);
+	scanf_s("%s", novoGestor.password, PASSWORD_LENGHT);
 	fflush(stdin);
 
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
 		return;
-
-	// Colocar o terminador de string
-	nome[NOME_LENGHT - 1] = '\0';
-	email[EMAIL_LENGHT - 1] = '\0';
-	password[PASSWORD_LENGHT - 1] = '\0';
-
-	// Atribuição de dados
-	strcpy_s(novoGestor->nome, NOME_LENGHT, nome);
-	strcpy_s(novoGestor->email, EMAIL_LENGHT, email);
-	strcpy_s(novoGestor->password, PASSWORD_LENGHT, password);
 	
-	AdicionarGestor(primeiroGestor, novoGestor);
+	*primeiroGestor = AdicionarGestor(*primeiroGestor, novoGestor);
 
 	GuardarGestores(GESTOR_SAVE_FILE_NAME, *primeiroGestor);
 }
@@ -608,15 +515,7 @@ void MostrarMenuAdicionarGestor(GestorLista** primeiroGestor) {
 void MostrarMenuEditarGestor(GestorLista* primeiroGestor) {
 	
 	// Variaveis
-	int id;
-	char nome[NOME_LENGHT];
-	char email[EMAIL_LENGHT];
-	char password[PASSWORD_LENGHT];
-	Gestor* novoGestor = (Gestor*)malloc(sizeof(Gestor));
-
-	// Verificar se houve problema a alocar memoria
-	if (novoGestor == NULL)
-		return;
+	Gestor novoGestor;
 	
 	// Inserir os dados 
 	system("cls");
@@ -625,35 +524,24 @@ void MostrarMenuEditarGestor(GestorLista* primeiroGestor) {
 	puts("+----------------------------------------+");
 	
 	printf("Insira o id do gestor: ");
-	scanf_s("%d", &id);
+	scanf_s("%d", &novoGestor.id);
 	fflush(stdin);
 	
 	printf("Insira o nome do gestor: ");
-	scanf_s("%s", nome, NOME_LENGHT);
+	scanf_s("%s", novoGestor.nome, NOME_LENGHT);
 	fflush(stdin);
 	
 	printf("Insira o email do gestor: ");
-	scanf_s("%s", email, EMAIL_LENGHT);
+	scanf_s("%s", novoGestor.email, EMAIL_LENGHT);
 	fflush(stdin);
 
 	printf("Insira a password do gestor: ");
-	scanf_s("%s", password, PASSWORD_LENGHT);
+	scanf_s("%s", novoGestor.password, PASSWORD_LENGHT);
 	fflush(stdin);
 	
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
 		return;
-
-	// Colocar o terminador de string
-	nome[NOME_LENGHT - 1] = '\0';
-	email[EMAIL_LENGHT - 1] = '\0';
-	password[PASSWORD_LENGHT - 1] = '\0';
-
-	// Atribuição de dados
-	novoGestor->id = id;
-	strcpy_s(novoGestor->nome, NOME_LENGHT, nome);
-	strcpy_s(novoGestor->email, EMAIL_LENGHT, email);
-	strcpy_s(novoGestor->password, PASSWORD_LENGHT, password);
 	
 	EditarGestor(primeiroGestor, novoGestor);
 

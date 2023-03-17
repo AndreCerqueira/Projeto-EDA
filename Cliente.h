@@ -57,7 +57,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool CarregarClientesIniciais(ClienteLista** primeiroCliente, char* filePathInicial, char* saveFilePath);
+	ClienteLista* CarregarClientesIniciais(ClienteLista* primeiroCliente, char* filePathInicial, char* saveFilePath);
 
 
 	/**
@@ -98,7 +98,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool AdicionarCliente(ClienteLista** primeiroCliente, Cliente* novoCliente);
+	ClienteLista* AdicionarCliente(ClienteLista* primeiroCliente, Cliente novoCliente);
 
 	
 	/**
@@ -118,7 +118,7 @@
 	* \author A. Cerqueira
 	*
 	*/
-	bool EditarCliente(ClienteLista* primeiroCliente, Cliente* clienteSelecionado);
+	bool EditarCliente(ClienteLista* primeiroCliente, Cliente clienteSelecionado);
 
 	
 	/**
@@ -127,7 +127,7 @@
 	 * \param primeiroCliente
 	 * \return
 	 */
-	bool OrdenarClientesPorId(ClienteLista** primeiroCliente);
+	ClienteLista* OrdenarClientesPorId(ClienteLista* primeiroCliente);
 
 
 	/**
