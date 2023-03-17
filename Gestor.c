@@ -183,15 +183,8 @@ bool AdicionarGestor(GestorLista** primeiroGestor, Gestor* novoGestor) {
 		return false;
 
 	novoGestor->ativo = true;
-
-	if (*primeiroGestor != NULL) {
-		novoGestor->id = (*primeiroGestor)->g.id + 1;
-		novoNode->proximo = *primeiroGestor;
-	}
-	else {
-		novoGestor->id = 1;
-		novoNode->proximo = NULL;
-	}
+	novoGestor->id = ProcurarProximoIdGestor(*primeiroGestor);
+	novoNode->proximo = (*primeiroGestor != NULL) ? *primeiroGestor : NULL;
 
 	novoNode->g = *novoGestor;
 	*primeiroGestor = novoNode;
@@ -233,7 +226,6 @@ bool RemoverGestor(GestorLista* primeiroGestor, int id) {
 *
 */
 bool EditarGestor(GestorLista* primeiroGestor, Gestor* gestorSelecionado) {
-
 	GestorLista* gestorAtual = primeiroGestor;
 
 	while (gestorAtual != NULL) {
@@ -276,4 +268,27 @@ bool OrdenarGestoresPorId(GestorLista** primeiroGestor) {
 	}
 
 	return true;
+}
+
+
+/**
+* \brief Devolve o proximo id disponivel para um Gestor
+*
+* \return
+* \author A. Cerqueira
+*
+*/
+int ProcurarProximoIdGestor(GestorLista* primeiroGestor) {
+	GestorLista* gestorAtual = primeiroGestor;
+	int id = 0;
+
+	while (gestorAtual != NULL) {
+
+		if (gestorAtual->g.id > id)
+			id = gestorAtual->g.id;
+
+		gestorAtual = gestorAtual->proximo;
+	}
+
+	return id + 1;
 }

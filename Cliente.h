@@ -139,7 +139,17 @@
 	*/
 	Cliente* ProcurarClientePorId(ClienteLista* primeiroCliente, int id);
 	
-	
+
+	/**
+	* \brief Devolve o proximo id disponivel para um Cliente
+	*
+	* \return
+	* \author A. Cerqueira
+	*
+	*/
+	int ProcurarProximoIdCliente(ClienteLista* primeiroCliente);
+
+		
 	/**
 	* \brief Devolve se o cliente tem saldo suficiente para realizar uma operação
 	*

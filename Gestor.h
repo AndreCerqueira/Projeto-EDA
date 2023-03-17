@@ -127,6 +127,16 @@
 	 */
 	bool OrdenarGestoresPorId(GestorLista** primeiroGestor);
 
+	
+	/**
+	* \brief Devolve o proximo id disponivel para um Gestor
+	*
+	* \return
+	* \author A. Cerqueira
+	*
+	*/
+	int ProcurarProximoIdGestor(GestorLista* primeiroGestor);
+
 #endif
 
 	

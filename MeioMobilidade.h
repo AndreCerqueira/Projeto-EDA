@@ -176,6 +176,16 @@
 	*/
 	MeioMobilidade* ProcurarMeioMobilidadePorId(MeioMobilidadeLista* primeiroMeio, int id);
 
+
+	/**
+	* \brief Devolve o proximo id disponivel para um MeioMobilidade
+	*
+	* \return
+	* \author A. Cerqueira
+	*
+	*/
+	int ProcurarProximoIdMeioMobilidade(MeioMobilidadeLista* primeiroMeio);
+
 	
 	/**
 	 * \brief Alugar um meio de mobilidade

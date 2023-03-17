@@ -187,15 +187,8 @@ bool AdicionarCliente(ClienteLista** primeiroCliente, Cliente* novoCliente) {
 		return false;
 
 	novoCliente->ativo = true;
-	
-	if (*primeiroCliente != NULL) {
-		novoCliente->id = (*primeiroCliente)->c.id + 1;
-		novoNode->proximo = *primeiroCliente;
-	}
-	else {
-		novoCliente->id = 1;
-		novoNode->proximo = NULL;
-	}
+	novoCliente->id = ProcurarProximoIdCliente(*primeiroCliente);
+	novoNode->proximo = (*primeiroCliente != NULL) ? *primeiroCliente : NULL;
 	
 	novoNode->c = *novoCliente;
 	*primeiroCliente = novoNode;
@@ -303,6 +296,29 @@ Cliente* ProcurarClientePorId(ClienteLista* primeiroCliente, int id) {
 	}
 
 	return NULL;
+}
+
+
+/**
+* \brief Devolve o proximo id disponivel para um Cliente
+*
+* \return
+* \author A. Cerqueira
+*
+*/
+int ProcurarProximoIdCliente(ClienteLista* primeiroCliente) {
+	ClienteLista* clienteAtual = primeiroCliente;
+	int id = 0;
+
+	while (clienteAtual != NULL) {
+
+		if (clienteAtual->c.id > id)
+			id = clienteAtual->c.id;
+
+		clienteAtual = clienteAtual->proximo;
+	}
+
+	return id + 1;
 }
 
 

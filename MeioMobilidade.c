@@ -191,15 +191,8 @@ bool AdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio, MeioMobilidade*
 		return false;
 
 	novoMeio->ativo = true;
-
-	if (*primeiroMeio != NULL) {
-		novoMeio->id = (*primeiroMeio)->m.id + 1;
-		novoNode->proximo = *primeiroMeio;
-	}
-	else {
-		novoMeio->id = 1;
-		novoNode->proximo = NULL;
-	}
+	novoMeio->id = ProcurarProximoIdMeioMobilidade(*primeiroMeio);
+	novoNode->proximo = (*primeiroMeio != NULL) ? *primeiroMeio : NULL;
 
 	novoNode->m = *novoMeio;
 	*primeiroMeio = novoNode;
@@ -384,6 +377,29 @@ MeioMobilidade* ProcurarMeioMobilidadePorId(MeioMobilidadeLista* primeiroMeio, i
 	}
 
 	return NULL;
+}
+
+
+/**
+* \brief Devolve o proximo id disponivel para um MeioMobilidade
+*
+* \return
+* \author A. Cerqueira
+*
+*/
+int ProcurarProximoIdMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
+	MeioMobilidadeLista* meioAtual = primeiroMeio;
+	int id = 0;
+
+	while (meioAtual != NULL) {
+
+		if (meioAtual->m.id > id)
+			id = meioAtual->m.id;
+
+		meioAtual = meioAtual->proximo;
+	}
+
+	return id + 1;
 }
 
 
