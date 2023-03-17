@@ -60,7 +60,8 @@ ClienteLista* LerClientesIniciais(char* filePath) {
 	ClienteLista* primeiroCliente = NULL;
 	char linha[MAX_SIZE];
 
-	if (fopen_s(&file, filePath, "r") != 0)
+	file = fopen(filePath, "r");
+	if (file == NULL)
 		return NULL;
 
 	while (fgets(linha, MAX_SIZE, file)) {
@@ -70,22 +71,22 @@ ClienteLista* LerClientesIniciais(char* filePath) {
 			return NULL;
 
 		char* contexto = NULL;
-		char* campo = strtok_s(linha, ";", &contexto);
+		char* campo = strtok(linha, ";", &contexto);
 		novoCliente->c.id = atoi(campo);
 
-		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(novoCliente->c.nome, NOME_CLIENTE_LENGHT, campo);
+		campo = strtok(NULL, ";", &contexto);
+		strcpy(novoCliente->c.nome, campo);
 
-		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(novoCliente->c.nif, NIF_LENGHT, campo);
+		campo = strtok(NULL, ";", &contexto);
+		strcpy(novoCliente->c.nif, campo);
 
-		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(novoCliente->c.morada, MORADA_LENGHT, campo);
+		campo = strtok(NULL, ";", &contexto);
+		strcpy(novoCliente->c.morada, campo);
 
-		campo = strtok_s(NULL, ";", &contexto);
+		campo = strtok(NULL, ";", &contexto);
 		novoCliente->c.saldo = atof(campo);
 
-		campo = strtok_s(NULL, ";", &contexto);
+		campo = strtok(NULL, ";", &contexto);
 		novoCliente->c.ativo = (bool)atoi(campo);
 
 		novoCliente->proximo = primeiroCliente;
@@ -234,9 +235,9 @@ bool EditarCliente(ClienteLista* primeiroCliente, Cliente clienteSelecionado) {
 	while (clienteAtual != NULL) {
 
 		if (clienteAtual->c.id == clienteSelecionado.id) {
-			strcpy_s(clienteAtual->c.nome, NOME_CLIENTE_LENGHT, clienteSelecionado.nome);
-			strcpy_s(clienteAtual->c.nif, NIF_LENGHT, clienteSelecionado.nif);
-			strcpy_s(clienteAtual->c.morada, MORADA_LENGHT, clienteSelecionado.morada);
+			strcpy(clienteAtual->c.nome, clienteSelecionado.nome);
+			strcpy(clienteAtual->c.nif, clienteSelecionado.nif);
+			strcpy(clienteAtual->c.morada, clienteSelecionado.morada);
 			clienteAtual->c.saldo = clienteSelecionado.saldo;
 			return true;
 		}

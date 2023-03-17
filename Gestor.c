@@ -59,7 +59,8 @@ GestorLista* LerGestoresIniciais(char* filePath) {
 	GestorLista* primeiroGestor = NULL;
 	char linha[MAX_SIZE];
 
-	if (fopen_s(&file, filePath, "r") != 0)
+	file = fopen(filePath, "r");
+	if (file == NULL)
 		return NULL;
 
 	while (fgets(linha, MAX_SIZE, file)) {
@@ -69,19 +70,19 @@ GestorLista* LerGestoresIniciais(char* filePath) {
 			return NULL;
 
 		char* contexto = NULL;
-		char* campo = strtok_s(linha, ";", &contexto);
+		char* campo = strtok(linha, ";", &contexto);
 		novoGestor->g.id = atoi(campo);
 
-		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(novoGestor->g.nome, NOME_LENGHT, campo);
+		campo = strtok(NULL, ";", &contexto);
+		strcpy(novoGestor->g.nome, campo);
 
-		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(novoGestor->g.email, EMAIL_LENGHT, campo);
+		campo = strtok(NULL, ";", &contexto);
+		strcpy(novoGestor->g.email, campo);
 
-		campo = strtok_s(NULL, ";", &contexto);
-		strcpy_s(novoGestor->g.password, PASSWORD_LENGHT, campo);
+		campo = strtok(NULL, ";", &contexto);
+		strcpy(novoGestor->g.password, campo);
 
-		campo = strtok_s(NULL, ";", &contexto);
+		campo = strtok(NULL, ";", &contexto);
 		novoGestor->g.ativo = (bool)atoi(campo);
 
 		novoGestor->proximo = primeiroGestor;
@@ -112,7 +113,7 @@ GestorLista* LerGestores(char* filePath) {
 
 	Gestor gestor;
 	size_t bytesLidos = fread(&gestor, sizeof(Gestor), 1, file);
-	
+
 	while (bytesLidos > 0) {
 		GestorLista* novoGestor = (GestorLista*)malloc(sizeof(GestorLista));
 
@@ -120,9 +121,9 @@ GestorLista* LerGestores(char* filePath) {
 			return NULL;
 
 		novoGestor->g.id = gestor.id;
-		strcpy_s(novoGestor->g.nome, NOME_LENGHT, gestor.nome);
-		strcpy_s(novoGestor->g.email, EMAIL_LENGHT, gestor.email);
-		strcpy_s(novoGestor->g.password, PASSWORD_LENGHT, gestor.password);
+		strcpy(novoGestor->g.nome, gestor.nome);
+		strcpy(novoGestor->g.email, gestor.email);
+		strcpy(novoGestor->g.password, gestor.password);
 		novoGestor->g.ativo = gestor.ativo;
 		novoGestor->proximo = primeiroGestor;
 		primeiroGestor = novoGestor;
@@ -133,7 +134,7 @@ GestorLista* LerGestores(char* filePath) {
 	fclose(file);
 
 	primeiroGestor = OrdenarGestoresPorId(primeiroGestor);
-	
+
 	return primeiroGestor;
 }
 
@@ -228,9 +229,9 @@ bool EditarGestor(GestorLista* primeiroGestor, Gestor gestorSelecionado) {
 	while (gestorAtual != NULL) {
 		
 		if (gestorAtual->g.id == gestorSelecionado.id) {
-			strcpy_s(gestorAtual->g.nome, NOME_LENGHT, gestorSelecionado.nome);
-			strcpy_s(gestorAtual->g.email, EMAIL_LENGHT, gestorSelecionado.email);
-			strcpy_s(gestorAtual->g.password, PASSWORD_LENGHT, gestorSelecionado.password);
+			strcpy(gestorAtual->g.nome, gestorSelecionado.nome);
+			strcpy(gestorAtual->g.email, gestorSelecionado.email);
+			strcpy(gestorAtual->g.password, gestorSelecionado.password);
 			return true;
 		}
 		
