@@ -77,14 +77,17 @@ MeioMobilidadeLista* LerMeiosMobilidadeIniciais(char* filePath) {
 		novoMeio->m.tipo = (TipoMeioMobilidade)atoi(campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
-		novoMeio->m.cargaBateria = atoi(campo);
+		novoMeio->m.cargaBateria = atof(campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
 		novoMeio->m.custoAluguer = atof(campo);
 
 		campo = strtok_s(NULL, ";", &contexto);
 		strcpy_s(novoMeio->m.localizacao, LOCALIZACAO_LENGHT, campo);
-
+		
+		campo = strtok_s(NULL, ";", &contexto);
+		novoMeio->m.alugadoPorId = atoi(campo);
+		
 		campo = strtok_s(NULL, ";", &contexto);
 		novoMeio->m.ativo = (bool)atoi(campo);
 
@@ -128,6 +131,7 @@ MeioMobilidadeLista* LerMeiosMobilidade(char* filePath) {
 		novoMeio->m.cargaBateria = meio.cargaBateria;
 		novoMeio->m.custoAluguer = meio.custoAluguer;
 		strcpy(novoMeio->m.localizacao, meio.localizacao);
+		novoMeio->m.alugadoPorId = meio.alugadoPorId;
 		novoMeio->m.ativo = meio.ativo;
 		novoMeio->proximo = primeiroMeio;
 		primeiroMeio = novoMeio;
@@ -199,8 +203,6 @@ bool AdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio, MeioMobilidade*
 
 	novoNode->m = *novoMeio;
 	*primeiroMeio = novoNode;
-
-	free(novoMeio);
 	
 	return true;
 }
@@ -359,4 +361,66 @@ MeioMobilidadeLista* ProcurarMeiosMobilidadePorLocalizacao(MeioMobilidadeLista* 
 	}
 
 	return meiosMobilidadeLocalizacao;
+}
+
+
+/**
+* \brief Devolve o Meio Mobilidade com o id selecionado
+*
+* \return
+* \author A. Cerqueira
+*
+*/
+MeioMobilidade* ProcurarMeioMobilidadePorId(MeioMobilidadeLista* primeiroMeio, int id) {
+	MeioMobilidadeLista* meioAtual = primeiroMeio;
+
+	while (meioAtual != NULL) {
+
+		if (meioAtual->m.id == id) {
+			return &(meioAtual->m);
+		}
+
+		meioAtual = meioAtual->proximo;
+	}
+
+	return NULL;
+}
+
+
+/**
+ * \brief Alugar um meio de mobilidade
+ *
+ * \param meioMobilidade
+ * \param cliente
+ * \return
+ */
+bool AlugarMeioMobilidade(MeioMobilidade* meioMobilidade, Cliente* cliente) {
+	
+	// Verificações iniciais
+	if (!ClienteTemSaldoSuficiente(*cliente, meioMobilidade->custoAluguer))
+		return false;
+
+	if (meioMobilidade->ativo == false)
+		return false;
+
+	if (MeioMobilidadeAlugado(*meioMobilidade))
+		return false;
+
+	// Alugar
+	meioMobilidade->alugadoPorId = cliente->id;
+	cliente->saldo -= meioMobilidade->custoAluguer;
+
+	return true;
+}
+
+
+/**
+ * \brief Devolve se um meio de mobilidade está alugado ou não
+ *
+ * \param meioMobilidade
+ * \param cliente
+ * \return
+ */
+bool MeioMobilidadeAlugado(MeioMobilidade meioMobilidade) {
+	return meioMobilidade.alugadoPorId != 0;
 }

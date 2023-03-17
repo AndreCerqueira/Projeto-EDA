@@ -195,8 +195,6 @@ bool AdicionarGestor(GestorLista** primeiroGestor, Gestor* novoGestor) {
 
 	novoNode->g = *novoGestor;
 	*primeiroGestor = novoNode;
-
-	free(novoGestor);
 	
 	return true;
 }

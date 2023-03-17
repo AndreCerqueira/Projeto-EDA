@@ -74,21 +74,23 @@ void MostrarMenuPrincipal(int* op) {
 	puts("|\t\t\t\t\t   |");
 	puts("| 7- Remover Meios de mobilidade\t   |");
 	puts("|\t\t\t\t\t   |");
-	puts("| 8- Listar Meios de mobilidade\t\t   |");
+	puts("| 8- Alugar Meio de mobilidade\t\t   |");
 	puts("|\t\t\t\t\t   |");
-	puts("| 9- Listar ordem decrescente de autonomia |");
+	puts("| 9- Listar Meios de mobilidade\t\t   |");
 	puts("|\t\t\t\t\t   |");
-	puts("| 10- Procurar Meios em localização\t   |");
+	puts("| 10- Listar ordem decrescente de autonomia|");
+	puts("|\t\t\t\t\t   |");
+	puts("| 11- Procurar Meios em localização\t   |");
 	puts("+------------------------------------------+");
-	puts("| 11- Adicionar Gestores\t\t   |");
+	puts("| 12- Adicionar Gestores\t\t   |");
 	puts("|\t\t\t\t\t   |");
-	puts("| 12- Editar Gestores\t\t\t   |");
+	puts("| 13- Editar Gestores\t\t\t   |");
 	puts("|\t\t\t\t\t   |");
-	puts("| 13- Remover Gestores\t\t\t   |");
+	puts("| 14- Remover Gestores\t\t\t   |");
 	puts("|\t\t\t\t\t   |");
-	puts("| 14- Listar Gestores\t\t\t   |");
+	puts("| 15- Listar Gestores\t\t\t   |");
 	puts("+------------------------------------------+");
-	puts("| 15- Carregar dados iniciais\t\t   |");
+	puts("| 16- Carregar dados iniciais\t\t   |");
 	puts("+------------------------------------------+");
 	puts("| 0- Sair\t\t\t\t   |");
 	puts("+------------------------------------------+");
@@ -442,32 +444,73 @@ void MostrarMenuRemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
 }
 
 
+// Alugar Meio de mobilidade
+void MostrarMenuAlugarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente) {
+
+	// Variaveis
+	int clienteId, meioId;
+
+	// Inserir os dados 
+	system("cls");
+	puts("+----------------------------------------+");
+	puts("|       Alugar Meio de Mobilidade        |");
+	puts("+----------------------------------------+");
+
+	printf("Insira o id do cliente: ");
+	scanf_s("%d", &clienteId);
+	fflush(stdin);
+	
+	printf("Insira o id do meio de mobilidade: ");
+	scanf_s("%d", &meioId);
+	fflush(stdin);
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+
+	// Atribuição de dados
+	Cliente* cliente = ProcurarClientePorId(primeiroCliente, clienteId);
+	MeioMobilidade* meio = ProcurarMeioMobilidadePorId(primeiroMeio, meioId);
+	
+	if (cliente == NULL || meio == NULL)
+		return;
+	
+	bool meioAlugado = AlugarMeioMobilidade(meio, cliente);
+	
+	if (meioAlugado)
+		GuardarMeiosMobilidade(MEIO_SAVE_FILE_NAME, primeiroMeio);
+}
+
+
 // Lista de Meios de mobilidade
-void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio) {
+void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente) {
 	
 	// Variaveis
 	int i;
 
 	// Mostrar os dados 
 	system("cls");
-	puts("+----------------------------------------------------------------------------------+");
-	puts("|                             Lista de Meios de Mobilidade                         |");
-	puts("+----------------------------------------------------------------------------------+");
-	puts("|  ID  |        Tipo        | Carga Bateria | Custo Aluguer |     Localizacao      |");
-	puts("+----------------------------------------------------------------------------------+");
+	puts("+---------------------------------------------------------------------------------------------------------+");
+	puts("|                                         Lista de Meios de Mobilidade                                    |");
+	puts("+---------------------------------------------------------------------------------------------------------+");
+	puts("|  ID  |        Tipo        | Carga Bateria | Custo Aluguer |      Localizacao     |     Alugado por      |");
+	puts("+---------------------------------------------------------------------------------------------------------+");
 
 	// Mostrar os dados dos clientes
 	MeioMobilidadeLista* meioAtual = primeiroMeio;
 	while (meioAtual != NULL) {
 		if (meioAtual->m.ativo == true)
 		{
-			printf("| %-4d | %-18s | %13.2f | %13.2f | %-20s |\n", meioAtual->m.id, TipoMeioMobilidadeToString(meioAtual->m.tipo), meioAtual->m.cargaBateria, meioAtual->m.custoAluguer, meioAtual->m.localizacao);
+			Cliente* cliente = ProcurarClientePorId(primeiroCliente, meioAtual->m.alugadoPorId);
+			char* nomeCliente = cliente == NULL ? "" : cliente->nome;
+
+			printf("| %-4d | %-18s | %13.2f | %13.2f | %-20s | %-20s |\n", meioAtual->m.id, TipoMeioMobilidadeToString(meioAtual->m.tipo), meioAtual->m.cargaBateria, meioAtual->m.custoAluguer, meioAtual->m.localizacao, nomeCliente);
 		}
 
 		meioAtual = meioAtual->proximo;
 	}
 
-	puts("+----------------------------------------------------------------------------------+");
+	puts("+---------------------------------------------------------------------------------------------------------+");
 
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
@@ -476,15 +519,15 @@ void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio) {
 
 
 // Lista de Meios de mobilidade por autonomia
-void MostrarMenuListaMeiosMobilidadePorAutonomia(MeioMobilidadeLista* primeiroMeio) {
+void MostrarMenuListaMeiosMobilidadePorAutonomia(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente) {
 	OrdenarMeiosMobilidadePorAutonomia(&primeiroMeio);
-	MostrarMenuListaMeiosMobilidade(primeiroMeio);
+	MostrarMenuListaMeiosMobilidade(primeiroMeio, primeiroCliente);
 	OrdenarMeiosMobilidadePorId(&primeiroMeio);
 }
 
 
 // Lista de Meios de mobilidade de uma localizacao
-void MostrarMenuListaMeiosMobilidadeLocalizacao(MeioMobilidadeLista* primeiroMeio) {
+void MostrarMenuListaMeiosMobilidadeLocalizacao(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente) {
 
 	// Variaveis
 	char localizacao[LOCALIZACAO_LENGHT];
@@ -503,7 +546,9 @@ void MostrarMenuListaMeiosMobilidadeLocalizacao(MeioMobilidadeLista* primeiroMei
 	MeioMobilidadeLista* primeiroMeioLocalizacao = ProcurarMeiosMobilidadePorLocalizacao(primeiroMeio, localizacao);
 	
 	// Mostrar os dados
-	MostrarMenuListaMeiosMobilidade(primeiroMeioLocalizacao);
+	MostrarMenuListaMeiosMobilidade(primeiroMeioLocalizacao, primeiroCliente);
+
+	LibertarMeiosMobilidade(primeiroMeioLocalizacao);
 
 }
 

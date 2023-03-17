@@ -19,8 +19,8 @@
 	#define NIF_LENGHT 20
 	#define MORADA_LENGHT 50
 
-	#define CLIENTE_INITDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/Clientes.txt"
-	#define CLIENTE_SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/Clientes.dat"
+	#define CLIENTE_INITDATA_FILE_NAME "D:/IPCA/Projeto-EDA/data/simulacao/Clientes.txt"
+	#define CLIENTE_SAVE_FILE_NAME "D:/IPCA/Projeto-EDA/data/save/Clientes.dat"
 
 	// Structs
 	typedef struct Cliente Cliente;
@@ -119,8 +119,8 @@
 	*
 	*/
 	bool EditarCliente(ClienteLista* primeiroCliente, Cliente* clienteSelecionado);
-	
 
+	
 	/**
 	 * \brief Ordenar clientes por id
 	 *
@@ -128,7 +128,27 @@
 	 * \return
 	 */
 	bool OrdenarClientesPorId(ClienteLista** primeiroCliente);
+
+
+	/**
+	* \brief Devolve o cliente com o id selecionado
+	*
+	* \return
+	* \author A. Cerqueira
+	*
+	*/
+	Cliente* ProcurarClientePorId(ClienteLista* primeiroCliente, int id);
 	
+	
+	/**
+	* \brief Devolve se o cliente tem saldo suficiente para realizar uma operação
+	*
+	* \return
+	* \author A. Cerqueira
+	*
+	*/
+	bool ClienteTemSaldoSuficiente(Cliente cliente, float valor);
+
 #endif
 
 

@@ -46,27 +46,30 @@ int main() {
 				MostrarMenuRemoverMeioMobilidade(primeiroMeio);
 				break;
 			case 8:
-				MostrarMenuListaMeiosMobilidade(primeiroMeio);
+				MostrarMenuAlugarMeioMobilidade(primeiroMeio, primeiroCliente);
 				break;
 			case 9:
-				MostrarMenuListaMeiosMobilidadePorAutonomia(primeiroMeio);
+				MostrarMenuListaMeiosMobilidade(primeiroMeio, primeiroCliente);
 				break;
 			case 10:
-				MostrarMenuListaMeiosMobilidadeLocalizacao(primeiroMeio);
+				MostrarMenuListaMeiosMobilidadePorAutonomia(primeiroMeio, primeiroCliente);
 				break;
 			case 11:
-				MostrarMenuAdicionarGestor(&primeiroGestor);
+				MostrarMenuListaMeiosMobilidadeLocalizacao(primeiroMeio);
 				break;
 			case 12:
-				MostrarMenuEditarGestor(primeiroGestor);
+				MostrarMenuAdicionarGestor(&primeiroGestor);
 				break;
 			case 13:
-				MostrarMenuRemoverGestor(primeiroGestor);
+				MostrarMenuEditarGestor(primeiroGestor);
 				break;
 			case 14:
-				MostrarMenuListaGestores(primeiroGestor);
+				MostrarMenuRemoverGestor(primeiroGestor);
 				break;
 			case 15:
+				MostrarMenuListaGestores(primeiroGestor);
+				break;
+			case 16:
 				CarregarDadosIniciais(&primeiroCliente, &primeiroMeio, &primeiroGestor);
 				break;
 			case 0:

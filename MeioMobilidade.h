@@ -13,12 +13,13 @@
 
 	// Includes
 	#include "Utils.h"
+	#include "Cliente.h"
 
 	// Constants
 	#define LOCALIZACAO_LENGHT 20
 
-	#define MEIO_INITDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/MeiosMobilidade.txt"
-	#define MEIO_SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/MeiosMobilidade.dat"
+	#define MEIO_INITDATA_FILE_NAME "D:/IPCA/Projeto-EDA/data/simulacao/MeiosMobilidade.txt"
+	#define MEIO_SAVE_FILE_NAME "D:/IPCA/Projeto-EDA/data/save/MeiosMobilidade.dat"
 
 	// Enums
 	typedef enum {
@@ -37,6 +38,7 @@
 		float cargaBateria;
 		float custoAluguer;
 		char localizacao[LOCALIZACAO_LENGHT];
+		int alugadoPorId;
 		bool ativo;
 		MeioMobilidade* proximo;
 	};
@@ -159,8 +161,39 @@
 	 * \brief Procurar meios de mobilidade em localização
 	 *
 	 * \param primeiroMeio
+	 * \param localizacao
 	 * \return
 	 */
 	MeioMobilidadeLista* ProcurarMeiosMobilidadePorLocalizacao(MeioMobilidadeLista* primeiroMeio, char* localizacao);
+	
+	
+	/**
+	* \brief Devolve o Meio Mobilidade com o id selecionado
+	*
+	* \return
+	* \author A. Cerqueira
+	*
+	*/
+	MeioMobilidade* ProcurarMeioMobilidadePorId(MeioMobilidadeLista* primeiroMeio, int id);
+
+	
+	/**
+	 * \brief Alugar um meio de mobilidade
+	 *
+	 * \param meioMobilidade
+	 * \param cliente
+	 * \return
+	 */
+	bool AlugarMeioMobilidade(MeioMobilidade* meioMobilidade, Cliente* cliente);
+
+
+	/**
+	 * \brief Devolve se um meio de mobilidade está alugado ou não
+	 *
+	 * \param meioMobilidade
+	 * \param cliente
+	 * \return
+	 */
+	bool MeioMobilidadeAlugado(MeioMobilidade meioMobilidade);
 	
 #endif

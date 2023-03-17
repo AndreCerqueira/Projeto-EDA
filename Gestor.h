@@ -19,8 +19,8 @@
 	#define EMAIL_LENGHT 50
 	#define PASSWORD_LENGHT 20
 
-	#define GESTOR_INITDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/Gestores.txt"
-	#define GESTOR_SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/Gestores.dat"
+	#define GESTOR_INITDATA_FILE_NAME "D:/IPCA/Projeto-EDA/data/simulacao/Gestores.txt"
+	#define GESTOR_SAVE_FILE_NAME "D:/IPCA/Projeto-EDA/data/save/Gestores.dat"
 
 	// Structs
 	typedef struct Gestor Gestor;

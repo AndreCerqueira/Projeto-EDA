@@ -200,8 +200,6 @@ bool AdicionarCliente(ClienteLista** primeiroCliente, Cliente* novoCliente) {
 	novoNode->c = *novoCliente;
 	*primeiroCliente = novoNode;
 	
-	free(novoCliente);
-	
 	return true;
 }
 
@@ -255,8 +253,6 @@ bool EditarCliente(ClienteLista* primeiroCliente, Cliente* clienteSelecionado) {
 		clienteAtual = clienteAtual->proximo;
 	}
 
-	free(clienteSelecionado);
-
 	return false;
 }
 
@@ -285,4 +281,38 @@ bool OrdenarClientesPorId(ClienteLista** primeiroCliente) {
 	}
 
 	return true;
+}
+
+
+/**
+* \brief Devolve o cliente com o id selecionado
+*
+* \return
+* \author A. Cerqueira
+*
+*/
+Cliente* ProcurarClientePorId(ClienteLista* primeiroCliente, int id) {
+	ClienteLista* clienteAtual = primeiroCliente;
+
+	while (clienteAtual != NULL) {
+
+		if (clienteAtual->c.id == id)
+			return &(clienteAtual->c);
+
+		clienteAtual = clienteAtual->proximo;
+	}
+
+	return NULL;
+}
+
+
+/**
+* \brief Devolve se o cliente tem saldo suficiente para realizar uma operação
+*
+* \return
+* \author A. Cerqueira
+*
+*/
+bool ClienteTemSaldoSuficiente(Cliente cliente, float valor) {
+	return cliente.saldo >= valor;
 }
