@@ -1,6 +1,6 @@
 /*****************************************************************//**
  * \file   Cliente.h
- * \brief  Funções de Cliente
+ * \brief  Declarações das funções relacionadas aos clientes
  *
  * \author A. Cerqueira
  * \date   February 2023
@@ -41,62 +41,65 @@
 
 	
 	/**
-	* \brief Resetar lista ligada de Clientes, reescreve o ficheiro .dat com a lista vazia
+	* \brief Liberta a memória da lista ligada de clientes
 	*
-	* \return
+	* \param primeiroCliente O apontador para o primeiro elemento da lista ligada de clientes
+	* \return true se a operação foi realizada com sucesso, false caso contrário
 	* \author A. Cerqueira
-	*
 	*/
 	bool LibertarClientes(ClienteLista* primeiroCliente);
 
 
 	/**
-	* \brief Resetar dados atuais, carregar dados de um ficheiro .txt para uma lista ligada e guardar no ficheiro .dat
+	* \brief Carrega os dados iniciais dos clientes de um ficheiro .txt para uma lista ligada e guarda no ficheiro .dat.
 	*
-	* \return Lista ligada com os dados lidos
+	* \param primeiroCliente O apontador para o primeiro elemento da lista ligada de clientes
+	* \param filePathInicial O caminho do ficheiro .txt com os dados iniciais dos clientes
+	* \param saveFilePath O caminho do ficheiro .dat para guardar a lista ligada
+	* \return O novo apontador para o primeiro elemento da lista ligada de clientes carregada
 	* \author A. Cerqueira
-	*
 	*/
 	ClienteLista* CarregarClientesIniciais(ClienteLista* primeiroCliente, char* filePathInicial, char* saveFilePath);
 
 
 	/**
-	* \brief Ler Ler dados de um ficheiro de texto e retorna para guardar numa lista ligada
+	* \brief Lê os dados de um ficheiro .txt e retorna uma lista ligada de clientes.
 	*
-	* \return
+	* \param filePath O caminho do ficheiro .txt com os dados dos clientes
+	* \return O novo apontador para o primeiro elemento da lista ligada de clientes
 	* \author A. Cerqueira
-	*
 	*/
 	ClienteLista* LerClientesIniciais(char* filePath);
 
 	
 	/**
-	* \brief Ler dados de um ficheiro de .dat e guardar numa lista ligada
+	* \brief Lê os dados de um ficheiro .dat e retorna uma lista ligada de clientes.
 	*
-	* \return Lista ligada com os dados lidos
+	* \param filePath O caminho do ficheiro .dat com os dados dos clientes
+	* \return O novo apontador para o primeiro elemento da lista ligada de clientes
 	* \author A. Cerqueira
-	*
 	*/
 	ClienteLista* LerClientes(char* filePath);
 	
 
 	/**
-	* \brief Carregar dados inicial de um ficheiro de texto e guardar numa lista ligada
+	* \brief Guarda a lista ligada de clientes em um arquivo .dat.
 	*
-	* \param clientes Lista ligada com os clientes
-	* \return
+	* \param filePath O caminho para o arquivo .dat onde os clientes serão guardados.
+	* \param primeiroCliente O apontador para o primeiro elemento da lista ligada de clientes
+	* \return true se a operação foi realizada com sucesso, false caso contrário
 	* \author A. Cerqueira
-	*
 	*/
 	bool GuardarClientes(char* filePath, ClienteLista* primeiroCliente);
 
 
 	/**
-	* \brief Adicionar um cliente à lista ligada
+	* \brief Adiciona um novo cliente ao inicio da lista ligada.
 	*
-	* \return
+	* \param primeiroCliente O apontador para o primeiro elemento da lista ligada de clientes
+	* \param novoCliente O cliente que será adicionado à lista.
+	* \return O novo apontador para o primeiro elemento da lista ligada de clientes
 	* \author A. Cerqueira
-	*
 	*/
 	ClienteLista* AdicionarCliente(ClienteLista* primeiroCliente, Cliente novoCliente);
 
@@ -104,9 +107,10 @@
 	/**
 	* \brief Remover um cliente da lista ligada
 	* 
-	* \return
+	* \param primeiroCliente O apontador para o primeiro elemento da lista ligada de clientes
+	* \param id O id do cliente que será removido
+	* \return true se a operação foi realizada com sucesso, false caso contrário
 	* \author A. Cerqueira
-	* 
 	*/
 	bool RemoverCliente(ClienteLista* primeiroCliente, int id);
 
@@ -114,48 +118,52 @@
 	/**
 	* \brief Alterar um cliente da lista ligada
 	*
-	* \return
+	* \param primeiroCliente O apontador para o primeiro elemento da lista ligada de clientes
+	* \param clienteSelecionado O cliente que será alterado
+	* \return true se a operação foi realizada com sucesso, false caso contrário
 	* \author A. Cerqueira
-	*
 	*/
 	bool EditarCliente(ClienteLista* primeiroCliente, Cliente clienteSelecionado);
 
 	
 	/**
-	 * \brief Ordenar clientes por id
+	 * \brief Ordena a lista ligada de clientes por ID em ordem decrescente.
 	 *
-	 * \param primeiroCliente
-	 * \return
+	 * \param primeiroCliente O apontador para o primeiro elemento da lista ligada de clientes
+	 * \return O novo apontador para o primeiro elemento da lista ligada de clientes ordenada
+	 * \author A. Cerqueira
 	 */
 	ClienteLista* OrdenarClientesPorId(ClienteLista* primeiroCliente);
 
 
 	/**
-	* \brief Devolve o cliente com o id selecionado
+	* \brief Procura um cliente na lista ligada a partir do seu ID.
 	*
-	* \return
+	* \param primeiroCliente O apontador para o primeiro elemento da lista ligada de clientes
+	* \param id O id do cliente que será procurado
+	* \return O apontador para o cliente com o id selecionado
 	* \author A. Cerqueira
-	*
 	*/
 	Cliente* ProcurarClientePorId(ClienteLista* primeiroCliente, int id);
 	
 
 	/**
-	* \brief Devolve o proximo id disponivel para um Cliente
+	* \brief Procura o ultimo id de um cliente na lista ligada.
 	*
-	* \return
+	* \param primeiroCliente O apontador para o primeiro elemento da lista ligada de clientes
+	* \return O proximo id a ser utilizado
 	* \author A. Cerqueira
-	*
 	*/
 	int ProcurarProximoIdCliente(ClienteLista* primeiroCliente);
 
 		
 	/**
-	* \brief Devolve se o cliente tem saldo suficiente para realizar uma operação
+	* \brief Devolve se o cliente tem saldo suficiente para realizar uma operação.
 	*
-	* \return
+	* \param cliente O cliente que será verificado
+	* \param O valor da operação
+	* \return true se o cliente tem saldo suficiente, false caso contrário
 	* \author A. Cerqueira
-	*
 	*/
 	bool ClienteTemSaldoSuficiente(Cliente cliente, float valor);
 

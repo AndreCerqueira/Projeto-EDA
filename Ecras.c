@@ -447,6 +447,7 @@ void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteL
 void MostrarMenuListaMeiosMobilidadePorAutonomia(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente) {
 	primeiroMeio = OrdenarMeiosMobilidadePorAutonomia(primeiroMeio);
 	MostrarMenuListaMeiosMobilidade(primeiroMeio, primeiroCliente);
+	primeiroMeio = OrdenarMeiosMobilidadePorId(primeiroMeio);
 }
 
 

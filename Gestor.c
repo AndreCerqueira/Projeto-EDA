@@ -10,11 +10,11 @@
 
 
 /**
-* \brief Resetar lista ligada de Gestores, reescreve o ficheiro .dat com a lista vazia
+* \brief Liberta a memória da lista ligada de gestores.
 *
-* \return
+* \param primeiroGestor O apontador para o primeiro elemento da lista ligada de gestores
+* \return true se a operação foi realizada com sucesso, false caso contrário
 * \author A. Cerqueira
-*
 */
 bool LibertarGestores(GestorLista* primeiroGestor) {
 	GestorLista* gestorAtual = primeiroGestor;
@@ -32,11 +32,13 @@ bool LibertarGestores(GestorLista* primeiroGestor) {
 
 
 /**
-* \brief Resetar dados atuais, carregar dados de um ficheiro .txt para uma lista ligada e guardar no ficheiro .dat
+* \brief Carrega os dados iniciais dos gestores de um ficheiro .txt para uma lista ligada e guarda no ficheiro .dat.
 *
-* \return Lista ligada com os dados lidos
+* \param primeiroGestor O apontador para o primeiro elemento da lista ligada de gestores
+* \param filePathInicial O caminho do ficheiro .txt com os dados iniciais dos gestores
+* \param saveFilePath O caminho do ficheiro .dat para guardar a lista ligada
+* \return O novo apontador para o primeiro elemento da lista ligada de gestores carregada
 * \author A. Cerqueira
-*
 */
 GestorLista* CarregarGestoresIniciais(GestorLista* primeiroGestor, char* filePathInicial, char* saveFilePath) {
 	LibertarGestores(primeiroGestor);
@@ -48,11 +50,11 @@ GestorLista* CarregarGestoresIniciais(GestorLista* primeiroGestor, char* filePat
 
 
 /**
-* \brief Ler Ler dados de um ficheiro de texto e retorna para guardar numa lista ligada
+* \brief Lê os dados de um ficheiro .txt e retorna uma lista ligada de gestores.
 *
-* \return
+* \param filePath O caminho do ficheiro .txt com os dados dos gestores
+* \return O novo apontador para o primeiro elemento da lista ligada de gestores
 * \author A. Cerqueira
-*
 */
 GestorLista* LerGestoresIniciais(char* filePath) {
 	FILE* file;
@@ -95,13 +97,13 @@ GestorLista* LerGestoresIniciais(char* filePath) {
 }
 
 
- /**
- * \brief Ler dados de um ficheiro binario e guardar numa lista ligada
- *
- * \return Lista ligada com os dados lidos
- * \author A. Cerqueira
- *
- */
+/**
+* \brief Lê os dados de um ficheiro .dat e retorna uma lista ligada de gestores.
+*
+* \param filePath O caminho do ficheiro .dat com os dados dos gestores
+* \return O novo apontador para o primeiro elemento da lista ligada de gestores
+* \author A. Cerqueira
+*/
 GestorLista* LerGestores(char* filePath) {
 	FILE* file;
 	GestorLista* primeiroGestor = NULL;
@@ -140,13 +142,13 @@ GestorLista* LerGestores(char* filePath) {
 
 
 /**
- * \brief Guardar dados de uma lista ligada num ficheiro de texto
- *
- * \param lista Lista ligada com os dados a guardar
- * \return 0 se tudo correu bem, 1 caso contrário
- * \author A. Cerqueira
- *
- */
+* \brief Guarda a lista ligada de gestores em um arquivo .dat.
+*
+* \param filePath O caminho para o arquivo .dat onde os gestores serão guardados.
+* \param primeiroGestor O apontador para o primeiro elemento da lista ligada de gestores
+* \return true se a operação foi realizada com sucesso, false caso contrário
+* \author A. Cerqueira
+*/
 bool GuardarGestores(char* filePath, GestorLista* primeiroGestor) {
 	FILE* file;
 	file = fopen(filePath, "wb");
@@ -168,11 +170,12 @@ bool GuardarGestores(char* filePath, GestorLista* primeiroGestor) {
 
 
 /**
-* \brief Adicionar um Gestor à lista ligada
+* \brief Adiciona um novo Gestor ao inicio da lista ligada.
 *
-* \return
+* \param primeiroGestor O apontador para o primeiro elemento da lista ligada de gestores
+* \param novoGestor O Gestor que será adicionado à lista.
+* \return O novo apontador para o primeiro elemento da lista ligada de gestores
 * \author A. Cerqueira
-*
 */
 GestorLista* AdicionarGestor(GestorLista* primeiroGestor, Gestor novoGestor) {
 	GestorLista* novoNode = (GestorLista*)malloc(sizeof(GestorLista));
@@ -180,8 +183,12 @@ GestorLista* AdicionarGestor(GestorLista* primeiroGestor, Gestor novoGestor) {
 	if (novoNode == NULL)
 		return primeiroGestor;
 
-	novoGestor.ativo = true;
-	novoGestor.id = ProcurarProximoIdGestor(primeiroGestor);
+	if (novoGestor.ativo == NULL)
+		novoGestor.ativo = true;
+
+	if (novoGestor.id == NULL)
+		novoGestor.id = ProcurarProximoIdGestor(primeiroGestor);
+	
 	novoNode->proximo = (primeiroGestor != NULL) ? primeiroGestor : NULL;
 
 	novoNode->g = novoGestor;
@@ -194,9 +201,10 @@ GestorLista* AdicionarGestor(GestorLista* primeiroGestor, Gestor novoGestor) {
 /**
 * \brief Remover um Gestor da lista ligada
 *
-* \return
+* \param primeiroGestor O apontador para o primeiro elemento da lista ligada de gestores
+* \param id O id do Gestor que será removido
+* \return true se a operação foi realizada com sucesso, false caso contrário
 * \author A. Cerqueira
-*
 */
 bool RemoverGestor(GestorLista* primeiroGestor, int id) {
 
@@ -219,9 +227,10 @@ bool RemoverGestor(GestorLista* primeiroGestor, int id) {
 /**
 * \brief Alterar um Gestor da lista ligada
 *
-* \return
+* \param primeiroGestor O apontador para o primeiro elemento da lista ligada de gestores
+* \param gestorSelecionado O Gestor que será alterado
+* \return true se a operação foi realizada com sucesso, false caso contrário
 * \author A. Cerqueira
-*
 */
 bool EditarGestor(GestorLista* primeiroGestor, Gestor gestorSelecionado) {
 	GestorLista* gestorAtual = primeiroGestor;
@@ -243,10 +252,11 @@ bool EditarGestor(GestorLista* primeiroGestor, Gestor gestorSelecionado) {
 
 
 /**
- * \brief Ordenar gestores por id
+ * \brief Ordena a lista ligada de gestores por ID em ordem decrescente.
  *
- * \param primeiroCliente
- * \return
+ * \param primeiroGestor O apontador para o primeiro elemento da lista ligada de gestores
+ * \return O novo apontador para o primeiro elemento da lista ligada de gestores ordenada
+ * \author A. Cerqueira
  */
 GestorLista* OrdenarGestoresPorId(GestorLista* primeiroGestor) {
 	GestorLista* atual;
@@ -270,11 +280,11 @@ GestorLista* OrdenarGestoresPorId(GestorLista* primeiroGestor) {
 
 
 /**
-* \brief Devolve o proximo id disponivel para um Gestor
+* \brief Procura o ultimo id de um Gestor na lista ligada.
 *
-* \return
+* \param primeiroGestor O apontador para o primeiro elemento da lista ligada de gestores
+* \return O proximo id a ser utilizado
 * \author A. Cerqueira
-*
 */
 int ProcurarProximoIdGestor(GestorLista* primeiroGestor) {
 	GestorLista* gestorAtual = primeiroGestor;

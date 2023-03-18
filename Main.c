@@ -55,7 +55,7 @@ int main() {
 				MostrarMenuListaMeiosMobilidadePorAutonomia(primeiroMeio, primeiroCliente);
 				break;
 			case 11:
-				MostrarMenuListaMeiosMobilidadeLocalizacao(primeiroMeio);
+				MostrarMenuListaMeiosMobilidadeLocalizacao(primeiroMeio, primeiroCliente);
 				break;
 			case 12:
 				MostrarMenuAdicionarGestor(&primeiroGestor);

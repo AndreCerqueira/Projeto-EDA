@@ -11,11 +11,11 @@
 
 
 /**
-* \brief Resetar lista ligada de Meios de Mobilidade, reescreve o ficheiro .dat com a lista vazia
+* \brief Liberta a memória da lista ligada de meios mobilidade
 *
-* \return
+* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+* \return true se a operação foi realizada com sucesso, false caso contrário
 * \author A. Cerqueira
-*
 */
 bool LibertarMeiosMobilidade(MeioMobilidadeLista* primeiroMeio) {
 	MeioMobilidadeLista* meioAtual = primeiroMeio;
@@ -33,11 +33,13 @@ bool LibertarMeiosMobilidade(MeioMobilidadeLista* primeiroMeio) {
 
 
 /**
-* \brief Resetar dados atuais, carregar dados de um ficheiro .txt para uma lista ligada e guardar no ficheiro .dat
+* \brief Carrega os dados iniciais dos meios mobilidade de um ficheiro .txt para uma lista ligada e guarda no ficheiro .dat.
 *
-* \return
+* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+* \param filePathInicial O caminho do ficheiro .txt com os dados iniciais dos meios mobilidade
+* \param saveFilePath O caminho do ficheiro .dat para guardar a lista ligada
+* \return O novo apontador para o primeiro elemento da lista ligada de meios mobilidade carregada
 * \author A. Cerqueira
-*
 */
 MeioMobilidadeLista* CarregarMeiosMobilidadeIniciais(MeioMobilidadeLista* primeiroMeio, char* filePathInicial, char* saveFilePath) {
 	LibertarMeiosMobilidade(primeiroMeio);
@@ -49,11 +51,11 @@ MeioMobilidadeLista* CarregarMeiosMobilidadeIniciais(MeioMobilidadeLista* primei
 
 
 /**
-* \brief Ler dados de um ficheiro de texto e retorna para guardar numa lista ligada
+* \brief Lê os dados de um ficheiro .txt e retorna uma lista ligada de meios mobilidade.
 *
-* \return
+* \param filePath O caminho do ficheiro .txt com os dados dos meios mobilidade
+* \return O novo apontador para o primeiro elemento da lista ligada de meios mobilidade
 * \author A. Cerqueira
-*
 */
 MeioMobilidadeLista* LerMeiosMobilidadeIniciais(char* filePath) {
 	FILE* file;
@@ -103,11 +105,11 @@ MeioMobilidadeLista* LerMeiosMobilidadeIniciais(char* filePath) {
 
 
 /**
-* \brief Ler dados de um ficheiro binario e guardar numa lista ligada
+* \brief Lê os dados de um ficheiro .dat e retorna uma lista ligada de meios mobilidade.
 *
-* \return Lista ligada com os dados lidos
+* \param filePath O caminho do ficheiro .dat com os dados dos meios mobilidade
+* \return O novo apontador para o primeiro elemento da lista ligada de meios mobilidade
 * \author A. Cerqueira
-*
 */
 MeioMobilidadeLista* LerMeiosMobilidade(char* filePath) {
 	FILE* file;
@@ -149,12 +151,12 @@ MeioMobilidadeLista* LerMeiosMobilidade(char* filePath) {
 
 
 /**
-* \brief Carregar dados inicial de um ficheiro de texto e guardar numa lista ligada
+* \brief Guarda a lista ligada de meios mobilidade em um arquivo .dat.
 *
-* \param clientes Lista ligada com os clientes
-* \return
+* \param filePath O caminho para o arquivo .dat onde os meios mobilidade serão guardados.
+* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+* \return true se a operação foi realizada com sucesso, false caso contrário
 * \author A. Cerqueira
-*
 */
 bool GuardarMeiosMobilidade(char* filePath, MeioMobilidadeLista* primeiroMeio) {
 	FILE* file;
@@ -177,20 +179,25 @@ bool GuardarMeiosMobilidade(char* filePath, MeioMobilidadeLista* primeiroMeio) {
 
 
 /**
-* \brief Adicionar um MeioMobilidade à lista ligada
+* \brief Adiciona um novo Meio ao inicio da lista ligada.
 *
-* \return
+* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+* \param novoMeio O Meio que será adicionado à lista.
+* \return O novo apontador para o primeiro elemento da lista ligada de meios mobilidade
 * \author A. Cerqueira
-*
 */
 MeioMobilidadeLista* AdicionarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, MeioMobilidade novoMeio) {
 	MeioMobilidadeLista* novoNode = (MeioMobilidadeLista*)malloc(sizeof(MeioMobilidadeLista));
 	
 	if (novoNode == NULL)
-		return false;
+		return primeiroMeio;
 
-	novoMeio.ativo = true;
-	novoMeio.id = ProcurarProximoIdMeioMobilidade(primeiroMeio);
+	if (novoMeio.ativo == NULL)
+		novoMeio.ativo = true;
+	
+	if (novoMeio.id == NULL)
+		novoMeio.id = ProcurarProximoIdMeioMobilidade(primeiroMeio);
+	
 	novoNode->proximo = (primeiroMeio != NULL) ? primeiroMeio : NULL;
 
 	novoNode->m = novoMeio;
@@ -201,11 +208,12 @@ MeioMobilidadeLista* AdicionarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, 
 
 
 /**
-* \brief Remover um MeioMobilidade da lista ligada
+* \brief Remover um Meio da lista ligada
 *
-* \return
+* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+* \param id O id do Meio que será removido
+* \return true se a operação foi realizada com sucesso, false caso contrário
 * \author A. Cerqueira
-*
 */
 bool RemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio, int id) {
 
@@ -226,11 +234,12 @@ bool RemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio, int id) {
 
 
 /**
-* \brief Alterar um MeioMobilidade da lista ligada
+* \brief Alterar um Meio da lista ligada
 *
-* \return
+* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+* \param meioSelecionado O Meio que será alterado
+* \return true se a operação foi realizada com sucesso, false caso contrário
 * \author A. Cerqueira
-*
 */
 bool EditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, MeioMobilidade meioSelecionado) {
 
@@ -254,11 +263,11 @@ bool EditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, MeioMobilidade meio
 
 
 /**
-* \brief Converter um TipoMeioMobilidade para string
+* \brief Converter um TipoMeioMobilidade em string
 *
-* \return Lista ligada com os dados lidos
+* \param tipoMeioMobilidade O tipo de meio de mobilidade
+* \return O tipo de meio de mobilidade em string
 * \author A. Cerqueira
-*
 */
 char* TipoMeioMobilidadeToString(TipoMeioMobilidade tipoMeioMobilidade) {
 
@@ -280,10 +289,11 @@ char* TipoMeioMobilidadeToString(TipoMeioMobilidade tipoMeioMobilidade) {
 
 
 /**
- * \brief Ordenar meios de mobilidade por id
+ * \brief Ordena a lista ligada de meios mobilidade por ID em ordem decrescente.
  *
- * \param primeiroMeio
- * \return
+ * \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+ * \return O novo apontador para o primeiro elemento da lista ligada de meios mobilidade ordenada
+ * \author A. Cerqueira
  */
 MeioMobilidadeLista* OrdenarMeiosMobilidadePorId(MeioMobilidadeLista* primeiroMeio) {
 	MeioMobilidadeLista* atual;
@@ -307,10 +317,10 @@ MeioMobilidadeLista* OrdenarMeiosMobilidadePorId(MeioMobilidadeLista* primeiroMe
 
 
 /**
- * \brief Ordenar meios de mobilidade por ordem decrescente de autonomia
+ * \brief Ordena a lista ligada de meios mobilidade por autonomia em ordem decrescente.
  *
- * \param primeiroMeio
- * \return
+ * \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+ * \return O novo apontador para o primeiro elemento da lista ligada de meios mobilidade ordenada
  */
 MeioMobilidadeLista* OrdenarMeiosMobilidadePorAutonomia(MeioMobilidadeLista* primeiroMeio) {
 	MeioMobilidadeLista* atual;
@@ -334,11 +344,12 @@ MeioMobilidadeLista* OrdenarMeiosMobilidadePorAutonomia(MeioMobilidadeLista* pri
 
 
 /**
-* \brief Procurar meios de mobilidade em localização
-*
-* \param primeiroMeio
-* \return
-*/
+ * \brief Procurar todos os meios de mobilidade que estão numa determinada localização.
+ *
+ * \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+ * \param localizacao A localização onde os meios de mobilidade serão procurados
+ * \return O novo apontador para o primeiro elemento da lista ligada de meios mobilidade ordenada
+ */
 MeioMobilidadeLista* ProcurarMeiosMobilidadePorLocalizacao(MeioMobilidadeLista* primeiroMeio, char* localizacao) {
 	MeioMobilidadeLista* meiosMobilidadeLocalizacao = NULL;
 	MeioMobilidadeLista* meioAtual = primeiroMeio;
@@ -357,11 +368,12 @@ MeioMobilidadeLista* ProcurarMeiosMobilidadePorLocalizacao(MeioMobilidadeLista* 
 
 
 /**
-* \brief Devolve o Meio Mobilidade com o id selecionado
+* \brief Procura um Meio na lista ligada a partir do seu ID.
 *
-* \return
+* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+* \param id O id do Meio que será procurado
+* \return O apontador para o Meio com o id selecionado
 * \author A. Cerqueira
-*
 */
 MeioMobilidade* ProcurarMeioMobilidadePorId(MeioMobilidadeLista* primeiroMeio, int id) {
 	MeioMobilidadeLista* meioAtual = primeiroMeio;
@@ -380,11 +392,11 @@ MeioMobilidade* ProcurarMeioMobilidadePorId(MeioMobilidadeLista* primeiroMeio, i
 
 
 /**
-* \brief Devolve o proximo id disponivel para um MeioMobilidade
+* \brief Procura o ultimo id de um Meio na lista ligada.
 *
-* \return
+* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+* \return O proximo id a ser utilizado
 * \author A. Cerqueira
-*
 */
 int ProcurarProximoIdMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
 	MeioMobilidadeLista* meioAtual = primeiroMeio;
@@ -405,9 +417,9 @@ int ProcurarProximoIdMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
 /**
  * \brief Alugar um meio de mobilidade
  *
- * \param meioMobilidade
- * \param cliente
- * \return
+ * \param meioMobilidade O meio de mobilidade que será alugado
+ * \param cliente O cliente que vai alugar o meio de mobilidade
+ * \return true se a operação foi realizada com sucesso, false caso contrário
  */
 bool AlugarMeioMobilidade(MeioMobilidade* meioMobilidade, Cliente* cliente) {
 	
@@ -432,9 +444,8 @@ bool AlugarMeioMobilidade(MeioMobilidade* meioMobilidade, Cliente* cliente) {
 /**
  * \brief Devolve se um meio de mobilidade está alugado ou não
  *
- * \param meioMobilidade
- * \param cliente
- * \return
+ * \param meioMobilidade O meio de mobilidade que será verificado
+ * \return true se o meio de mobilidade estiver alugado, false caso contrário
  */
 bool MeioMobilidadeAlugado(MeioMobilidade meioMobilidade) {
 	return meioMobilidade.alugadoPorId != 0;
