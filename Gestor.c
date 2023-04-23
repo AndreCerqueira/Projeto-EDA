@@ -66,29 +66,19 @@ GestorLista* LerGestoresIniciais(char* filePath) {
 		return NULL;
 
 	while (fgets(linha, MAX_SIZE, file)) {
-		GestorLista* novoGestor = (GestorLista*)malloc(sizeof(GestorLista));
+		Gestor novoGestor;
 
-		if (novoGestor == NULL)
-			return NULL;
+		int numLidos = sscanf(linha, "%d;%[^;];%[^;];%[^;];%d",
+			&novoGestor.id,
+			novoGestor.nome,
+			novoGestor.email,
+			novoGestor.password,
+			&novoGestor.ativo);
 
-		char* contexto = NULL;
-		char* campo = strtok(linha, ";", &contexto);
-		novoGestor->g.id = atoi(campo);
+		if (numLidos != 5)
+			continue;
 
-		campo = strtok(NULL, ";", &contexto);
-		strcpy(novoGestor->g.nome, campo);
-
-		campo = strtok(NULL, ";", &contexto);
-		strcpy(novoGestor->g.email, campo);
-
-		campo = strtok(NULL, ";", &contexto);
-		strcpy(novoGestor->g.password, campo);
-
-		campo = strtok(NULL, ";", &contexto);
-		novoGestor->g.ativo = (bool)atoi(campo);
-
-		novoGestor->proximo = primeiroGestor;
-		primeiroGestor = novoGestor;
+		primeiroGestor = AdicionarGestor(primeiroGestor, novoGestor);
 	}
 
 	fclose(file);
@@ -106,31 +96,19 @@ GestorLista* LerGestoresIniciais(char* filePath) {
 */
 GestorLista* LerGestores(char* filePath) {
 	FILE* file;
+	Gestor* gestor;
 	GestorLista* primeiroGestor = NULL;
 
 	file = fopen(filePath, "rb");
 
 	if (file == NULL)
 		return NULL;
+	
+	gestor = (Gestor*)malloc(sizeof(Gestor));
 
-	Gestor gestor;
-	size_t bytesLidos = fread(&gestor, sizeof(Gestor), 1, file);
-
-	while (bytesLidos > 0) {
-		GestorLista* novoGestor = (GestorLista*)malloc(sizeof(GestorLista));
-
-		if (novoGestor == NULL)
-			return NULL;
-
-		novoGestor->g.id = gestor.id;
-		strcpy(novoGestor->g.nome, gestor.nome);
-		strcpy(novoGestor->g.email, gestor.email);
-		strcpy(novoGestor->g.password, gestor.password);
-		novoGestor->g.ativo = gestor.ativo;
-		novoGestor->proximo = primeiroGestor;
-		primeiroGestor = novoGestor;
-
-		bytesLidos = fread(&gestor, sizeof(Gestor), 1, file);
+	while (gestor != NULL && fread(gestor, sizeof(Gestor), 1, file)) {
+		primeiroGestor = AdicionarGestor(primeiroGestor, *gestor);
+		gestor = (Gestor*)malloc(sizeof(Gestor));
 	}
 
 	fclose(file);

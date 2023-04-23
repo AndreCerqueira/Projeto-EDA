@@ -67,35 +67,21 @@ MeioMobilidadeLista* LerMeiosMobilidadeIniciais(char* filePath) {
 		return NULL;
 
 	while (fgets(linha, MAX_SIZE, file)) {
-		MeioMobilidadeLista* novoMeio = (MeioMobilidadeLista*)malloc(sizeof(MeioMobilidadeLista));
+		MeioMobilidade novoMeio;
 
-		if (novoMeio == NULL)
-			return NULL;
+		int numLidos = sscanf(linha, "%d;%d;%f;%f;%[^;];%d;%d",
+			&novoMeio.id,
+			(int*)&novoMeio.tipo,
+			&novoMeio.cargaBateria,
+			&novoMeio.custoAluguer,
+			novoMeio.localizacao,
+			&novoMeio.alugadoPorId,
+			(int*)&novoMeio.ativo);
 
-		char* contexto = NULL;
-		char* campo = strtok(linha, ";");
-		novoMeio->m.id = atoi(campo);
+		if (numLidos != 7)
+			continue;
 
-		campo = strtok(NULL, ";");
-		novoMeio->m.tipo = (TipoMeioMobilidade)atoi(campo);
-
-		campo = strtok(NULL, ";");
-		novoMeio->m.cargaBateria = atof(campo);
-
-		campo = strtok(NULL, ";");
-		novoMeio->m.custoAluguer = atof(campo);
-
-		campo = strtok(NULL, ";");
-		strncpy(novoMeio->m.localizacao, campo, LOCALIZACAO_LENGHT);
-
-		campo = strtok(NULL, ";");
-		novoMeio->m.alugadoPorId = atoi(campo);
-
-		campo = strtok(NULL, ";");
-		novoMeio->m.ativo = (bool)atoi(campo);
-
-		novoMeio->proximo = primeiroMeio;
-		primeiroMeio = novoMeio;
+		primeiroMeio = AdicionarMeioMobilidade(primeiroMeio, novoMeio);
 	}
 
 	fclose(file);
@@ -113,33 +99,19 @@ MeioMobilidadeLista* LerMeiosMobilidadeIniciais(char* filePath) {
 */
 MeioMobilidadeLista* LerMeiosMobilidade(char* filePath) {
 	FILE* file;
+	MeioMobilidade* meio;
 	MeioMobilidadeLista* primeiroMeio = NULL;
 
 	file = fopen(filePath, "rb");
 
 	if (file == NULL)
 		return NULL;
-	
-	MeioMobilidade meio;
-	size_t bytesLidos = fread(&meio, sizeof(MeioMobilidade), 1, file);
-	
-	while (bytesLidos > 0) {
-		MeioMobilidadeLista* novoMeio = (MeioMobilidadeLista*)malloc(sizeof(MeioMobilidadeLista));
 
-		if (novoMeio == NULL)
-			return NULL;
+	meio = (MeioMobilidade*)malloc(sizeof(MeioMobilidade));
 
-		novoMeio->m.id = meio.id;
-		novoMeio->m.tipo = meio.tipo;
-		novoMeio->m.cargaBateria = meio.cargaBateria;
-		novoMeio->m.custoAluguer = meio.custoAluguer;
-		strcpy(novoMeio->m.localizacao, meio.localizacao);
-		novoMeio->m.alugadoPorId = meio.alugadoPorId;
-		novoMeio->m.ativo = meio.ativo;
-		novoMeio->proximo = primeiroMeio;
-		primeiroMeio = novoMeio;
-
-		bytesLidos = fread(&meio, sizeof(MeioMobilidade), 1, file);
+	while (meio != NULL && fread(meio, sizeof(MeioMobilidade), 1, file)) {
+		primeiroMeio = AdicionarMeioMobilidade(primeiroMeio, *meio);
+		meio = (MeioMobilidade*)malloc(sizeof(MeioMobilidade));
 	}
 	
 	fclose(file);

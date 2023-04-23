@@ -65,34 +65,22 @@ ClienteLista* LerClientesIniciais(char* filePath) {
 	file = fopen(filePath, "r");
 	if (file == NULL)
 		return NULL;
-
+	
 	while (fgets(linha, MAX_SIZE, file)) {
-		ClienteLista* novoCliente = (ClienteLista*)malloc(sizeof(ClienteLista));
+		Cliente novoCliente;
 
-		if (novoCliente == NULL)
-			return NULL;
+		int numLidos = sscanf(linha, "%d;%[^;];%[^;];%[^;];%f;%d",
+			&novoCliente.id, 
+			novoCliente.nome, 
+			novoCliente.nif, 
+			novoCliente.morada, 
+			&novoCliente.saldo, 
+			&novoCliente.ativo);
 
-		char* contexto = NULL;
-		char* campo = strtok(linha, ";", &contexto);
-		novoCliente->c.id = atoi(campo);
-
-		campo = strtok(NULL, ";", &contexto);
-		strcpy(novoCliente->c.nome, campo);
-
-		campo = strtok(NULL, ";", &contexto);
-		strcpy(novoCliente->c.nif, campo);
-
-		campo = strtok(NULL, ";", &contexto);
-		strcpy(novoCliente->c.morada, campo);
-
-		campo = strtok(NULL, ";", &contexto);
-		novoCliente->c.saldo = atof(campo);
-
-		campo = strtok(NULL, ";", &contexto);
-		novoCliente->c.ativo = (bool)atoi(campo);
-
-		novoCliente->proximo = primeiroCliente;
-		primeiroCliente = novoCliente;
+		if (numLidos != 6)
+			continue;
+		
+		primeiroCliente = AdicionarCliente(primeiroCliente, novoCliente);
 	}
 
 	fclose(file);
@@ -110,6 +98,7 @@ ClienteLista* LerClientesIniciais(char* filePath) {
 */
 ClienteLista* LerClientes(char* filePath) {
 	FILE* file;
+	Cliente* cliente;
 	ClienteLista* primeiroCliente = NULL;
 
 	file = fopen(filePath, "rb");
@@ -117,27 +106,13 @@ ClienteLista* LerClientes(char* filePath) {
 	if (file == NULL)
 		return NULL;
 
-	Cliente cliente;
-	size_t bytesLidos = fread(&cliente, sizeof(Cliente), 1, file);
-
-	while (bytesLidos > 0) {
-		ClienteLista* novoCliente = (ClienteLista*)malloc(sizeof(ClienteLista));
-
-		if (novoCliente == NULL)
-			return NULL;
-
-		novoCliente->c.id = cliente.id;
-		strcpy(novoCliente->c.nome, cliente.nome);
-		strcpy(novoCliente->c.nif, cliente.nif);
-		strcpy(novoCliente->c.morada, cliente.morada);
-		novoCliente->c.saldo = cliente.saldo;
-		novoCliente->c.ativo = cliente.ativo;
-		novoCliente->proximo = primeiroCliente;
-		primeiroCliente = novoCliente;
-
-		bytesLidos = fread(&cliente, sizeof(Cliente), 1, file);
+	cliente = (Cliente*)malloc(sizeof(Cliente));
+	
+	while (cliente != NULL && fread(cliente, sizeof(Cliente), 1, file)) {
+		primeiroCliente = AdicionarCliente(primeiroCliente, *cliente);
+		cliente = (Cliente*)malloc(sizeof(Cliente));
 	}
-
+	
 	fclose(file);
 
 	primeiroCliente = OrdenarClientesPorId(primeiroCliente);
