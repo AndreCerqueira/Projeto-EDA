@@ -70,7 +70,7 @@ void MostrarMenuPrincipal(int* op) {
 	puts("+---------------------------------------------------------------------------------------+");
 	puts("| 5- Adicionar Meios de mobilidade\t   | 17- Listar Postos\t\t\t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
-	puts("| 6- Editar Meios de mobilidade\t\t   |                   \t\t\t\t|");
+	puts("| 6- Editar Meios de mobilidade\t\t   | 18- Listar Postos com Adjacencias\t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
 	puts("| 7- Remover Meios de mobilidade\t   |                   \t\t\t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
@@ -109,6 +109,7 @@ void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidadeLista**
 	*primeiroCliente = CarregarClientesIniciais(*primeiroCliente, CLIENTE_INITDATA_FILE_NAME, CLIENTE_SAVE_FILE_NAME);
 	*primeiroGestor = CarregarGestoresIniciais(*primeiroGestor, GESTOR_INITDATA_FILE_NAME, GESTOR_SAVE_FILE_NAME);
 	*primeiroPosto = CarregarPostosIniciais(*primeiroPosto, POSTO_INITDATA_FILE_NAME, POSTO_SAVE_FILE_NAME, POSTO_ADJ_INITDATA_FILE_NAME, POSTO_ADJ_SAVE_FILE_NAME);
+	*primeiroPosto = CarregarPostosAdjacentesIniciais(*primeiroPosto, POSTO_ADJ_INITDATA_FILE_NAME, POSTO_ADJ_SAVE_FILE_NAME);
 }
 
 
@@ -603,7 +604,6 @@ void MostrarMenuListaGestores(GestorLista* primeiroGestor) {
 }
 
 
-
 // Lista de Postos
 void MostrarMenuListaPostos(PostoVertice* primeiroPosto) {
 
@@ -619,6 +619,43 @@ void MostrarMenuListaPostos(PostoVertice* primeiroPosto) {
 	PostoVertice* postoAtual = primeiroPosto;
 	while (postoAtual != NULL) {
 		printf("| %-4d | %-22s | %-38s |\n", postoAtual->p.f.id, postoAtual->p.f.nome, postoAtual->p.f.geocode);
+
+		postoAtual = postoAtual->proximo;
+	}
+
+	puts("+------------------------------------------------------------------------+");
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+}
+
+
+// Lista de Postos com adjacencias
+void MostrarMenuListaPostosComAdjacencias(PostoVertice* primeiroPosto) {
+
+	// Mostrar os dados 
+	system("cls");
+	puts("+------------------------------------------------------------------------+");
+	puts("|                          Lista de Postos                               |");
+	puts("+------------------------------------------------------------------------+");
+	puts("|  ID  |          Nome          |                Geocódigo               |");
+	puts("+------------------------------------------------------------------------+");
+
+	// Mostrar os dados dos clientes
+	PostoVertice* postoAtual = primeiroPosto;
+	while (postoAtual != NULL) {
+		printf("| %-4d | %-22s | %-38s |\n", postoAtual->p.f.id, postoAtual->p.f.nome, postoAtual->p.f.geocode);
+		puts("+------------------------------------------------------------------------+");
+
+		PostoAdjacente* postoAdjAtual = postoAtual->p.primeiraAdjacencia;
+		while (postoAdjAtual != NULL) {
+			printf("  >  %-26s | %-5.2f Km \t\t\t\t |\n", postoAdjAtual->destino->p.f.nome, postoAdjAtual->f.distancia);
+			
+			postoAdjAtual = postoAdjAtual->proximo;
+		}
+		if (postoAtual->p.primeiraAdjacencia != NULL)
+			puts("+------------------------------------------------------------------------+");
 
 		postoAtual = postoAtual->proximo;
 	}

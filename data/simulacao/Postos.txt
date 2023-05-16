@@ -18,24 +18,3 @@
 18;Castelo Branco;///rua.murada.medieval;
 19;Covilhã;///aldeia.serrana.tradicional;
 20;Elvas;///fortaleza.baluarte.historico;
-21;Fátima;///santuário.peregrinação.fé;
-22;Penafiel;///castelo.medieval.colina;
-23;Silves;///castelo.laranjeiras.historia;
-24;Vila Franca de Xira;///lezíria.ribeirinha.tauromaquia;
-25;São Martinho do Porto;///baía.tranquila.areia.fininha;
-26;Castro Verde;///campo.alentejano.aves;
-27;Serra da Estrela;///montanhas.neve.ski;
-28;Aljezur;///praia.fortaleza.surf;
-29;Caldas da Rainha;///termas.parque.cerâmica;
-30;Alcochete;///tejo.marina.cais;
-31;Mirandela;///rio.tua.ponte.ferro;
-32;Vila Nova de Milfontes;///praia.mar.costa.alentejana;
-33;Portalegre;///castelo.torre.paisagem;
-34;Vizela;///termas.romanas.termalismo;
-35;Viana do Alentejo;///castelo.alentejo.medieval;
-36;Batalha;///mosteiro.gótico.historia;
-37;Praia da Rocha;///praia.rocha.mar;
-38;Rio Maior;///saltos.altos.natureza;
-39;Monchique;///serra.termas.natureza;
-40;Lagoa;///grutas.algarve.praia;
-

@@ -155,8 +155,7 @@ PostoAdjacente* LerPostosAdjacentesIniciais(PostoVertice* primeiroPosto, PostoVe
 	while (fgets(linha, MAX_SIZE, file)) {
 		AdjacenciaFicheiro adjFicheiro;
 
-		int numLidos = sscanf(linha, "%d;%d;%d;%f",
-			&adjFicheiro.id,
+		int numLidos = sscanf(linha, "%d;%d;%f",
 			&adjFicheiro.origemId,
 			&adjFicheiro.destinoId,
 			&adjFicheiro.distancia
@@ -170,7 +169,7 @@ PostoAdjacente* LerPostosAdjacentesIniciais(PostoVertice* primeiroPosto, PostoVe
 
 	fclose(file);
 
-	return primeiroPosto;
+	return primeiroPostoAdjacente;
 }
 
 
@@ -232,8 +231,6 @@ PostoAdjacente* LerPostosAdjacentes(PostoVertice* primeiroPosto, char* filePath)
 
 	fclose(file);
 
-	primeiroPostoAdjacente = OrdenarPostosAdjacentesPorId(primeiroPostoAdjacente);
-
 	return primeiroPostoAdjacente;
 }
 
@@ -278,7 +275,7 @@ bool GuardarPostosAdjacentes(char* filePath, PostoAdjacente* primeiroPostoAdjace
 	FILE* file;
 	file = fopen(filePath, "wb");
 
-	if (file == NULL)
+	if (file == NULL || primeiroPostoAdjacente == NULL)
 		return false;
 
 	PostoAdjacente* postoAdjacenteAtual = primeiroPostoAdjacente;
@@ -335,9 +332,6 @@ PostoAdjacente* AdicionarPostoAdjacente(PostoVertice* primeiroPosto, PostoAdjace
 	if (novoNode == NULL)
 		return primeiroPostoAdjacente;
 
-	if (novoAdjFicheiro.id == NULL)
-		novoAdjFicheiro.id = ProcurarProximoIdPostoAdjacente(primeiroPostoAdjacente);
-
 	novoNode->f = novoAdjFicheiro;
 	novoNode->origem = ProcurarPostoPorId(primeiroPosto, novoAdjFicheiro.origemId);
 	novoNode->destino = ProcurarPostoPorId(primeiroPosto, novoAdjFicheiro.destinoId);
@@ -378,34 +372,6 @@ PostoVertice* OrdenarPostosPorId(PostoVertice* primeiroPosto) {
 
 
 /**
-* \brief Ordena a lista ligada de postos adjacentes por ID em ordem decrescente.
-*
-* \param primeiroPostoAdjacente O apontador para o primeiro elemento da lista ligada de postos adjacentes
-* \return O novo apontador para o primeiro elemento da lista ligada de postos adjacentes ordenada
-* \author A. Cerqueira
-*/
-PostoAdjacente* OrdenarPostosAdjacentesPorId(PostoAdjacente* primeiroPostoAdjacente) {
-	PostoAdjacente* atual;
-	PostoAdjacente* proximo;
-	PostoAdjacente temp;
-
-	for (atual = primeiroPostoAdjacente; atual != NULL; atual = atual->proximo) {
-		for (proximo = atual->proximo; proximo != NULL; proximo = proximo->proximo) {
-
-			if (atual->f.id < proximo->f.id) {
-				temp = *atual;
-				atual->f = proximo->f;
-				proximo = &temp;
-			}
-
-		}
-	}
-
-	return primeiroPostoAdjacente;
-}
-
-
-/**
 * \brief Procura um posto na lista ligada a partir do seu ID.
 *
 * \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
@@ -441,29 +407,6 @@ int ProcurarProximoIdPosto(PostoVertice* primeiroPosto) {
 
 		if (postoAtual->p.f.id > id)
 			id = postoAtual->p.f.id;
-
-		postoAtual = postoAtual->proximo;
-	}
-
-	return id + 1;
-}
-
-
-/**
-* \brief Procura o ultimo id de um posto adjacente na lista ligada.
-*
-* \param primeiroPostoAdjacente O apontador para o primeiro elemento da lista ligada de postos adjacentes
-* \return O proximo id a ser utilizado
-* \author A. Cerqueira
-*/
-int ProcurarProximoIdPostoAdjacente(PostoAdjacente* primeiroPostoAdjacente) {
-	PostoAdjacente* postoAtual = primeiroPostoAdjacente;
-	int id = 0;
-
-	while (postoAtual != NULL) {
-
-		if (postoAtual->f.id > id)
-			id = postoAtual->f.id;
 
 		postoAtual = postoAtual->proximo;
 	}

@@ -76,6 +76,9 @@ int main() {
 			case 17:
 				MostrarMenuListaPostos(primeiroPosto);
 				break;
+			case 18:
+				MostrarMenuListaPostosComAdjacencias(primeiroPosto);
+				break;
 			case 0:
 				LibertarClientes(primeiroCliente);
 				LibertarMeiosMobilidade(primeiroMeio);

@@ -48,7 +48,6 @@
 	};
 
 	struct AdjacenciaFicheiro {
-		int id;
 		int origemId;
 		int destinoId;
 		float distancia;  // em km (peso)
@@ -203,16 +202,6 @@
 
 
 	/**
-	 * \brief Ordena a lista ligada de postos adjacentes por ID em ordem decrescente.
-	 *
-	 * \param primeiroPostoAdjacente O apontador para o primeiro elemento da lista ligada de postos adjacentes
-	 * \return O novo apontador para o primeiro elemento da lista ligada de postos adjacentes ordenada
-	 * \author A. Cerqueira
-	 */
-	PostoAdjacente* OrdenarPostosAdjacentesPorId(PostoAdjacente* primeiroPostoAdjacente);
-
-
-	/**
 	* \brief Procura um posto na lista ligada a partir do seu ID.
 	*
 	* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
@@ -231,16 +220,6 @@
 	* \author A. Cerqueira
 	*/
 	int ProcurarProximoIdPosto(PostoVertice* primeiroPosto);
-
-
-	/**
-	* \brief Procura o ultimo id de um posto adjacente na lista ligada.
-	*
-	* \param primeiroPostoAdjacente O apontador para o primeiro elemento da lista ligada de postos adjacentes
-	* \return O proximo id a ser utilizado
-	* \author A. Cerqueira
-	*/
-	int ProcurarProximoIdPostoAdjacente(PostoAdjacente* primeiroPostoAdjacente);
 
 #endif
 

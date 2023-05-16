@@ -41,5 +41,6 @@
 	void MostrarMenuRemoverGestor(GestorLista* primeiroGestor);
 	void MostrarMenuListaGestores(GestorLista* primeiroGestor);
 	void MostrarMenuListaPostos(PostoVertice* primeiroPosto);
+	void MostrarMenuListaPostosComAdjacencias(PostoVertice* primeiroPosto);
 
 #endif
