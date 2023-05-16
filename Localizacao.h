@@ -60,6 +60,7 @@
 		PostoAdjacente* proximo;
 	};
 
+
 	/**
 	* \brief Liberta a memória da lista ligada de postos
 	*
@@ -84,14 +85,12 @@
 	* \brief Carrega os dados iniciais dos postos de um ficheiro .txt para uma lista ligada e guarda no ficheiro .dat.
 	*
 	* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
-	* \param postosFilePathInicial O caminho do ficheiro .txt com os dados iniciais dos postos
-	* \param postosSaveFilePath O caminho do ficheiro .dat onde os postos serão guardados
-	* \param postosAdjFilePathInicial O caminho do ficheiro .txt com os dados iniciais dos postos adjacentes
-	* \param postosAdjSaveFilePath O caminho do ficheiro .dat onde os postos adjacentes serão guardados
+	* \param filePathInicial O caminho do ficheiro .txt com os dados iniciais dos postos
+	* \param saveFilePath O caminho do ficheiro .dat para guardar a lista ligada
 	* \return O novo apontador para o primeiro elemento da lista ligada de postos carregada
 	* \author A. Cerqueira
 	*/
-	PostoVertice* CarregarPostosIniciais(PostoVertice* primeiroPosto, char* postosFilePathInicial, char* postosSaveFilePath, char* postosAdjFilePathInicial, char* postosAdjSaveFilePath);
+	PostoVertice* CarregarPostosIniciais(PostoVertice* primeiroPosto, char* filePathInicial, char* saveFilePath);
 
 
 	/**
@@ -120,6 +119,7 @@
 	* \brief Lê os dados de um ficheiro .txt e retorna uma lista ligada de postos adjacentes.
 	*
 	* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+	* \param posto O apontador para o posto atual
 	* \param filePath O caminho do ficheiro .txt com os dados dos postos adjacentes
 	* \return O novo apontador para o primeiro elemento da lista ligada de postos adjacentes
 	* \author A. Cerqueira
@@ -140,11 +140,13 @@
 	/**
 	* \brief Lê os dados de um ficheiro .dat e retorna uma lista ligada de postos adjacentes.
 	*
+	* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+	* \param posto O apontador para o posto atual
 	* \param filePath O caminho do ficheiro .dat com os dados dos posto adjacentes.
 	* \return O novo apontador para o primeiro elemento da lista ligada de postos adjacentes
 	* \author A. Cerqueira
 	*/
-	PostoAdjacente* LerPostosAdjacentes(PostoVertice* primeiroPosto, char* filePath);
+	PostoAdjacente* LerPostosAdjacentes(PostoVertice* primeiroPosto, PostoVertice* posto, char* filePath);
 
 
 	/**
@@ -167,6 +169,16 @@
 	* \author A. Cerqueira
 	*/
 	bool GuardarPostosAdjacentes(char* filePath, PostoAdjacente* primeiroPostoAdjacente);
+
+
+	/**
+	* \brief Apaga o arquivo .dat com os dados dos postos.
+	*
+	* \param filePath O caminho para o arquivo .dat onde os postos serão guardados.
+	* \return true se a operação foi realizada com sucesso, false caso contrário
+	* \author A. Cerqueira
+	*/
+	bool ApagarPostosAdjacentesFicheiro(char* filePath);
 
 
 	/**

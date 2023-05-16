@@ -19,6 +19,14 @@ int main() {
 	MeioMobilidadeLista* primeiroMeio = LerMeiosMobilidade(MEIO_SAVE_FILE_NAME);
 	GestorLista* primeiroGestor = LerGestores(GESTOR_SAVE_FILE_NAME);
 	PostoVertice* primeiroPosto = LerPostos(POSTO_SAVE_FILE_NAME);
+
+	// ler postos adjacentes
+	PostoVertice* atual = primeiroPosto;
+	while (atual != NULL)
+	{
+		atual->p.primeiraAdjacencia = LerPostosAdjacentes(primeiroPosto, atual, POSTO_ADJ_SAVE_FILE_NAME);
+		atual = atual->proximo;
+	}
 	
 	// Program loop
 	while (op != 0) {

@@ -64,11 +64,10 @@ bool LibertarPostosAdjacentes(PostoAdjacente* primeiroPostoAdjacente) {
 * \return O novo apontador para o primeiro elemento da lista ligada de postos carregada
 * \author A. Cerqueira
 */
-PostoVertice* CarregarPostosIniciais(PostoVertice* primeiroPosto, char* postosFilePathInicial, char* postosSaveFilePath, char* postosAdjFilePathInicial, char* postosAdjSaveFilePath) {
+PostoVertice* CarregarPostosIniciais(PostoVertice* primeiroPosto, char* filePathInicial, char* saveFilePath) {
 	LibertarPostos(primeiroPosto);
-	primeiroPosto = LerPostosIniciais(postosFilePathInicial);
-	primeiroPosto = CarregarPostosAdjacentesIniciais(primeiroPosto, postosAdjFilePathInicial, postosAdjSaveFilePath);
-	GuardarPostos(postosSaveFilePath, primeiroPosto);
+	primeiroPosto = LerPostosIniciais(filePathInicial);
+	GuardarPostos(saveFilePath, primeiroPosto);
 
 	return primeiroPosto;
 }
@@ -86,6 +85,7 @@ PostoVertice* CarregarPostosIniciais(PostoVertice* primeiroPosto, char* postosFi
 PostoVertice* CarregarPostosAdjacentesIniciais(PostoVertice* primeiroPosto, char* filePathInicial, char* saveFilePath) {
 	PostoVertice* atual;
 
+	ApagarPostosAdjacentesFicheiro(saveFilePath);
 	for (atual = primeiroPosto; atual != NULL; atual = atual->proximo) {
 		LibertarPostosAdjacentes(atual->p.primeiraAdjacencia);
 		atual->p.primeiraAdjacencia = LerPostosAdjacentesIniciais(primeiroPosto, atual, filePathInicial);
@@ -182,6 +182,7 @@ PostoAdjacente* LerPostosAdjacentesIniciais(PostoVertice* primeiroPosto, PostoVe
 */
 PostoVertice* LerPostos(char* filePath) {
 	FILE* file;
+	PostoFicheiro* postoFicheiro;
 	Posto* posto;
 	PostoVertice* primeiroPosto = NULL;
 
@@ -190,11 +191,18 @@ PostoVertice* LerPostos(char* filePath) {
 	if (file == NULL)
 		return NULL;
 
+	postoFicheiro = (PostoFicheiro*)malloc(sizeof(PostoFicheiro));
 	posto = (Posto*)malloc(sizeof(Posto));
 
-	while (posto != NULL && fread(posto, sizeof(Posto), 1, file)) {
+	while (postoFicheiro != NULL && fread(postoFicheiro, sizeof(PostoFicheiro), 1, file)) {
+
+		posto->f = *postoFicheiro;
+		posto->primeiraAdjacencia = NULL;
+
 		primeiroPosto = AdicionarPosto(primeiroPosto, *posto);
+		
 		posto = (Posto*)malloc(sizeof(Posto));
+		postoFicheiro = (PostoFicheiro*)malloc(sizeof(PostoFicheiro));
 	}
 
 	fclose(file);
@@ -208,23 +216,29 @@ PostoVertice* LerPostos(char* filePath) {
 /**
 * \brief Lê os dados de um ficheiro .dat e retorna uma lista ligada de postos adjacentes.
 *
+* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+* \param posto O apontador para o posto atual
 * \param filePath O caminho do ficheiro .dat com os dados dos posto adjacentes.
 * \return O novo apontador para o primeiro elemento da lista ligada de postos adjacentes
 * \author A. Cerqueira
 */
-PostoAdjacente* LerPostosAdjacentes(PostoVertice* primeiroPosto, char* filePath) {
+PostoAdjacente* LerPostosAdjacentes(PostoVertice* primeiroPosto, PostoVertice* posto, char* filePath) {
 	FILE* file;
 	AdjacenciaFicheiro* adjFicheiro;
 	PostoAdjacente* primeiroPostoAdjacente = NULL;
 
 	file = fopen(filePath, "rb");
 
-	if (file == NULL)
+	if (file == NULL || posto == NULL)
 		return NULL;
 
 	adjFicheiro = (AdjacenciaFicheiro*)malloc(sizeof(AdjacenciaFicheiro));
 
 	while (adjFicheiro != NULL && fread(adjFicheiro, sizeof(AdjacenciaFicheiro), 1, file)) {
+
+		if (posto->p.f.id != adjFicheiro->origemId)
+			continue;
+
 		primeiroPostoAdjacente = AdicionarPostoAdjacente(primeiroPosto, primeiroPostoAdjacente, *adjFicheiro);
 		adjFicheiro = (AdjacenciaFicheiro*)malloc(sizeof(AdjacenciaFicheiro));
 	}
@@ -253,7 +267,7 @@ bool GuardarPostos(char* filePath, PostoVertice* primeiroPosto) {
 	PostoVertice* postoAtual = primeiroPosto;
 
 	while (postoAtual != NULL) {
-		fwrite(&postoAtual->p, sizeof(Posto), 1, file);
+		fwrite(&postoAtual->p.f, sizeof(PostoFicheiro), 1, file);
 		postoAtual = postoAtual->proximo;
 	}
 
@@ -273,7 +287,7 @@ bool GuardarPostos(char* filePath, PostoVertice* primeiroPosto) {
 */
 bool GuardarPostosAdjacentes(char* filePath, PostoAdjacente* primeiroPostoAdjacente) {
 	FILE* file;
-	file = fopen(filePath, "wb");
+	file = fopen(filePath, "ab");
 
 	if (file == NULL || primeiroPostoAdjacente == NULL)
 		return false;
@@ -288,6 +302,18 @@ bool GuardarPostosAdjacentes(char* filePath, PostoAdjacente* primeiroPostoAdjace
 	fclose(file);
 
 	return true;
+}
+
+
+/**
+* \brief Apaga o arquivo .dat com os dados dos postos.
+* 
+* \param filePath O caminho para o arquivo .dat onde os postos serão guardados.
+* \return true se a operação foi realizada com sucesso, false caso contrário
+* \author A. Cerqueira
+*/
+bool ApagarPostosAdjacentesFicheiro(char* filePath) {
+	return (remove(filePath) == 0);
 }
 
 
