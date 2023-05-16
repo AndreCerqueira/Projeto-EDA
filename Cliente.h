@@ -19,12 +19,14 @@
 	#define NIF_LENGHT 20
 	#define MORADA_LENGHT 50
 
-	#define CLIENTE_INITDATA_FILE_NAME "D:/IPCA/Projeto-EDA/data/simulacao/Clientes.txt"
-	#define CLIENTE_SAVE_FILE_NAME "D:/IPCA/Projeto-EDA/data/save/Clientes.dat"
+	#define CLIENTE_INITDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/Clientes.txt"
+	#define CLIENTE_SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/Clientes.dat"
 
 	// Structs
 	typedef struct Cliente Cliente;
-	typedef struct Cliente {
+	typedef struct ClienteLista ClienteLista;
+
+	struct Cliente {
 		int id;
 		char nome[NOME_CLIENTE_LENGHT];
 		char nif[NIF_LENGHT];
@@ -33,8 +35,7 @@
 		bool ativo;
 	};
 
-	typedef struct ClienteLista ClienteLista;
-	typedef struct ClienteLista {
+	struct ClienteLista {
 		Cliente c;
 		ClienteLista* proximo;
 	};

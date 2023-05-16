@@ -131,6 +131,7 @@
     <ClCompile Include="Cliente.c" />
     <ClCompile Include="Ecras.c" />
     <ClCompile Include="Gestor.c" />
+    <ClCompile Include="Localizacao.c" />
     <ClCompile Include="Main.c" />
     <ClCompile Include="MeioMobilidade.c" />
     <ClCompile Include="Utils.c" />
@@ -139,6 +140,7 @@
     <ClInclude Include="Cliente.h" />
     <ClInclude Include="Ecras.h" />
     <ClInclude Include="Gestor.h" />
+    <ClInclude Include="Localizacao.h" />
     <ClInclude Include="MeioMobilidade.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>

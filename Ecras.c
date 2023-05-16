@@ -57,43 +57,35 @@ void MostrarMenuPrincipal(int* op) {
 
 	// Menu
 	system("cls");
-	puts("+------------------------------------------+");
-	printf("|\t    Gestor de Mobilidade\t   |\n");
-	puts("+------------------------------------------+");
-	puts("| 1- Adicionar Clientes\t\t\t   |");
-	puts("|\t\t\t\t\t   |");
-	puts("| 2- Editar Clientes\t\t\t   |");
-	puts("|\t\t\t\t\t   |");
-	puts("| 3- Remover Clientes\t\t\t   |");
-	puts("|\t\t\t\t\t   |");
-	puts("| 4- Listar Clientes\t\t\t   |");
-	puts("+------------------------------------------+");
-	puts("| 5- Adicionar Meios de mobilidade\t   |");
-	puts("|\t\t\t\t\t   |");
-	puts("| 6- Editar Meios de mobilidade\t\t   |");
-	puts("|\t\t\t\t\t   |");
-	puts("| 7- Remover Meios de mobilidade\t   |");
-	puts("|\t\t\t\t\t   |");
-	puts("| 8- Alugar Meio de mobilidade\t\t   |");
-	puts("|\t\t\t\t\t   |");
-	puts("| 9- Listar Meios de mobilidade\t\t   |");
-	puts("|\t\t\t\t\t   |");
-	puts("| 10- Listar ordem decrescente de autonomia|");
-	puts("|\t\t\t\t\t   |");
-	puts("| 11- Procurar Meios em localização\t   |");
-	puts("+------------------------------------------+");
-	puts("| 12- Adicionar Gestores\t\t   |");
-	puts("|\t\t\t\t\t   |");
-	puts("| 13- Editar Gestores\t\t\t   |");
-	puts("|\t\t\t\t\t   |");
-	puts("| 14- Remover Gestores\t\t\t   |");
-	puts("|\t\t\t\t\t   |");
-	puts("| 15- Listar Gestores\t\t\t   |");
-	puts("+------------------------------------------+");
-	puts("| 16- Carregar dados iniciais\t\t   |");
-	puts("+------------------------------------------+");
-	puts("| 0- Sair\t\t\t\t   |");
-	puts("+------------------------------------------+");
+	puts("+---------------------------------------------------------------------------------------+");
+	printf("|                                  Gestor de Mobilidade                                 |\n");
+	puts("+---------------------------------------------------------------------------------------+");
+	puts("| 1- Adicionar Clientes\t\t\t   | 12- Adicionar Gestores\t\t\t|");
+	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
+	puts("| 2- Editar Clientes\t\t\t   | 13- Editar Gestores\t\t\t|");
+	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
+	puts("| 3- Remover Clientes\t\t\t   | 14- Remover Gestores\t\t\t|");
+	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
+	puts("| 4- Listar Clientes\t\t\t   | 15- Listar Gestores\t\t\t|");
+	puts("+---------------------------------------------------------------------------------------+");
+	puts("| 5- Adicionar Meios de mobilidade\t   | 17- Listar Postos\t\t\t\t|");
+	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
+	puts("| 6- Editar Meios de mobilidade\t\t   |                   \t\t\t\t|");
+	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
+	puts("| 7- Remover Meios de mobilidade\t   |                   \t\t\t\t|");
+	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
+	puts("| 8- Alugar Meio de mobilidade\t\t   |                   \t\t\t\t|");
+	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
+	puts("| 9- Listar Meios de mobilidade\t\t   |                   \t\t\t\t|");
+	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
+	puts("| 10- Listar ordem decrescente de autonomia|                   \t\t\t\t|");
+	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
+	puts("| 11- Procurar Meios em localização\t   |                   \t\t\t\t|");
+	puts("+---------------------------------------------------------------------------------------+");
+	puts("| 16- Carregar dados iniciais\t\t\t\t\t\t\t\t|");
+	puts("+---------------------------------------------------------------------------------------+");
+	puts("| 0- Sair\t\t\t\t\t\t\t\t\t\t|");
+	puts("+---------------------------------------------------------------------------------------+");
 
 	// Selecionar uma opção
 	printf("Selecione uma opção: ");
@@ -102,7 +94,7 @@ void MostrarMenuPrincipal(int* op) {
 
 
 // Apaga os dados nos ficheiros binarios e carrega os dados iniciais
-void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidadeLista** primeiroMeio, GestorLista** primeiroGestor) {
+void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidadeLista** primeiroMeio, GestorLista** primeiroGestor, PostoVertice** primeiroPosto) {
 	
 	// Variaveis
 	int op = -1;
@@ -116,6 +108,7 @@ void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidadeLista**
 	*primeiroMeio = CarregarMeiosMobilidadeIniciais(*primeiroMeio, MEIO_INITDATA_FILE_NAME, MEIO_SAVE_FILE_NAME);
 	*primeiroCliente = CarregarClientesIniciais(*primeiroCliente, CLIENTE_INITDATA_FILE_NAME, CLIENTE_SAVE_FILE_NAME);
 	*primeiroGestor = CarregarGestoresIniciais(*primeiroGestor, GESTOR_INITDATA_FILE_NAME, GESTOR_SAVE_FILE_NAME);
+	*primeiroPosto = CarregarPostosIniciais(*primeiroPosto, POSTO_INITDATA_FILE_NAME, POSTO_SAVE_FILE_NAME, POSTO_ADJ_INITDATA_FILE_NAME, POSTO_ADJ_SAVE_FILE_NAME);
 }
 
 
@@ -150,6 +143,9 @@ void MostrarMenuAdicionarCliente(ClienteLista** primeiroCliente) {
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
 		return;
+
+	novoCliente.ativo = 1;
+	novoCliente.id = ProcurarProximoIdCliente(*primeiroCliente);
 	
 	*primeiroCliente = AdicionarCliente(*primeiroCliente, novoCliente);
 
@@ -230,9 +226,6 @@ void MostrarMenuRemoverCliente(ClienteLista* primeiroCliente) {
 // Lista de Clientes
 void MostrarMenuListaClientes(ClienteLista* primeiroCliente) {
 
-	// Variaveis
-	int i;
-
 	// Mostrar os dados 
 	system("cls");
 	puts("+---------------------------------------------------------------------------------+");
@@ -292,6 +285,9 @@ void MostrarMenuAdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio) {
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
 		return;
+
+	novoMeio.ativo = 1;
+	novoMeio.id = ProcurarProximoIdMeioMobilidade(*primeiroMeio);
 
 	*primeiroMeio = AdicionarMeioMobilidade(*primeiroMeio, novoMeio);
 
@@ -410,9 +406,6 @@ void MostrarMenuAlugarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteL
 // Lista de Meios de mobilidade
 void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente) {
 	
-	// Variaveis
-	int i;
-
 	// Mostrar os dados 
 	system("cls");
 	puts("+---------------------------------------------------------------------------------------------------------+");
@@ -505,6 +498,9 @@ void MostrarMenuAdicionarGestor(GestorLista** primeiroGestor) {
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
 		return;
+
+	novoGestor.ativo = 1;
+	novoGestor.id = ProcurarProximoIdGestor(*primeiroGestor);
 	
 	*primeiroGestor = AdicionarGestor(*primeiroGestor, novoGestor);
 
@@ -580,9 +576,6 @@ void MostrarMenuRemoverGestor(GestorLista* primeiroGestor) {
 // Lista de Gestores
 void MostrarMenuListaGestores(GestorLista* primeiroGestor) {
 
-	// Variaveis
-	int i;
-
 	// Mostrar os dados 
 	system("cls");
 	puts("+---------------------------------------------------------------+");
@@ -611,3 +604,28 @@ void MostrarMenuListaGestores(GestorLista* primeiroGestor) {
 
 
 
+// Lista de Postos
+void MostrarMenuListaPostos(PostoVertice* primeiroPosto) {
+
+	// Mostrar os dados 
+	system("cls");
+	puts("+------------------------------------------------------------------------+");
+	puts("|                          Lista de Postos                               |");
+	puts("+------------------------------------------------------------------------+");
+	puts("|  ID  |          Nome          |                Geocódigo               |");
+	puts("+------------------------------------------------------------------------+");
+
+	// Mostrar os dados dos clientes
+	PostoVertice* postoAtual = primeiroPosto;
+	while (postoAtual != NULL) {
+		printf("| %-4d | %-22s | %-38s |\n", postoAtual->p.f.id, postoAtual->p.f.nome, postoAtual->p.f.geocode);
+
+		postoAtual = postoAtual->proximo;
+	}
+
+	puts("+------------------------------------------------------------------------+");
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+}

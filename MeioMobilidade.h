@@ -18,8 +18,8 @@
 	// Constants
 	#define LOCALIZACAO_LENGHT 20
 
-	#define MEIO_INITDATA_FILE_NAME "D:/IPCA/Projeto-EDA/data/simulacao/MeiosMobilidade.txt"
-	#define MEIO_SAVE_FILE_NAME "D:/IPCA/Projeto-EDA/data/save/MeiosMobilidade.dat"
+	#define MEIO_INITDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/MeiosMobilidade.txt"
+	#define MEIO_SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/MeiosMobilidade.dat"
 
 	// Enums
 	typedef enum {
@@ -32,7 +32,9 @@
 
 	// Structs
 	typedef struct MeioMobilidade MeioMobilidade;
-	typedef struct MeioMobilidade {
+	typedef struct MeioMobilidadeLista MeioMobilidadeLista;
+
+	struct MeioMobilidade {
 		int id;
 		TipoMeioMobilidade tipo;
 		float cargaBateria;
@@ -42,8 +44,7 @@
 		bool ativo;
 	};
 
-	typedef struct MeioMobilidadeLista MeioMobilidadeLista;
-	typedef struct MeioMobilidadeLista {
+	struct MeioMobilidadeLista {
 		MeioMobilidade m;
 		MeioMobilidadeLista* proximo;
 	};

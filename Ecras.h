@@ -15,12 +15,13 @@
 	#include "MeioMobilidade.h"
 	#include "Cliente.h"
 	#include "Gestor.h"
+	#include "Localizacao.h"
 	#include "Utils.h"
 
 
 	void MostrarMenuLogin();
 	void MostrarMenuPrincipal(int* op);
-	void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidadeLista** primeiroMeio, GestorLista** primeiroGestor);
+	void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidadeLista** primeiroMeio, GestorLista** primeiroGestor, PostoVertice** primeiroPosto);
 	
 	void MostrarMenuAdicionarCliente(ClienteLista** primeiroCliente);
 	void MostrarMenuEditarCliente(ClienteLista* primeiroCliente);
@@ -39,5 +40,6 @@
 	void MostrarMenuEditarGestor(GestorLista* primeiroGestor);
 	void MostrarMenuRemoverGestor(GestorLista* primeiroGestor);
 	void MostrarMenuListaGestores(GestorLista* primeiroGestor);
+	void MostrarMenuListaPostos(PostoVertice* primeiroPosto);
 
 #endif

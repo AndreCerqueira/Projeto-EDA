@@ -19,12 +19,14 @@
 	#define EMAIL_LENGHT 50
 	#define PASSWORD_LENGHT 20
 
-	#define GESTOR_INITDATA_FILE_NAME "D:/IPCA/Projeto-EDA/data/simulacao/Gestores.txt"
-	#define GESTOR_SAVE_FILE_NAME "D:/IPCA/Projeto-EDA/data/save/Gestores.dat"
+	#define GESTOR_INITDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/Gestores.txt"
+	#define GESTOR_SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/Gestores.dat"
 
 	// Structs
 	typedef struct Gestor Gestor;
-	typedef struct Gestor {
+	typedef struct GestorLista GestorLista;
+
+	struct Gestor {
 		int id;
 		char nome[NOME_LENGHT];
 		char email[EMAIL_LENGHT];
@@ -32,8 +34,7 @@
 		bool ativo;
 	};
 
-	typedef struct GestorLista GestorLista;
-	typedef struct GestorLista {
+	struct GestorLista {
 		Gestor g;
 		GestorLista* proximo;
 	};

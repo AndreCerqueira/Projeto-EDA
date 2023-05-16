@@ -195,13 +195,13 @@ bool RemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio, int id) {
 
 		if (meioAtual->m.id == id) {
 			meioAtual->m.ativo = false;
-			return;
+			return true;
 		}
 
 		meioAtual = meioAtual->proximo;
 	}
 	
-	return true;
+	return false;
 }
 
 

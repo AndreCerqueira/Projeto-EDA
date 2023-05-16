@@ -16,8 +16,9 @@ int main() {
 	// Variables
 	int op = -1;
 	ClienteLista* primeiroCliente = LerClientes(CLIENTE_SAVE_FILE_NAME);
-	MeioMobilidade* primeiroMeio = LerMeiosMobilidade(MEIO_SAVE_FILE_NAME);
+	MeioMobilidadeLista* primeiroMeio = LerMeiosMobilidade(MEIO_SAVE_FILE_NAME);
 	GestorLista* primeiroGestor = LerGestores(GESTOR_SAVE_FILE_NAME);
+	PostoVertice* primeiroPosto = LerPostos(POSTO_SAVE_FILE_NAME);
 	
 	// Program loop
 	while (op != 0) {
@@ -70,7 +71,10 @@ int main() {
 				MostrarMenuListaGestores(primeiroGestor);
 				break;
 			case 16:
-				CarregarDadosIniciais(&primeiroCliente, &primeiroMeio, &primeiroGestor);
+				CarregarDadosIniciais(&primeiroCliente, &primeiroMeio, &primeiroGestor, &primeiroPosto);
+				break;
+			case 17:
+				MostrarMenuListaPostos(primeiroPosto);
 				break;
 			case 0:
 				LibertarClientes(primeiroCliente);
