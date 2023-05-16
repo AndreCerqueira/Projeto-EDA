@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Alugueres.c" />
     <ClCompile Include="Cliente.c" />
     <ClCompile Include="Ecras.c" />
     <ClCompile Include="Gestor.c" />
@@ -137,6 +138,7 @@
     <ClCompile Include="Utils.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Alugueres.h" />
     <ClInclude Include="Cliente.h" />
     <ClInclude Include="Ecras.h" />
     <ClInclude Include="Gestor.h" />
