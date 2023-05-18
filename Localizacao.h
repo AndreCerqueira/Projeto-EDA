@@ -119,12 +119,11 @@
 	* \brief Lê os dados de um ficheiro .txt e retorna uma lista ligada de postos adjacentes.
 	*
 	* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
-	* \param posto O apontador para o posto atual
 	* \param filePath O caminho do ficheiro .txt com os dados dos postos adjacentes
 	* \return O novo apontador para o primeiro elemento da lista ligada de postos adjacentes
 	* \author A. Cerqueira
 	*/
-	PostoAdjacente* LerPostosAdjacentesIniciais(PostoVertice* primeiroPosto, PostoVertice* posto, char* filePath);
+	PostoVertice* LerPostosAdjacentesIniciais(PostoVertice* primeiroPosto, char* filePath);
 
 
 	/**
@@ -146,7 +145,7 @@
 	* \return O novo apontador para o primeiro elemento da lista ligada de postos adjacentes
 	* \author A. Cerqueira
 	*/
-	PostoAdjacente* LerPostosAdjacentes(PostoVertice* primeiroPosto, PostoVertice* posto, char* filePath);
+	PostoVertice* LerPostosAdjacentes(PostoVertice* primeiroPosto, char* filePath);
 
 
 	/**
@@ -195,12 +194,12 @@
 	/**
 	* \brief Adiciona um novo Posto adjacente ao inicio da lista ligada.
 	*
-	* \param primeiroPostoAdjacente O apontador para o primeiro elemento da lista ligada de postos adjacentes
-	* \param novaAdjacencia A adjacência que será adicionada à lista.
+	* \param posto O apontador para o posto atual
+	* \param postoAdjacente O Posto adjacente que será adicionado à lista.
 	* \return O novo apontador para o primeiro elemento da lista ligada de postos adjacentes
 	* \author A. Cerqueira
 	*/
-	PostoAdjacente* AdicionarPostoAdjacente(PostoVertice* primeiroPosto, PostoAdjacente* primeiroPostoAdjacente, AdjacenciaFicheiro novoAdjFicheiro);
+	PostoVertice* AdicionarPostoAdjacente(PostoVertice* posto, PostoAdjacente* postoAdjacente);
 
 
 	/**
@@ -222,6 +221,17 @@
 	* \author A. Cerqueira
 	*/
 	Posto* ProcurarPostoPorId(PostoVertice* primeiroPosto, int id);
+
+
+	/**
+	* \brief Procura um posto vertice na lista ligada a partir do seu ID.
+	*
+	* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+	* \param id O id do posto que será procurado
+	* \return O apontador para o vertice do posto com o id selecionado
+	* \author A. Cerqueira
+	*/
+	PostoVertice* ProcurarPostoVerticePorId(PostoVertice* primeiroPosto, int id);
 
 
 	/**

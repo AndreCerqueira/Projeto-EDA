@@ -19,15 +19,9 @@ int main() {
 	MeioMobilidadeLista* primeiroMeio = LerMeiosMobilidade(MEIO_SAVE_FILE_NAME);
 	GestorLista* primeiroGestor = LerGestores(GESTOR_SAVE_FILE_NAME);
 	PostoVertice* primeiroPosto = LerPostos(POSTO_SAVE_FILE_NAME);
+	primeiroPosto = LerPostosAdjacentes(primeiroPosto, POSTO_ADJ_SAVE_FILE_NAME);
+	AluguerLista* primeiroAluguer = LerAlugueres(ALUGUER_SAVE_FILE_NAME);
 
-	// ler postos adjacentes
-	PostoVertice* atual = primeiroPosto;
-	while (atual != NULL)
-	{
-		atual->p.primeiraAdjacencia = LerPostosAdjacentes(primeiroPosto, atual, POSTO_ADJ_SAVE_FILE_NAME);
-		atual = atual->proximo;
-	}
-	
 	// Program loop
 	while (op != 0) {
 		MostrarMenuPrincipal(&op);
@@ -79,7 +73,7 @@ int main() {
 				MostrarMenuListaGestores(primeiroGestor);
 				break;
 			case 16:
-				CarregarDadosIniciais(&primeiroCliente, &primeiroMeio, &primeiroGestor, &primeiroPosto);
+				CarregarDadosIniciais(&primeiroCliente, &primeiroMeio, &primeiroGestor, &primeiroPosto, &primeiroAluguer);
 				break;
 			case 17:
 				MostrarMenuListaPostos(primeiroPosto);
@@ -87,10 +81,15 @@ int main() {
 			case 18:
 				MostrarMenuListaPostosComAdjacencias(primeiroPosto);
 				break;
+			case 19:
+				MostrarMenuListaAlugueres(primeiroAluguer, primeiroCliente, primeiroMeio);
+				break;
 			case 0:
 				LibertarClientes(primeiroCliente);
 				LibertarMeiosMobilidade(primeiroMeio);
 				LibertarGestores(primeiroGestor);
+				LibertarPostos(primeiroPosto);
+				LibertarAlugueres(primeiroAluguer);
 				op = 0;
 			default:
 				break;

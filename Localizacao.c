@@ -88,7 +88,11 @@ PostoVertice* CarregarPostosAdjacentesIniciais(PostoVertice* primeiroPosto, char
 	ApagarPostosAdjacentesFicheiro(saveFilePath);
 	for (atual = primeiroPosto; atual != NULL; atual = atual->proximo) {
 		LibertarPostosAdjacentes(atual->p.primeiraAdjacencia);
-		atual->p.primeiraAdjacencia = LerPostosAdjacentesIniciais(primeiroPosto, atual, filePathInicial);
+	}
+
+	primeiroPosto = LerPostosAdjacentesIniciais(primeiroPosto, filePathInicial);
+
+	for (atual = primeiroPosto; atual != NULL; atual = atual->proximo) {
 		GuardarPostosAdjacentes(saveFilePath, atual->p.primeiraAdjacencia);
 	}
 
@@ -139,13 +143,13 @@ PostoVertice* LerPostosIniciais(char* filePath) {
 /**
 * \brief Lê os dados de um ficheiro .txt e retorna uma lista ligada de postos adjacentes.
 *
+* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
 * \param filePath O caminho do ficheiro .txt com os dados dos postos adjacentes
 * \return O novo apontador para o primeiro elemento da lista ligada de postos adjacentes
 * \author A. Cerqueira
 */
-PostoAdjacente* LerPostosAdjacentesIniciais(PostoVertice* primeiroPosto, PostoVertice* posto, char* filePath) {
+PostoVertice* LerPostosAdjacentesIniciais(PostoVertice* primeiroPosto, char* filePath) {
 	FILE* file;
-	PostoAdjacente* primeiroPostoAdjacente = NULL;
 	char linha[MAX_SIZE];
 
 	file = fopen(filePath, "r");
@@ -153,6 +157,7 @@ PostoAdjacente* LerPostosAdjacentesIniciais(PostoVertice* primeiroPosto, PostoVe
 		return NULL;
 
 	while (fgets(linha, MAX_SIZE, file)) {
+		PostoAdjacente adj;
 		AdjacenciaFicheiro adjFicheiro;
 
 		int numLidos = sscanf(linha, "%d;%d;%f",
@@ -161,15 +166,18 @@ PostoAdjacente* LerPostosAdjacentesIniciais(PostoVertice* primeiroPosto, PostoVe
 			&adjFicheiro.distancia
 		);
 
-		if (numLidos != 3 || posto->p.f.id != adjFicheiro.origemId)
-			continue;
+		PostoVertice* origem = ProcurarPostoVerticePorId(primeiroPosto, adjFicheiro.origemId);
 
-		primeiroPostoAdjacente = AdicionarPostoAdjacente(primeiroPosto, primeiroPostoAdjacente, adjFicheiro);
+		adj.origem = &origem->p;
+		adj.destino = ProcurarPostoPorId(primeiroPosto, adjFicheiro.destinoId);
+		adj.f = adjFicheiro;
+
+		origem = AdicionarPostoAdjacente(origem, &adj);
 	}
 
 	fclose(file);
 
-	return primeiroPostoAdjacente;
+	return primeiroPosto;
 }
 
 
@@ -222,30 +230,32 @@ PostoVertice* LerPostos(char* filePath) {
 * \return O novo apontador para o primeiro elemento da lista ligada de postos adjacentes
 * \author A. Cerqueira
 */
-PostoAdjacente* LerPostosAdjacentes(PostoVertice* primeiroPosto, PostoVertice* posto, char* filePath) {
+PostoVertice* LerPostosAdjacentes(PostoVertice* primeiroPosto, char* filePath) {
 	FILE* file;
 	AdjacenciaFicheiro* adjFicheiro;
-	PostoAdjacente* primeiroPostoAdjacente = NULL;
 
 	file = fopen(filePath, "rb");
 
-	if (file == NULL || posto == NULL)
+	if (file == NULL)
 		return NULL;
 
 	adjFicheiro = (AdjacenciaFicheiro*)malloc(sizeof(AdjacenciaFicheiro));
 
 	while (adjFicheiro != NULL && fread(adjFicheiro, sizeof(AdjacenciaFicheiro), 1, file)) {
+		PostoAdjacente adj;
+		PostoVertice* origem = ProcurarPostoVerticePorId(primeiroPosto, adjFicheiro->origemId);
 
-		if (posto->p.f.id != adjFicheiro->origemId)
-			continue;
+		adj.origem = &origem->p;
+		adj.destino = ProcurarPostoPorId(primeiroPosto, adjFicheiro->destinoId);
+		adj.f = *adjFicheiro;
 
-		primeiroPostoAdjacente = AdicionarPostoAdjacente(primeiroPosto, primeiroPostoAdjacente, *adjFicheiro);
+		origem = AdicionarPostoAdjacente(origem, &adj);
 		adjFicheiro = (AdjacenciaFicheiro*)malloc(sizeof(AdjacenciaFicheiro));
 	}
 
 	fclose(file);
 
-	return primeiroPostoAdjacente;
+	return primeiroPosto;
 }
 
 
@@ -346,26 +356,25 @@ PostoVertice* AdicionarPosto(PostoVertice* primeiroPosto, Posto novoPosto) {
 /**
 * \brief Adiciona um novo Posto adjacente ao inicio da lista ligada.
 *
-* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
-* \param primeiroPostoAdjacente O apontador para o primeiro elemento da lista ligada de postos adjacentes
-* \param novaAdjacencia A adjacência que será adicionada à lista.
+* \param posto O apontador para o posto atual
+* \param postoAdjacente O Posto adjacente que será adicionado à lista.
 * \return O novo apontador para o primeiro elemento da lista ligada de postos adjacentes
 * \author A. Cerqueira
 */
-PostoAdjacente* AdicionarPostoAdjacente(PostoVertice* primeiroPosto, PostoAdjacente* primeiroPostoAdjacente, AdjacenciaFicheiro novoAdjFicheiro) {
+PostoVertice* AdicionarPostoAdjacente(PostoVertice* posto, PostoAdjacente* postoAdjacente) {
 	PostoAdjacente* novoNode = (PostoAdjacente*)malloc(sizeof(PostoAdjacente));
 
 	if (novoNode == NULL)
-		return primeiroPostoAdjacente;
+		return posto;
 
-	novoNode->f = novoAdjFicheiro;
-	novoNode->origem = ProcurarPostoPorId(primeiroPosto, novoAdjFicheiro.origemId);
-	novoNode->destino = ProcurarPostoPorId(primeiroPosto, novoAdjFicheiro.destinoId);
-	novoNode->proximo = (primeiroPostoAdjacente != NULL) ? primeiroPostoAdjacente : NULL;
+	novoNode->f = postoAdjacente->f;
+	novoNode->origem = postoAdjacente->origem;
+	novoNode->destino = postoAdjacente->destino;
+	novoNode->proximo = (posto->p.primeiraAdjacencia != NULL) ? posto->p.primeiraAdjacencia : NULL;
 
-	primeiroPostoAdjacente = novoNode;
+	posto->p.primeiraAdjacencia = novoNode;
 
-	return primeiroPostoAdjacente;
+	return posto;
 }
 
 
@@ -411,6 +420,27 @@ Posto* ProcurarPostoPorId(PostoVertice* primeiroPosto, int id) {
 	while (postoAtual != NULL) {
 		if (postoAtual->p.f.id == id)
 			return &postoAtual->p;
+		postoAtual = postoAtual->proximo;
+	}
+
+	return NULL;
+}
+
+
+/**
+* \brief Procura um posto vertice na lista ligada a partir do seu ID.
+*
+* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+* \param id O id do posto que será procurado
+* \return O apontador para o vertice do posto com o id selecionado
+* \author A. Cerqueira
+*/
+PostoVertice* ProcurarPostoVerticePorId(PostoVertice* primeiroPosto, int id) {
+	PostoVertice* postoAtual = primeiroPosto;
+
+	while (postoAtual != NULL) {
+		if (postoAtual->p.f.id == id)
+			return postoAtual;
 		postoAtual = postoAtual->proximo;
 	}
 

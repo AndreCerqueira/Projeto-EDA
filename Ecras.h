@@ -16,12 +16,13 @@
 	#include "Cliente.h"
 	#include "Gestor.h"
 	#include "Localizacao.h"
+	#include "Alugueres.h"
 	#include "Utils.h"
 
 
 	void MostrarMenuLogin();
 	void MostrarMenuPrincipal(int* op);
-	void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidadeLista** primeiroMeio, GestorLista** primeiroGestor, PostoVertice** primeiroPosto);
+	void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidadeLista** primeiroMeio, GestorLista** primeiroGestor, PostoVertice** primeiroPosto, AluguerLista** primeiroAluguer);
 	
 	void MostrarMenuAdicionarCliente(ClienteLista** primeiroCliente);
 	void MostrarMenuEditarCliente(ClienteLista* primeiroCliente);
@@ -42,5 +43,7 @@
 	void MostrarMenuListaGestores(GestorLista* primeiroGestor);
 	void MostrarMenuListaPostos(PostoVertice* primeiroPosto);
 	void MostrarMenuListaPostosComAdjacencias(PostoVertice* primeiroPosto);
+
+	void MostrarMenuListaAlugueres(AluguerLista* primeiroAluguer, ClienteLista* primeiroCliente, MeioMobilidadeLista* primeiroMeio);
 
 #endif

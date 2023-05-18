@@ -14,9 +14,12 @@
 	 // Includes
 	#include "Utils.h"
 	#include "Cliente.h"
+	#include "Localizacao.h"
 	#include "MeioMobilidade.h"
 
 	// Constants
+	#define DATA_LENGHT 28
+
 	#define ALUGUER_INITDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/Alugueres.txt"
 	#define ALUGUER_SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/Alugueres.dat"
 	#define PRECO_ALUGUER_INITDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/PrecosAluguer.txt"
@@ -32,8 +35,9 @@
 		int id;
 		int clienteId;
 		int meioId;
-		time_t dataInicio;
-		time_t dataFim;
+		float kmPercorridos;
+		char dataInicio[DATA_LENGHT];
+		char dataFim[DATA_LENGHT];
 		bool ativo;
 	};
 
@@ -43,9 +47,9 @@
 	};
 
 	struct PrecoAluguer {
-		time_t dataInicio;
+		char dataInicio[DATA_LENGHT];
 		int meioId;
-		float preco;
+		float precoPorKm;
 	};
 
 	struct PrecoAluguerLista {

@@ -37,7 +37,7 @@
       <Filter>Arquivos de Recurso</Filter>
     </ClCompile>
     <ClCompile Include="Alugueres.c">
-      <Filter>Arquivos de Origem</Filter>
+      <Filter>Arquivos de Recurso</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -68,15 +68,16 @@ AluguerLista* LerAlugueresIniciais(char* filePath) {
 	while (fgets(linha, MAX_SIZE, file)) {
 		Aluguer novoAluguer;
 
-		int numLidos = sscanf(linha, "%d;%d;%d;%[^;];%[^;];%d",
+		int numLidos = sscanf(linha, "%d;%d;%d;%f;%[^;];%[^;];%d",
 			&novoAluguer.id,
 			&novoAluguer.clienteId,
 			&novoAluguer.meioId,
-			novoAluguer.dataInicio, // arranjar
-			novoAluguer.dataFim, // arranjar
+			&novoAluguer.kmPercorridos,
+			novoAluguer.dataInicio,
+			novoAluguer.dataFim,
 			&novoAluguer.ativo);
 
-		if (numLidos != 6)
+		if (numLidos != 7)
 			continue;
 
 		primeiroAluguer = AdicionarAluguer(primeiroAluguer, novoAluguer);

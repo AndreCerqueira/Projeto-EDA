@@ -64,7 +64,7 @@ void MostrarMenuPrincipal(int* op) {
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
 	puts("| 2- Editar Clientes\t\t\t   | 13- Editar Gestores\t\t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
-	puts("| 3- Remover Clientes\t\t\t   | 14- Remover Gestores\t\t\t|");
+	puts("| 3- Remover Clientes(X)\t\t   | 14- Remover Gestores(X)\t\t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
 	puts("| 4- Listar Clientes\t\t\t   | 15- Listar Gestores\t\t\t|");
 	puts("+---------------------------------------------------------------------------------------+");
@@ -72,15 +72,17 @@ void MostrarMenuPrincipal(int* op) {
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
 	puts("| 6- Editar Meios de mobilidade\t\t   | 18- Listar Postos com Adjacencias\t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
-	puts("| 7- Remover Meios de mobilidade\t   |                   \t\t\t\t|");
+	puts("| 7- Remover Meios de mobilidade(X)\t   | 19- Listar todos alugueres(X)     \t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
-	puts("| 8- Alugar Meio de mobilidade\t\t   |                   \t\t\t\t|");
+	puts("| 8- Alugar Meio de mobilidade(X)\t\t   | 20- Listar alugueres ativos(X)    \t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
-	puts("| 9- Listar Meios de mobilidade\t\t   |                   \t\t\t\t|");
+	puts("| 9- Listar Meios de mobilidade\t\t   | 21- Desalugar Meio de mobilidade(X)\t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
-	puts("| 10- Listar ordem decrescente de autonomia|                   \t\t\t\t|");
+	puts("| 10- Listar ordem decrescente de autonomia| 22- Listar preços(X)             \t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
-	puts("| 11- Procurar Meios em localização\t   |                   \t\t\t\t|");
+	puts("| 11- Procurar Meios em localização\t   | 23- Adicionar preço(X)              \t\t|");
+	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
+	puts("| 24- Problema Caixeiro Viajante(X)\t   |               \t\t\t\t|");
 	puts("+---------------------------------------------------------------------------------------+");
 	puts("| 16- Carregar dados iniciais\t\t\t\t\t\t\t\t|");
 	puts("+---------------------------------------------------------------------------------------+");
@@ -94,7 +96,7 @@ void MostrarMenuPrincipal(int* op) {
 
 
 // Apaga os dados nos ficheiros binarios e carrega os dados iniciais
-void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidadeLista** primeiroMeio, GestorLista** primeiroGestor, PostoVertice** primeiroPosto) {
+void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidadeLista** primeiroMeio, GestorLista** primeiroGestor, PostoVertice** primeiroPosto, AluguerLista** primeiroAluguer) {
 	
 	// Variaveis
 	int op = -1;
@@ -110,6 +112,7 @@ void CarregarDadosIniciais(ClienteLista** primeiroCliente, MeioMobilidadeLista**
 	*primeiroGestor = CarregarGestoresIniciais(*primeiroGestor, GESTOR_INITDATA_FILE_NAME, GESTOR_SAVE_FILE_NAME);
 	*primeiroPosto = CarregarPostosIniciais(*primeiroPosto, POSTO_INITDATA_FILE_NAME, POSTO_SAVE_FILE_NAME);
 	*primeiroPosto = CarregarPostosAdjacentesIniciais(*primeiroPosto, POSTO_ADJ_INITDATA_FILE_NAME, POSTO_ADJ_SAVE_FILE_NAME);
+	*primeiroAluguer = CarregarAlugueresIniciais(*primeiroAluguer, ALUGUER_INITDATA_FILE_NAME, ALUGUER_SAVE_FILE_NAME);
 }
 
 
@@ -661,6 +664,41 @@ void MostrarMenuListaPostosComAdjacencias(PostoVertice* primeiroPosto) {
 	}
 
 	puts("+------------------------------------------------------------------------+");
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+}
+
+
+
+// Lista de alugueres
+void MostrarMenuListaAlugueres(AluguerLista* primeiroAluguer, ClienteLista* primeiroCliente, MeioMobilidadeLista* primeiroMeio) {
+
+	// Mostrar os dados 
+	system("cls");
+	puts("+-------------------------------------------------------------------------------------------------------------------+");
+	puts("|                                                Lista de Alugueres                                                 |");
+	puts("+-------------------------------------------------------------------------------------------------------------------+");
+	puts("|  ID  |      Cliente       |        Meio        |      Data Inicio     |       Data Fim       |   Km   |   Custo   |");
+	puts("+-------------------------------------------------------------------------------------------------------------------+");
+
+	// Mostrar os dados dos clientes
+	AluguerLista* aluguerAtual = primeiroAluguer;
+	while (aluguerAtual != NULL) {
+
+		if (!aluguerAtual->a.ativo)
+			continue;
+
+		Cliente* cliente = ProcurarClientePorId(primeiroCliente, aluguerAtual->a.clienteId);
+		MeioMobilidade* meio = ProcurarMeioMobilidadePorId(primeiroMeio, aluguerAtual->a.meioId);
+
+		printf("| %-4d | %-18s | %-18s | %-4s | %-4s | %-6.2f | %-9d |\n", aluguerAtual->a.id, cliente->nome, TipoMeioMobilidadeToString(meio->tipo), aluguerAtual->a.dataInicio, aluguerAtual->a.dataFim, aluguerAtual->a.kmPercorridos, 0);
+
+		aluguerAtual = aluguerAtual->proximo;
+	}
+
+	puts("+-------------------------------------------------------------------------------------------------------------------+");
 
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
