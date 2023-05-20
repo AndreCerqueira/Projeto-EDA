@@ -17,6 +17,8 @@
 	#include "Localizacao.h"
 
 	// Constants
+	#define BATERIA_MINIMA_PARA_RECOLHA 50
+
 	#define MEIO_INITDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/MeiosMobilidade.txt"
 	#define MEIO_SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/MeiosMobilidade.dat"
 
@@ -32,12 +34,14 @@
 	// Structs
 	typedef struct MeioMobilidade MeioMobilidade;
 	typedef struct MeioMobilidadeLista MeioMobilidadeLista;
+	typedef struct Camiao Camiao;
 
 	struct MeioMobilidade {
 		int id;
 		TipoMeioMobilidade tipo;
 		float cargaBateria;
 		float custoAluguer;
+		float peso; // Kg
 		int postoId;
 		bool ativo;
 	};
@@ -47,6 +51,11 @@
 		MeioMobilidadeLista* proximo;
 	};
 
+	struct Camiao {
+		float capacidadeMaxima; // Kg
+		PostoVertice* localizacaoAtual;
+	};
+	
 
 	/**
 	* \brief Liberta a memória da lista ligada de meios mobilidade
@@ -194,4 +203,31 @@
 	*/
 	int ProcurarProximoIdMeioMobilidade(MeioMobilidadeLista* primeiroMeio);
 
+
+	/**
+	* \brief Recolhe todos os meios de mobilidade que estão numa determinada localização, e que tenham menos de 50% de bateria.
+	*
+	* \param camiao O apontador para o camiao que vai recolher os meios de mobilidade
+	* \param posto O apontador para o posto onde o camiao se dirige
+	* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+	* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+	* \return Os meios de mobilidade recolhidos pelo camiao no posto
+	* \author A. Cerqueira
+	*/
+	MeioMobilidadeLista* RecolherMeiosMobilidadeEmPosto(Camiao* camiao, PostoVertice* posto, PostoVertice* primeiroPosto, MeioMobilidadeLista* primeiroMeio);
+	
+
+	/**
+	* \brief Recolhe todos os meios de mobilidade em todas as localizações uma de cada vez e volta até a origem no final de cada
+	*
+	* \param camiao O apontador para o camiao que vai recolher os meios de mobilidade
+	* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+	* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+	* \return Km percorridos pelo camiao
+	* \author A. Cerqueira
+	*/
+	MeioMobilidadeLista* RecolherMeiosMobilidade(Camiao* camiao, PostoVertice* primeiroPosto, MeioMobilidadeLista* primeiroMeio, char* saveFilePath, int* kmPercorridos);
+	
 #endif
+
+

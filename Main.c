@@ -22,6 +22,10 @@ int main() {
 	primeiroPosto = LerPostosAdjacentes(primeiroPosto, POSTO_ADJ_SAVE_FILE_NAME);
 	AluguerLista* primeiroAluguer = LerAlugueres(ALUGUER_SAVE_FILE_NAME);
 
+	Camiao camiao;
+	camiao.capacidadeMaxima = 10000;
+	camiao.localizacaoAtual = primeiroPosto;
+
 	// Program loop
 	while (op != 0) {
 		MostrarMenuPrincipal(&op);
@@ -83,6 +87,9 @@ int main() {
 				break;
 			case 19:
 				MostrarMenuListaAlugueres(primeiroAluguer, primeiroCliente, primeiroMeio);
+				break;
+			case 20:
+				RecolherMeiosMobilidadeEcra(&camiao, primeiroPosto, &primeiroMeio);
 				break;
 			case 0:
 				LibertarClientes(primeiroCliente);

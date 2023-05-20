@@ -48,4 +48,6 @@
 
 	void MostrarMenuListaAlugueres(AluguerLista* primeiroAluguer, ClienteLista* primeiroCliente, MeioMobilidadeLista* primeiroMeio);
 
+	void RecolherMeiosMobilidadeEcra(Camiao* camiao, PostoVertice* primeiroPosto, MeioMobilidadeLista** primeiroMeio);
+	
 #endif

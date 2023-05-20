@@ -69,15 +69,16 @@ MeioMobilidadeLista* LerMeiosMobilidadeIniciais(char* filePath) {
 	while (fgets(linha, MAX_SIZE, file)) {
 		MeioMobilidade novoMeio;
 
-		int numLidos = sscanf(linha, "%d;%d;%f;%f;%d;%d",
+		int numLidos = sscanf(linha, "%d;%d;%f;%f;%f;%d;%d",
 			&novoMeio.id,
 			(int*)&novoMeio.tipo,
 			&novoMeio.cargaBateria,
 			&novoMeio.custoAluguer,
+			&novoMeio.peso,
 			&novoMeio.postoId,
 			(int*)&novoMeio.ativo);
 
-		if (numLidos != 6)
+		if (numLidos != 7)
 			continue;
 
 		primeiroMeio = AdicionarMeioMobilidade(primeiroMeio, novoMeio);
@@ -386,4 +387,68 @@ int ProcurarProximoIdMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
 	}
 
 	return id + 1;
+}
+
+
+/**
+* \brief Recolhe todos os meios de mobilidade que estão numa determinada localização, e que tenham menos de 50% de bateria.
+*
+* \param camiao O apontador para o camiao que vai recolher os meios de mobilidade
+* \param posto O apontador para o posto onde o camiao se dirige
+* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+* \return Os meios de mobilidade recolhidos pelo camiao no posto
+* \author A. Cerqueira
+*/
+MeioMobilidadeLista* RecolherMeiosMobilidadeEmPosto(Camiao* camiao, PostoVertice* posto, PostoVertice* primeiroPosto, MeioMobilidadeLista* primeiroMeio) {
+	float capacidadeOcupada = 0;
+	MeioMobilidadeLista* meioAtual = primeiroMeio;
+	
+	while (meioAtual != NULL) {
+		
+		if (meioAtual->m.postoId != posto->p.f.id || meioAtual->m.cargaBateria > BATERIA_MINIMA_PARA_RECOLHA) {
+			meioAtual = meioAtual->proximo;
+			continue;
+		}
+			
+		// Verificar se o caminhão tem capacidade para recolher o meio de mobilidade
+		if (capacidadeOcupada + meioAtual->m.peso > camiao->capacidadeMaxima) {
+			break;
+		}
+
+		// Atualizar o meio de mobilidade
+		meioAtual->m.postoId = camiao->localizacaoAtual->p.f.id;
+		capacidadeOcupada += meioAtual->m.peso;
+		
+		meioAtual = meioAtual->proximo;
+	}
+
+	return primeiroMeio;
+}
+
+
+/**
+* \brief Recolhe todos os meios de mobilidade em todas as localizações uma de cada vez e volta até a origem no final de cada
+*
+* \param camiao O apontador para o camiao que vai recolher os meios de mobilidade
+* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+* \return Km percorridos pelo camiao
+* \author A. Cerqueira
+*/
+MeioMobilidadeLista* RecolherMeiosMobilidade(Camiao* camiao, PostoVertice* primeiroPosto, MeioMobilidadeLista* primeiroMeio, char* saveFilePath, int* kmPercorridos) {
+	PostoVertice* postoAtual = primeiroPosto;
+	*kmPercorridos = 0;
+
+	while (postoAtual != NULL) {
+		Percurso* percurso = ProcurarPercursoMaisRapido(camiao->localizacaoAtual, postoAtual, primeiroPosto);
+		*kmPercorridos += ContarDistanciaEmPercurso(percurso);
+		primeiroMeio = RecolherMeiosMobilidadeEmPosto(camiao, postoAtual, primeiroPosto, primeiroMeio);
+
+		postoAtual = postoAtual->proximo;
+	}
+
+	GuardarMeiosMobilidade(saveFilePath, primeiroMeio);
+
+	return primeiroMeio;
 }

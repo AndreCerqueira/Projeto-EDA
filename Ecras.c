@@ -74,8 +74,8 @@ void MostrarMenuPrincipal(int* op) {
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
 	puts("| 7- Remover Meios de mobilidade\t   | 19- Listar todos alugueres        \t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
-	puts("| 8- Alugar Meio de mobilidade\t\t   | 20- Problema Caixeiro Viajante\t\t|");
-	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
+	puts("| 8- Alugar Meio de mobilidade\t\t   | 20- (Problema Caixeiro Viajante)\t\t|");
+	puts("|\t\t\t\t\t   |     Recolher meios de transporte\t\t|");
 	puts("| 9- Listar Meios de mobilidade\t\t   | \t\t\t\t\t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
 	puts("| 10- Listar ordem decrescente de autonomia| \t\t\t\t\t\t|");
@@ -434,11 +434,11 @@ void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteL
 	
 	// Mostrar os dados 
 	system("cls");
-	puts("+----------------------------------------------------------------------------------+");
-	puts("|                             Lista de Meios de Mobilidade                         |");
-	puts("+----------------------------------------------------------------------------------+");
-	puts("|  ID  |        Tipo        | Carga Bateria | Custo Aluguer |      Localizacao     |");
-	puts("+----------------------------------------------------------------------------------+");
+	puts("+---------------------------------------------------------------------------------------------+");
+	puts("|                                  Lista de Meios de Mobilidade                               |");
+	puts("+---------------------------------------------------------------------------------------------+");
+	puts("|  ID  |        Tipo        | Carga Bateria | Custo Aluguer |   Peso   |      Localizacao     |");
+	puts("+---------------------------------------------------------------------------------------------+");
 
 	// Mostrar os dados dos clientes
 	MeioMobilidadeLista* meioAtual = primeiroMeio;
@@ -447,13 +447,13 @@ void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteL
 		{
 			Posto* posto = ProcurarPostoPorId(primeiroPosto, meioAtual->m.postoId);
 
-			printf("| %-4d | %-18s | %13.2f | %13.2f | %-20s |\n", meioAtual->m.id, TipoMeioMobilidadeToString(meioAtual->m.tipo), meioAtual->m.cargaBateria, meioAtual->m.custoAluguer, posto->f.nome);
+			printf("| %-4d | %-18s | %13.2f | %13.2f | %8.2f | %-20s |\n", meioAtual->m.id, TipoMeioMobilidadeToString(meioAtual->m.tipo), meioAtual->m.cargaBateria, meioAtual->m.custoAluguer, meioAtual->m.peso, posto->f.nome);
 		}
 
 		meioAtual = meioAtual->proximo;
 	}
 
-	puts("+----------------------------------------------------------------------------------+");
+	puts("+---------------------------------------------------------------------------------------------+");
 
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
@@ -721,6 +721,24 @@ void MostrarMenuListaAlugueres(AluguerLista* primeiroAluguer, ClienteLista* prim
 	}
 
 	puts("+-------------------------------------------------------------------------------------------------------------------+");
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+}
+
+
+void RecolherMeiosMobilidadeEcra(Camiao* camiao, PostoVertice* primeiroPosto, MeioMobilidadeLista** primeiroMeio) {
+	
+	int kmPercorridos = 0;
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+
+	*primeiroMeio = RecolherMeiosMobilidade(camiao, primeiroPosto, *primeiroMeio, MEIO_SAVE_FILE_NAME, &kmPercorridos);
+
+	printf("Km percorridos pelo camião: %d\n", kmPercorridos);
 
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
