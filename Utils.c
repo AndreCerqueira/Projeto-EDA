@@ -73,6 +73,107 @@ void GetDate(char* date)
 	strftime(date, 11, "%d/%m/%Y", &timeinfo);
 }
 
+// read a data char* 2021-04-08T00:00:00Z by parameter and return by reference the year, month and day, and hour, minute and second
+void GetDateAndTime(char* date, int* year, int* month, int* day, int* hour, int* minute, int* second)
+{
+	// Variables
+	char* token;
+	char* next_token;
+	char* dateCopy = (char*)malloc(strlen(date) + 1);
+	strcpy(dateCopy, date);
+
+	// Get year
+	token = strtok_s(dateCopy, "-", &next_token);
+	*year = atoi(token);
+
+	// Get month
+	token = strtok_s(NULL, "-", &next_token);
+	*month = atoi(token);
+
+	// Get day
+	token = strtok_s(NULL, "T", &next_token);
+	*day = atoi(token);
+
+	// Get hour
+	token = strtok_s(NULL, ":", &next_token);
+	*hour = atoi(token);
+
+	// Get minute
+	token = strtok_s(NULL, ":", &next_token);
+	*minute = atoi(token);
+
+	// Get second
+	token = strtok_s(NULL, "Z", &next_token);
+	*second = atoi(token);
+
+	// Free memory
+	free(dateCopy);
+}
+
+
+// check witch date "2021-04-08T00:00:00Z" between two is the most recent
+int CompareDate(char* date1, char* date2)
+{
+	// Variables
+	int year1, month1, day1, hour1, minute1, second1;
+	int year2, month2, day2, hour2, minute2, second2;
+
+	// Get date and time
+	GetDateAndTime(date1, &year1, &month1, &day1, &hour1, &minute1, &second1);
+	GetDateAndTime(date2, &year2, &month2, &day2, &hour2, &minute2, &second2);
+
+	// Compare year
+	if (year1 > year2)
+		return 1;
+	else if (year1 < year2)
+		return 2;
+
+	// Compare month
+	if (month1 > month2)
+		return 1;
+	else if (month1 < month2)
+		return 2;
+
+	// Compare day
+	if (day1 > day2)
+		return 1;
+	else if (day1 < day2)
+		return 2;
+
+	// Compare hour
+	if (hour1 > hour2)
+		return 1;
+	else if (hour1 < hour2)
+		return 2;
+
+	// Compare minute
+	if (minute1 > minute2)
+		return 1;
+	else if (minute1 < minute2)
+		return 2;
+
+	// Compare second
+	if (second1 > second2)
+		return 1;
+	else if (second1 < second2)
+		return 2;
+
+	// Return 0 if equal
+	return 0;
+}
+
+
+// get current date like "2021-04-08T00:00:00Z"
+void GetCurrentDate(char* date)
+{
+	// Variables
+	time_t t = time(NULL);
+	struct tm tm = *localtime(&t);
+
+	// Format date string
+	sprintf(date, "%d-%02d-%02dT%02d:%02d:%02dZ", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+}
+
 
 /*
 	Function to calculate the positive cases average returning the percentage

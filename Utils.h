@@ -37,5 +37,8 @@
 	void GetDate(char* date);
 	float Percentage(int nums, int totalNum);
 	float Average(int* nums, int n);
+	void GetDateAndTime(char* date, int* year, int* month, int* day, int* hour, int* minute, int* second);
+	void GetCurrentDate(char* date);
+	int CompareDate(char* date1, char* date2);
 
 #endif

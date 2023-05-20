@@ -1,6 +1,6 @@
 /*****************************************************************//**
  * \file   Alugueres.c
- * \brief  Funções de Alugueres
+ * \brief  Funções de Alugueres e Preços de Aluguer.
  *
  * \author A. Cerqueira
  * \date   March 2023
@@ -228,3 +228,59 @@ int ProcurarProximoIdAluguer(AluguerLista* primeiroAluguer) {
 	return id + 1;
 }
 
+
+/**
+ * \brief Alugar um meio de mobilidade
+ *
+ * \param meioMobilidade O meio de mobilidade que será alugado
+ * \param cliente O cliente que vai alugar o meio de mobilidade
+ * \param primeiroAluguer O apontador para o primeiro elemento da lista ligada de alugueres
+ * \param destino O posto de destino ao qual o cliente pretende ir
+ * \param percurso O percurso que o cliente vai fazer
+ * \return O apontador para o primeiro elemento da lista ligada de alugueres
+ */
+AluguerLista* AlugarMeioMobilidade(MeioMobilidade* meioMobilidade, Cliente* cliente, AluguerLista* primeiroAluguer, Posto destino, Percurso* percurso) {
+
+	// Verificações iniciais
+	if (!ClienteTemSaldoSuficiente(*cliente, meioMobilidade->custoAluguer))
+		return primeiroAluguer; // return false;
+
+	if (meioMobilidade->ativo == false)
+		return primeiroAluguer; // false;
+
+	// Criar aluguer
+	Aluguer novoAluguer;
+	novoAluguer.clienteId = cliente->id;
+	novoAluguer.meioId = meioMobilidade->id;
+	novoAluguer.kmPercorridos = ContarDistanciaEmPercurso(percurso);
+	novoAluguer.id = NULL;
+	GetCurrentDate(novoAluguer.dataFim);
+	GetCurrentDate(novoAluguer.dataInicio);
+
+	primeiroAluguer = AdicionarAluguer(primeiroAluguer, novoAluguer);
+
+	// Atualizar dados
+	cliente->saldo -= meioMobilidade->custoAluguer;
+	meioMobilidade->postoId = destino.f.id;
+
+	return primeiroAluguer;
+	// return true;
+}
+
+
+/**
+* \brief Calcula o custo de um Aluguer com base no meio de mobilidade utilizado e nos km percorridos.
+*
+* \param aluguer O Aluguer que será calculado o custo
+* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de Meios de Mobilidade
+* \return O custo do Aluguer, multiplicando o custo do meio de mobilidade pelo numero de km percorridos
+* \author A. Cerqueira
+*/
+float CalcularCustoAluguer(Aluguer aluguer, MeioMobilidadeLista* primeiroMeio) {
+	MeioMobilidade* meio = ProcurarMeioMobilidadePorId(primeiroMeio, aluguer.meioId);
+
+	if (meio == NULL)
+		return 0;
+	
+	return meio->custoAluguer * aluguer.kmPercorridos;
+}

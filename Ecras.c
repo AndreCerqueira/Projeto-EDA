@@ -64,7 +64,7 @@ void MostrarMenuPrincipal(int* op) {
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
 	puts("| 2- Editar Clientes\t\t\t   | 13- Editar Gestores\t\t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
-	puts("| 3- Remover Clientes(X)\t\t   | 14- Remover Gestores(X)\t\t\t|");
+	puts("| 3- Remover Clientes\t\t\t   | 14- Remover Gestores\t\t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
 	puts("| 4- Listar Clientes\t\t\t   | 15- Listar Gestores\t\t\t|");
 	puts("+---------------------------------------------------------------------------------------+");
@@ -72,17 +72,15 @@ void MostrarMenuPrincipal(int* op) {
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
 	puts("| 6- Editar Meios de mobilidade\t\t   | 18- Listar Postos com Adjacencias\t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
-	puts("| 7- Remover Meios de mobilidade(X)\t   | 19- Listar todos alugueres(X)     \t\t|");
+	puts("| 7- Remover Meios de mobilidade\t   | 19- Listar todos alugueres        \t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
-	puts("| 8- Alugar Meio de mobilidade(X)\t\t   | 20- Listar alugueres ativos(X)    \t\t|");
+	puts("| 8- Alugar Meio de mobilidade\t\t   | 20- Problema Caixeiro Viajante\t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
-	puts("| 9- Listar Meios de mobilidade\t\t   | 21- Desalugar Meio de mobilidade(X)\t\t|");
+	puts("| 9- Listar Meios de mobilidade\t\t   | \t\t\t\t\t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
-	puts("| 10- Listar ordem decrescente de autonomia| 22- Listar preços(X)             \t\t|");
+	puts("| 10- Listar ordem decrescente de autonomia| \t\t\t\t\t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
-	puts("| 11- Procurar Meios em localização\t   | 23- Adicionar preço(X)              \t\t|");
-	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
-	puts("| 24- Problema Caixeiro Viajante(X)\t   |               \t\t\t\t|");
+	puts("| 11- Procurar Meios em localização\t   | \t\t\t\t\t\t|");
 	puts("+---------------------------------------------------------------------------------------+");
 	puts("| 16- Carregar dados iniciais\t\t\t\t\t\t\t\t|");
 	puts("+---------------------------------------------------------------------------------------+");
@@ -278,12 +276,8 @@ void MostrarMenuAdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio) {
 	scanf_s("%f", &novoMeio.cargaBateria);
 	fflush(stdin);
 	
-	printf("Insira o custo de aluguer do meio de mobilidade: ");
-	scanf_s("%f", &novoMeio.custoAluguer);
-	fflush(stdin);
-	
 	printf("Insira a localizacao do meio de mobilidade: ");
-	scanf_s("%s", novoMeio.localizacao, LOCALIZACAO_LENGHT);
+	scanf_s("%d", &novoMeio.postoId);
 	fflush(stdin);
 	
 	// Confirmar ou cancelar a respetiva operação.
@@ -324,12 +318,8 @@ void MostrarMenuEditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
 	scanf_s("%f", &novoMeio.cargaBateria);
 	fflush(stdin);
 	
-	printf("Insira o custo de aluguer do meio de mobilidade: ");
-	scanf_s("%f", &novoMeio.custoAluguer);
-	fflush(stdin);
-	
-	printf("Insira a localizacao do meio de mobilidade: ");
-	scanf_s("%s", novoMeio.localizacao, LOCALIZACAO_LENGHT);
+	printf("Insira o id do posto do meio de mobilidade: ");
+	scanf_s("%d", novoMeio.postoId);
 	fflush(stdin);
 	
 	// Confirmar ou cancelar a respetiva operação.
@@ -370,10 +360,10 @@ void MostrarMenuRemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
 
 
 // Alugar Meio de mobilidade
-void MostrarMenuAlugarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente) {
+void MostrarMenuAlugarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente, PostoVertice* primeiroPosto, AluguerLista** primeiroAluguer) {
 
 	// Variaveis
-	int clienteId, meioId;
+	int clienteId, meioId, destinoId;
 
 	// Inserir os dados 
 	system("cls");
@@ -389,6 +379,10 @@ void MostrarMenuAlugarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteL
 	scanf_s("%d", &meioId);
 	fflush(stdin);
 
+	printf("Insira o id do posto de destino: ");
+	scanf_s("%d", &destinoId);
+	fflush(stdin);
+
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
 		return;
@@ -399,40 +393,67 @@ void MostrarMenuAlugarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteL
 	
 	if (cliente == NULL || meio == NULL)
 		return;
+
+	Aluguer novoAluguer;
+	novoAluguer.clienteId = cliente->id;
+	novoAluguer.meioId = meio->id;
+	novoAluguer.id = ProcurarProximoIdAluguer(*primeiroAluguer);
+	novoAluguer.kmPercorridos = 0;
+	novoAluguer.ativo = 1;
+	GetCurrentDate(novoAluguer.dataFim);
+	GetCurrentDate(novoAluguer.dataInicio);
 	
-	bool meioAlugado = AlugarMeioMobilidade(meio, cliente);
+	Posto* origem = ProcurarPostoPorId(primeiroPosto, meio->postoId);
+	Posto* destino = ProcurarPostoPorId(primeiroPosto, destinoId);
+
+	// Ver percurso
+	Percurso* percurso = ProcurarPercursoMaisRapido(origem, destino, primeiroPosto);
+
+	puts("Percurso: ");
+	Percurso* aux = percurso;
+	while (aux != NULL) {
+		printf("%s -> ", aux->vertice->p.f.nome);
+		aux = aux->proximo;
+	}
+	puts("Fim");
+
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+
+	*primeiroAluguer = AlugarMeioMobilidade(meio, cliente, *primeiroAluguer, *destino, percurso);
 	
-	if (meioAlugado)
-		GuardarMeiosMobilidade(MEIO_SAVE_FILE_NAME, primeiroMeio);
+	GuardarMeiosMobilidade(MEIO_SAVE_FILE_NAME, primeiroMeio);
+	GuardarClientes(CLIENTE_SAVE_FILE_NAME, primeiroCliente);
+	GuardarAlugueres(ALUGUER_SAVE_FILE_NAME, *primeiroAluguer);
 }
 
 
 // Lista de Meios de mobilidade
-void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente) {
+void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente, PostoVertice* primeiroPosto) {
 	
 	// Mostrar os dados 
 	system("cls");
-	puts("+---------------------------------------------------------------------------------------------------------+");
-	puts("|                                         Lista de Meios de Mobilidade                                    |");
-	puts("+---------------------------------------------------------------------------------------------------------+");
-	puts("|  ID  |        Tipo        | Carga Bateria | Custo Aluguer |      Localizacao     |     Alugado por      |");
-	puts("+---------------------------------------------------------------------------------------------------------+");
+	puts("+----------------------------------------------------------------------------------+");
+	puts("|                             Lista de Meios de Mobilidade                         |");
+	puts("+----------------------------------------------------------------------------------+");
+	puts("|  ID  |        Tipo        | Carga Bateria | Custo Aluguer |      Localizacao     |");
+	puts("+----------------------------------------------------------------------------------+");
 
 	// Mostrar os dados dos clientes
 	MeioMobilidadeLista* meioAtual = primeiroMeio;
 	while (meioAtual != NULL) {
 		if (meioAtual->m.ativo == true)
 		{
-			Cliente* cliente = ProcurarClientePorId(primeiroCliente, meioAtual->m.alugadoPorId);
-			char* nomeCliente = cliente == NULL ? "" : cliente->nome;
+			Posto* posto = ProcurarPostoPorId(primeiroPosto, meioAtual->m.postoId);
 
-			printf("| %-4d | %-18s | %13.2f | %13.2f | %-20s | %-20s |\n", meioAtual->m.id, TipoMeioMobilidadeToString(meioAtual->m.tipo), meioAtual->m.cargaBateria, meioAtual->m.custoAluguer, meioAtual->m.localizacao, nomeCliente);
+			printf("| %-4d | %-18s | %13.2f | %13.2f | %-20s |\n", meioAtual->m.id, TipoMeioMobilidadeToString(meioAtual->m.tipo), meioAtual->m.cargaBateria, meioAtual->m.custoAluguer, posto->f.nome);
 		}
 
 		meioAtual = meioAtual->proximo;
 	}
 
-	puts("+---------------------------------------------------------------------------------------------------------+");
+	puts("+----------------------------------------------------------------------------------+");
 
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
@@ -441,18 +462,18 @@ void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteL
 
 
 // Lista de Meios de mobilidade por autonomia
-void MostrarMenuListaMeiosMobilidadePorAutonomia(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente) {
+void MostrarMenuListaMeiosMobilidadePorAutonomia(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente, PostoVertice* primeiroPosto) {
 	primeiroMeio = OrdenarMeiosMobilidadePorAutonomia(primeiroMeio);
-	MostrarMenuListaMeiosMobilidade(primeiroMeio, primeiroCliente);
+	MostrarMenuListaMeiosMobilidade(primeiroMeio, primeiroCliente, primeiroPosto);
 	primeiroMeio = OrdenarMeiosMobilidadePorId(primeiroMeio);
 }
 
 
 // Lista de Meios de mobilidade de uma localizacao
-void MostrarMenuListaMeiosMobilidadeLocalizacao(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente) {
+void MostrarMenuListaMeiosMobilidadeLocalizacao(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente, PostoVertice* primeiroPosto) {
 
 	// Variaveis
-	char localizacao[LOCALIZACAO_LENGHT];
+	char geocode[GEOCODE_LENGHT];
 
 	// Inserir os dados 
 	system("cls");
@@ -461,14 +482,14 @@ void MostrarMenuListaMeiosMobilidadeLocalizacao(MeioMobilidadeLista* primeiroMei
 	puts("+----------------------------------------+");
 
 	printf("Insira o geocódigo da localização: ");
-	scanf_s("%s", localizacao, LOCALIZACAO_LENGHT);
+	scanf_s("%s", geocode, GEOCODE_LENGHT);
 	fflush(stdin);
 
 	// ProcurarMeiosMobilidadePorLocalizacao
-	MeioMobilidadeLista* primeiroMeioLocalizacao = ProcurarMeiosMobilidadePorLocalizacao(primeiroMeio, localizacao);
+	MeioMobilidadeLista* primeiroMeioLocalizacao = ProcurarMeiosMobilidadePorLocalizacao(primeiroMeio, primeiroPosto, geocode);
 	
 	// Mostrar os dados
-	MostrarMenuListaMeiosMobilidade(primeiroMeioLocalizacao, primeiroCliente);
+	MostrarMenuListaMeiosMobilidade(primeiroMeioLocalizacao, primeiroCliente, primeiroPosto);
 
 	LibertarMeiosMobilidade(primeiroMeioLocalizacao);
 
@@ -692,8 +713,9 @@ void MostrarMenuListaAlugueres(AluguerLista* primeiroAluguer, ClienteLista* prim
 
 		Cliente* cliente = ProcurarClientePorId(primeiroCliente, aluguerAtual->a.clienteId);
 		MeioMobilidade* meio = ProcurarMeioMobilidadePorId(primeiroMeio, aluguerAtual->a.meioId);
+		float custo = CalcularCustoAluguer(aluguerAtual->a, primeiroMeio);
 
-		printf("| %-4d | %-18s | %-18s | %-4s | %-4s | %-6.2f | %-9d |\n", aluguerAtual->a.id, cliente->nome, TipoMeioMobilidadeToString(meio->tipo), aluguerAtual->a.dataInicio, aluguerAtual->a.dataFim, aluguerAtual->a.kmPercorridos, 0);
+		printf("| %-4d | %-18s | %-18s | %-4s | %-4s | %-6.2f | %-9.2f |\n", aluguerAtual->a.id, cliente->nome, TipoMeioMobilidadeToString(meio->tipo), aluguerAtual->a.dataInicio, aluguerAtual->a.dataFim, aluguerAtual->a.kmPercorridos, custo);
 
 		aluguerAtual = aluguerAtual->proximo;
 	}

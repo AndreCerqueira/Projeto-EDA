@@ -469,3 +469,235 @@ int ProcurarProximoIdPosto(PostoVertice* primeiroPosto) {
 
 	return id + 1;
 }
+
+
+/**
+* \brief Procura o id de um posto na lista ligada a partir do seu geocodigo.
+*
+* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+* \param geocodigo O geocodigo do posto que será procurado
+* \return O id do posto com o geocodigo selecionado
+* \author A. Cerqueira
+*/
+int ProcurarIdPostoDeGeocodigo(PostoVertice* primeiroPosto, char* geocodigo) {
+	PostoVertice* postoAtual = primeiroPosto;
+
+	while (postoAtual != NULL) {
+		if (strcmp(postoAtual->p.f.geocode, geocodigo) == 0)
+			return postoAtual->p.f.id;
+		postoAtual = postoAtual->proximo;
+	}
+
+	return -1;
+}
+
+
+/**
+* \brief Conta o numero de postos na lista ligada.
+*
+* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+* \return O numero de postos na lista ligada
+* \author A. Cerqueira
+*/
+int ContarPostos(PostoVertice* primeiroPosto) {
+	PostoVertice* postoAtual = primeiroPosto;
+	int total = 0;
+
+	while (postoAtual != NULL) {
+		total++;
+		postoAtual = postoAtual->proximo;
+	}
+
+	return total;
+}
+
+
+/**
+* \brief Conta a distancia entre os postos na lista ligada.
+*
+* \param percurso O apontador para o primeiro elemento da lista ligada de postos do percurso
+* \return O numero de postos na lista ligada
+* \author A. Cerqueira
+*/
+float ContarDistanciaEmPercurso(Percurso* percurso) {
+	Percurso* postoAtual = percurso;
+	float distancia = 0;
+
+	while (postoAtual != NULL) {
+		distancia += postoAtual->distancia;
+		postoAtual = postoAtual->proximo;
+	}
+
+	return distancia;
+}
+
+
+/**
+* \brief Procura o percurso mais rapido entre dois postos, utilizando o algoritmo de Dijkstra.
+*
+* \param origem O apontador para o vertice do posto de origem
+* \param destino O apontador para o vertice do posto de destino
+* \return O apontador para o vertice do posto de inicio do percurso mais rapido
+* \author A. Cerqueira
+*/
+Percurso* ProcurarPercursoMaisRapido(PostoVertice* origem, PostoVertice* destino, PostoVertice* primeiroPosto) {
+	VerticeDijkstra* dijkstraVertices = InicializarDijkstraVertices(primeiroPosto);
+	VerticeDijkstra* atual = EncontrarVerticeDijkstraPorId(dijkstraVertices, origem->p.f.id);
+	atual->distancia = 0;
+
+	while (atual != NULL) {
+		PostoAdjacente* adj = atual->vertice->p.primeiraAdjacencia;
+		
+		while (adj != NULL) {
+			VerticeDijkstra* adjDijkstra = EncontrarVerticeDijkstraPorId(dijkstraVertices, adj->f.destinoId);
+			float novaDistancia = atual->distancia + adj->f.distancia;
+			
+			if (novaDistancia < adjDijkstra->distancia) {
+				adjDijkstra->distancia = novaDistancia;
+				adjDijkstra->antecessor = atual;
+			}
+			
+			adj = adj->proximo;
+		}
+		
+		atual->visitado = true;
+		atual = EncontrarProximoVertice(dijkstraVertices);
+	}
+
+	// Agora, construímos o Percurso do destino de volta à origem
+	VerticeDijkstra* dijkstraDestino = EncontrarVerticeDijkstraPorId(dijkstraVertices, destino->p.f.id);
+	Percurso* percursoMaisRapido = ConstruirPercurso(dijkstraDestino);
+	
+	// Limpar a memoria
+	LibertarDijkstraVertices(dijkstraVertices);
+	
+	return percursoMaisRapido;
+}
+
+
+/**
+ * \brief Constroi um percurso a partir de um vertice de destino do algoritmo de Dijkstra.
+ * 
+ * \param dijkstraDestino O apontador para o vertice de destino do algoritmo de Dijkstra
+ * \return O apontador para o primeiro elemento da lista ligada de postos do percurso
+ */
+Percurso* ConstruirPercurso(VerticeDijkstra* dijkstraDestino) {
+	Percurso* percursoMaisRapido = NULL;
+	VerticeDijkstra* dijkstraAtual = dijkstraDestino;
+	
+	while (dijkstraAtual->antecessor != NULL) {
+		
+		Percurso* novo = malloc(sizeof(Percurso));
+		if (novo == NULL)
+			return;
+		
+		novo->vertice = dijkstraAtual->vertice;
+		novo->proximo = percursoMaisRapido;
+		novo->distancia = dijkstraAtual->distancia - dijkstraAtual->antecessor->distancia;
+		percursoMaisRapido = novo;
+		dijkstraAtual = dijkstraAtual->antecessor;
+	}
+
+	// Adicionar a origem no percurso
+	Percurso* novo = malloc(sizeof(Percurso));
+	if (novo == NULL)
+		return;
+
+	novo->vertice = dijkstraAtual->vertice;
+	novo->proximo = percursoMaisRapido;
+	novo->distancia = 0;  
+	percursoMaisRapido = novo;
+
+	return percursoMaisRapido;
+}
+
+
+/**
+* \brief Inicializa o algoritmo de Dijkstra para um conjunto de vertices.
+*
+* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+* \return O apontador para o primeiro elemento da lista ligada de vertices do algoritmo de Dijkstra
+*/
+VerticeDijkstra* InicializarDijkstraVertices(PostoVertice* primeiroPosto) {
+	PostoVertice* postoAtual = primeiroPosto;
+	VerticeDijkstra* dijkstraVertices = NULL;
+	VerticeDijkstra* ultimo = NULL;
+
+	while (postoAtual != NULL) {
+		
+		VerticeDijkstra* novo = malloc(sizeof(VerticeDijkstra));
+		if (novo == NULL)
+			return;
+
+		novo->vertice = postoAtual;
+		novo->distancia = INFINITO;
+		novo->antecessor = NULL;
+		novo->visitado = false;
+		novo->proximo = NULL;
+
+		if (dijkstraVertices == NULL) {
+			dijkstraVertices = novo;
+		}
+		else {
+			ultimo->proximo = novo;
+		}
+		ultimo = novo;
+
+		postoAtual = postoAtual->proximo;
+	}
+	
+	return dijkstraVertices;
+}
+
+
+/**
+ * \brief Encontra o proximo vertice a ser visitado no algoritmo de Dijkstra.
+ * 
+ * \param dijkstraVertices O array com todos os vertices
+ * \return O apontador para o vertice a ser visitado
+ */
+VerticeDijkstra* EncontrarProximoVertice(VerticeDijkstra* dijkstraVertices) {
+	VerticeDijkstra* proximo = NULL;
+	
+	while (dijkstraVertices != NULL) {
+		if (!dijkstraVertices->visitado && (proximo == NULL || dijkstraVertices->distancia < proximo->distancia)) {
+			proximo = dijkstraVertices;
+		}
+		dijkstraVertices = dijkstraVertices->proximo;
+	}
+	
+	return proximo;
+}
+
+
+/**
+ * \brief Encontra um vertice na lista ligada de vertices do algoritmo de Dijkstra.
+ * 
+ * \param dijkstraVertices A lista ligada de vertices do algoritmo de Dijkstra
+ * \param id O id do vertice a encontrar
+ * \return O apontador para o vertice encontrado
+ */
+VerticeDijkstra* EncontrarVerticeDijkstraPorId(VerticeDijkstra* dijkstraVertices, int id) {
+	while (dijkstraVertices != NULL && dijkstraVertices->vertice->p.f.id != id) {
+		dijkstraVertices = dijkstraVertices->proximo;
+	}
+	return dijkstraVertices;
+}
+
+
+/**
+ * \brief Liberta a memoria alocada para a lista ligada de vertices do algoritmo de Dijkstra.
+ *
+ * \param dijkstraVertices O apontador para o primeiro elemento da lista ligada de vertices do algoritmo de Dijkstra
+ */
+bool LibertarDijkstraVertices(VerticeDijkstra* dijkstraVertices) {
+	VerticeDijkstra* dijkstraAtual = dijkstraVertices;
+	
+	while (dijkstraAtual != NULL) {
+		VerticeDijkstra* dijkstraProximo = dijkstraAtual->proximo;
+		free(dijkstraAtual);
+		dijkstraAtual = dijkstraProximo;
+	}
+
+	return true;
+}

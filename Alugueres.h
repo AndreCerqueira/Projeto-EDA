@@ -1,6 +1,6 @@
 /*****************************************************************//**
  * \file   Aluguer.h
- * \brief  Declarações das funções relacionadas aos Alugueres
+ * \brief  Declarações das funções relacionadas aos Alugueres e Preços de Aluguer.
  *
  * \author A. Cerqueira
  * \date   February 2023
@@ -22,14 +22,10 @@
 
 	#define ALUGUER_INITDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/Alugueres.txt"
 	#define ALUGUER_SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/Alugueres.dat"
-	#define PRECO_ALUGUER_INITDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/PrecosAluguer.txt"
-	#define PRECO_ALUGUER_SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/PrecosAluguer.dat"
 
 	// Structs
 	typedef struct Aluguer Aluguer;
 	typedef struct AluguerLista AluguerLista;
-	typedef struct PrecoAluguer PrecoAluguer;
-	typedef struct PrecoAluguerLista PrecoAluguerLista;
 
 	struct Aluguer {
 		int id;
@@ -44,17 +40,6 @@
 	struct AluguerLista {
 		Aluguer a;
 		AluguerLista* proximo;
-	};
-
-	struct PrecoAluguer {
-		char dataInicio[DATA_LENGHT];
-		int meioId;
-		float precoPorKm;
-	};
-
-	struct PrecoAluguerLista {
-		PrecoAluguer p;
-		PrecoAluguerLista* proximo;
 	};
 
 
@@ -78,7 +63,7 @@
 	* \author A. Cerqueira
 	*/
 	AluguerLista* CarregarAlugueresIniciais(AluguerLista* primeiroAluguer, char* filePathInicial, char* saveFilePath);
-
+	
 
 	/**
 	* \brief Lê os dados de um ficheiro .txt e retorna uma lista ligada de Alugueres.
@@ -140,6 +125,30 @@
 	* \author A. Cerqueira
 	*/
 	int ProcurarProximoIdAluguer(AluguerLista* primeiroAluguer);
+
+	
+	/**
+	 * \brief Alugar um meio de mobilidade
+	 *
+	 * \param meioMobilidade O meio de mobilidade que será alugado
+	 * \param cliente O cliente que vai alugar o meio de mobilidade
+	 * \param primeiroAluguer O apontador para o primeiro elemento da lista ligada de alugueres
+	 * \param destino O posto de destino ao qual o cliente pretende ir
+	 * \param percurso O percurso que o cliente vai fazer
+	 * \return O apontador para o primeiro elemento da lista ligada de alugueres
+	 */
+	AluguerLista* AlugarMeioMobilidade(MeioMobilidade* meioMobilidade, Cliente* cliente, AluguerLista* primeiroAluguer, Posto destino, Percurso* percurso);
+	
+
+	/**
+	* \brief Calcula o custo de um Aluguer com base no meio de mobilidade utilizado e nos km percorridos.
+	*
+	* \param aluguer O Aluguer que será calculado o custo
+	* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de Meios de Mobilidade
+	* \return O custo do Aluguer, multiplicando o custo do meio de mobilidade pelo numero de km percorridos
+	* \author A. Cerqueira
+	*/
+	float CalcularCustoAluguer(Aluguer aluguer, MeioMobilidadeLista* primeiroMeio);
 
 #endif
 

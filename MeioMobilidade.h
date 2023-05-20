@@ -11,13 +11,12 @@
 #ifndef MEIO_MOBILIDADE_H_
 #define MEIO_MOBILIDADE_H_
 
-	// Includes
+	 // Includes
 	#include "Utils.h"
 	#include "Cliente.h"
+	#include "Localizacao.h"
 
 	// Constants
-	#define LOCALIZACAO_LENGHT 20
-
 	#define MEIO_INITDATA_FILE_NAME "C:/IPCA/Projeto-EDA/data/simulacao/MeiosMobilidade.txt"
 	#define MEIO_SAVE_FILE_NAME "C:/IPCA/Projeto-EDA/data/save/MeiosMobilidade.dat"
 
@@ -39,8 +38,7 @@
 		TipoMeioMobilidade tipo;
 		float cargaBateria;
 		float custoAluguer;
-		char localizacao[LOCALIZACAO_LENGHT];
-		int alugadoPorId;
+		int postoId;
 		bool ativo;
 	};
 
@@ -49,7 +47,7 @@
 		MeioMobilidadeLista* proximo;
 	};
 
-	
+
 	/**
 	* \brief Liberta a memória da lista ligada de meios mobilidade
 	*
@@ -134,7 +132,7 @@
 	* \author A. Cerqueira
 	*/
 	bool EditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, MeioMobilidade meioSelecionado);
-	
+
 
 	/**
 	* \brief Converter um TipoMeioMobilidade em string
@@ -144,7 +142,7 @@
 	* \author A. Cerqueira
 	*/
 	char* TipoMeioMobilidadeToString(TipoMeioMobilidade tipoMeioMobilidade);
-	
+
 
 	/**
 	 * \brief Ordena a lista ligada de meios mobilidade por ID em ordem decrescente.
@@ -164,16 +162,17 @@
 	 */
 	MeioMobilidadeLista* OrdenarMeiosMobilidadePorAutonomia(MeioMobilidadeLista* primeiroMeio);
 
-	
+
 	/**
 	 * \brief Procurar todos os meios de mobilidade que estão numa determinada localização.
 	 *
 	 * \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
-	 * \param localizacao A localização onde os meios de mobilidade serão procurados
+	 * \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+	 * \param geocodigo O geocódigo da localização
 	 * \return O novo apontador para o primeiro elemento da lista ligada de meios mobilidade ordenada
 	 */
-	MeioMobilidadeLista* ProcurarMeiosMobilidadePorLocalizacao(MeioMobilidadeLista* primeiroMeio, char* localizacao);
-	
+	MeioMobilidadeLista* ProcurarMeiosMobilidadePorLocalizacao(MeioMobilidadeLista* primeiroMeio, PostoVertice* primeiroPosto, char* geocodigo);
+
 
 	/**
 	* \brief Procura um Meio na lista ligada a partir do seu ID.
@@ -195,23 +194,4 @@
 	*/
 	int ProcurarProximoIdMeioMobilidade(MeioMobilidadeLista* primeiroMeio);
 
-	
-	/**
-	 * \brief Alugar um meio de mobilidade 
-	 *
-	 * \param meioMobilidade O meio de mobilidade que será alugado
-	 * \param cliente O cliente que vai alugar o meio de mobilidade
-	 * \return true se a operação foi realizada com sucesso, false caso contrário
-	 */
-	bool AlugarMeioMobilidade(MeioMobilidade* meioMobilidade, Cliente* cliente);
-
-
-	/**
-	 * \brief Devolve se um meio de mobilidade está alugado ou não
-	 *
-	 * \param meioMobilidade O meio de mobilidade que será verificado
-	 * \return true se o meio de mobilidade estiver alugado, false caso contrário
-	 */
-	bool MeioMobilidadeAlugado(MeioMobilidade meioMobilidade);
-	
 #endif

@@ -32,10 +32,12 @@
 	void MostrarMenuAdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio);
 	void MostrarMenuEditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio);
 	void MostrarMenuRemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio);
-	void MostrarMenuAlugarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente);
-	void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente);
-	void MostrarMenuListaMeiosMobilidadePorAutonomia(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente);
-	void MostrarMenuListaMeiosMobilidadeLocalizacao(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente);
+	
+	void MostrarMenuAlugarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente, PostoVertice* primeiroPosto, AluguerLista** primeiroAluguer);
+
+	void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente, PostoVertice* primeiroPosto);
+	void MostrarMenuListaMeiosMobilidadePorAutonomia(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente, PostoVertice* primeiroPosto);
+	void MostrarMenuListaMeiosMobilidadeLocalizacao(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente, PostoVertice* primeiroPosto);
 	
 	void MostrarMenuAdicionarGestor(GestorLista** primeiroGestor);
 	void MostrarMenuEditarGestor(GestorLista* primeiroGestor);

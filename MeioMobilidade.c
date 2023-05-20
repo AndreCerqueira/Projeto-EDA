@@ -1,7 +1,7 @@
 /*****************************************************************//**
  * \file   MeioMobilidade.c
  * \brief  Funções de Meios de mobilidade
- * 
+ *
  * \author A. Cerqueira
  * \date   March 2023
  *********************************************************************/
@@ -69,16 +69,15 @@ MeioMobilidadeLista* LerMeiosMobilidadeIniciais(char* filePath) {
 	while (fgets(linha, MAX_SIZE, file)) {
 		MeioMobilidade novoMeio;
 
-		int numLidos = sscanf(linha, "%d;%d;%f;%f;%[^;];%d;%d",
+		int numLidos = sscanf(linha, "%d;%d;%f;%f;%d;%d",
 			&novoMeio.id,
 			(int*)&novoMeio.tipo,
 			&novoMeio.cargaBateria,
 			&novoMeio.custoAluguer,
-			novoMeio.localizacao,
-			&novoMeio.alugadoPorId,
+			&novoMeio.postoId,
 			(int*)&novoMeio.ativo);
 
-		if (numLidos != 7)
+		if (numLidos != 6)
 			continue;
 
 		primeiroMeio = AdicionarMeioMobilidade(primeiroMeio, novoMeio);
@@ -113,11 +112,11 @@ MeioMobilidadeLista* LerMeiosMobilidade(char* filePath) {
 		primeiroMeio = AdicionarMeioMobilidade(primeiroMeio, *meio);
 		meio = (MeioMobilidade*)malloc(sizeof(MeioMobilidade));
 	}
-	
+
 	fclose(file);
-	
+
 	primeiroMeio = OrdenarMeiosMobilidadePorId(primeiroMeio);
-	
+
 	return primeiroMeio;
 }
 
@@ -136,7 +135,7 @@ bool GuardarMeiosMobilidade(char* filePath, MeioMobilidadeLista* primeiroMeio) {
 
 	if (file == NULL)
 		return false;
-	
+
 	MeioMobilidadeLista* meioAtual = primeiroMeio;
 
 	while (meioAtual != NULL) {
@@ -160,21 +159,21 @@ bool GuardarMeiosMobilidade(char* filePath, MeioMobilidadeLista* primeiroMeio) {
 */
 MeioMobilidadeLista* AdicionarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, MeioMobilidade novoMeio) {
 	MeioMobilidadeLista* novoNode = (MeioMobilidadeLista*)malloc(sizeof(MeioMobilidadeLista));
-	
+
 	if (novoNode == NULL)
 		return primeiroMeio;
 
 	if (novoMeio.ativo == NULL)
 		novoMeio.ativo = true;
-	
+
 	if (novoMeio.id == NULL)
 		novoMeio.id = ProcurarProximoIdMeioMobilidade(primeiroMeio);
-	
+
 	novoNode->proximo = (primeiroMeio != NULL) ? primeiroMeio : NULL;
 
 	novoNode->m = novoMeio;
 	primeiroMeio = novoNode;
-	
+
 	return primeiroMeio;
 }
 
@@ -200,7 +199,7 @@ bool RemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio, int id) {
 
 		meioAtual = meioAtual->proximo;
 	}
-	
+
 	return false;
 }
 
@@ -223,7 +222,7 @@ bool EditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, MeioMobilidade meio
 			meioAtual->m.tipo = meioSelecionado.tipo;
 			meioAtual->m.cargaBateria = meioSelecionado.cargaBateria;
 			meioAtual->m.custoAluguer = meioSelecionado.custoAluguer;
-			strcpy(meioAtual->m.localizacao, meioSelecionado.localizacao);
+			meioAtual->m.postoId = meioSelecionado.postoId;
 			return true;
 		}
 
@@ -244,18 +243,18 @@ bool EditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, MeioMobilidade meio
 char* TipoMeioMobilidadeToString(TipoMeioMobilidade tipoMeioMobilidade) {
 
 	switch (tipoMeioMobilidade) {
-		case Bicibleta:
-			return "Bicibleta";
-		case Trotinente:
-			return "Trotinente";
-		case Scooter:
-			return "Scooter";
-		case SkateEletrico:
-			return "SkateEletrico";
-		case Outro:
-			return "Outro";
-		default:
-			return "Desconhecido";
+	case Bicibleta:
+		return "Bicibleta";
+	case Trotinente:
+		return "Trotinente";
+	case Scooter:
+		return "Scooter";
+	case SkateEletrico:
+		return "SkateEletrico";
+	case Outro:
+		return "Outro";
+	default:
+		return "Desconhecido";
 	}
 }
 
@@ -319,16 +318,20 @@ MeioMobilidadeLista* OrdenarMeiosMobilidadePorAutonomia(MeioMobilidadeLista* pri
  * \brief Procurar todos os meios de mobilidade que estão numa determinada localização.
  *
  * \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
- * \param localizacao A localização onde os meios de mobilidade serão procurados
+ * \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+ * \param geocodigo O geocódigo da localização
  * \return O novo apontador para o primeiro elemento da lista ligada de meios mobilidade ordenada
  */
-MeioMobilidadeLista* ProcurarMeiosMobilidadePorLocalizacao(MeioMobilidadeLista* primeiroMeio, char* localizacao) {
+MeioMobilidadeLista* ProcurarMeiosMobilidadePorLocalizacao(MeioMobilidadeLista* primeiroMeio, PostoVertice* primeiroPosto, char* geocodigo) {
 	MeioMobilidadeLista* meiosMobilidadeLocalizacao = NULL;
 	MeioMobilidadeLista* meioAtual = primeiroMeio;
 
+	// Get Posto Id By Geocode
+	int postoIdSelecionado = ProcurarIdPostoDeGeocodigo(primeiroPosto, geocodigo);
+
 	while (meioAtual != NULL) {
 
-		if (strcmp(meioAtual->m.localizacao, localizacao) == 0) {
+		if (meioAtual->m.postoId == postoIdSelecionado) {
 			meiosMobilidadeLocalizacao = AdicionarMeioMobilidade(meiosMobilidadeLocalizacao, meioAtual->m);
 		}
 
@@ -383,42 +386,4 @@ int ProcurarProximoIdMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
 	}
 
 	return id + 1;
-}
-
-
-/**
- * \brief Alugar um meio de mobilidade
- *
- * \param meioMobilidade O meio de mobilidade que será alugado
- * \param cliente O cliente que vai alugar o meio de mobilidade
- * \return true se a operação foi realizada com sucesso, false caso contrário
- */
-bool AlugarMeioMobilidade(MeioMobilidade* meioMobilidade, Cliente* cliente) {
-	
-	// Verificações iniciais
-	if (!ClienteTemSaldoSuficiente(*cliente, meioMobilidade->custoAluguer))
-		return false;
-
-	if (meioMobilidade->ativo == false)
-		return false;
-
-	if (MeioMobilidadeAlugado(*meioMobilidade))
-		return false;
-
-	// Alugar
-	meioMobilidade->alugadoPorId = cliente->id;
-	cliente->saldo -= meioMobilidade->custoAluguer;
-
-	return true;
-}
-
-
-/**
- * \brief Devolve se um meio de mobilidade está alugado ou não
- *
- * \param meioMobilidade O meio de mobilidade que será verificado
- * \return true se o meio de mobilidade estiver alugado, false caso contrário
- */
-bool MeioMobilidadeAlugado(MeioMobilidade meioMobilidade) {
-	return meioMobilidade.alugadoPorId != 0;
 }

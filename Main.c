@@ -49,16 +49,16 @@ int main() {
 				MostrarMenuRemoverMeioMobilidade(primeiroMeio);
 				break;
 			case 8:
-				MostrarMenuAlugarMeioMobilidade(primeiroMeio, primeiroCliente);
+				MostrarMenuAlugarMeioMobilidade(primeiroMeio, primeiroCliente, primeiroPosto, &primeiroAluguer);
 				break;
 			case 9:
-				MostrarMenuListaMeiosMobilidade(primeiroMeio, primeiroCliente);
+				MostrarMenuListaMeiosMobilidade(primeiroMeio, primeiroCliente, primeiroPosto);
 				break;
 			case 10:
-				MostrarMenuListaMeiosMobilidadePorAutonomia(primeiroMeio, primeiroCliente);
+				MostrarMenuListaMeiosMobilidadePorAutonomia(primeiroMeio, primeiroCliente, primeiroPosto);
 				break;
 			case 11:
-				MostrarMenuListaMeiosMobilidadeLocalizacao(primeiroMeio, primeiroCliente);
+				MostrarMenuListaMeiosMobilidadeLocalizacao(primeiroMeio, primeiroCliente, primeiroPosto);
 				break;
 			case 12:
 				MostrarMenuAdicionarGestor(&primeiroGestor);
