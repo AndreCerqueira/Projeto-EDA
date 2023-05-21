@@ -541,6 +541,10 @@ float ContarDistanciaEmPercurso(Percurso* percurso) {
 * \author A. Cerqueira
 */
 Percurso* ProcurarPercursoMaisRapido(PostoVertice* origem, PostoVertice* destino, PostoVertice* primeiroPosto) {
+	
+	if (origem == NULL || destino == NULL)
+		return NULL;
+	
 	VerticeDijkstra* dijkstraVertices = InicializarDijkstraVertices(primeiroPosto);
 	VerticeDijkstra* atual = EncontrarVerticeDijkstraPorId(dijkstraVertices, origem->p.f.id);
 	atual->distancia = 0;

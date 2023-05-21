@@ -203,6 +203,16 @@
 	*/
 	int ProcurarProximoIdMeioMobilidade(MeioMobilidadeLista* primeiroMeio);
 
+	
+	/**
+	* \brief Conta o numero de postos na lista ligada.
+	*
+	* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+	* \return O numero de postos na lista ligada
+	* \author A. Cerqueira
+	*/
+	int ContarMeiosPorRecolherEmPosto(PostoVertice* posto, MeioMobilidadeLista* primeiroMeio);
+
 
 	/**
 	* \brief Recolhe todos os meios de mobilidade que estão numa determinada localização, e que tenham menos de 50% de bateria.
@@ -211,10 +221,11 @@
 	* \param posto O apontador para o posto onde o camiao se dirige
 	* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
 	* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+	* \param meiosFaltaRecolher O apontador para o primeiro elemento da lista ligada de meios mobilidade que falta recolher
 	* \return Os meios de mobilidade recolhidos pelo camiao no posto
 	* \author A. Cerqueira
 	*/
-	MeioMobilidadeLista* RecolherMeiosMobilidadeEmPosto(Camiao* camiao, PostoVertice* posto, PostoVertice* primeiroPosto, MeioMobilidadeLista* primeiroMeio);
+	MeioMobilidadeLista* RecolherMeiosMobilidadeEmPosto(Camiao* camiao, PostoVertice* posto, PostoVertice* primeiroPosto, MeioMobilidadeLista* primeiroMeio, MeioMobilidadeLista** meiosFaltaRecolher);
 	
 
 	/**

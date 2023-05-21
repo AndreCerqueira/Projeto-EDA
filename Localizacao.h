@@ -280,7 +280,7 @@
 	* \author A. Cerqueira
 	*/
 	int ContarPostos(PostoVertice* primeiroPosto);
-
+	
 
 	/**
 	* \brief Conta a distancia entre os postos na lista ligada.

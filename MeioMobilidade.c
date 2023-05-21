@@ -391,18 +391,42 @@ int ProcurarProximoIdMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
 
 
 /**
+* \brief Conta o numero de postos na lista ligada.
+*
+* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+* \return O numero de postos na lista ligada
+* \author A. Cerqueira
+*/
+int ContarMeiosPorRecolherEmPosto(PostoVertice* posto, MeioMobilidadeLista* primeiroMeio) {
+	MeioMobilidadeLista* meioAtual = primeiroMeio;
+	int nMeios = 0;
+
+	while (meioAtual != NULL) {
+
+		if (meioAtual->m.postoId == posto->p.f.id && meioAtual->m.cargaBateria < BATERIA_MINIMA_PARA_RECOLHA)
+			nMeios++;
+
+		meioAtual = meioAtual->proximo;
+	}
+
+	return nMeios;
+}
+
+
+/**
 * \brief Recolhe todos os meios de mobilidade que estão numa determinada localização, e que tenham menos de 50% de bateria.
 *
 * \param camiao O apontador para o camiao que vai recolher os meios de mobilidade
 * \param posto O apontador para o posto onde o camiao se dirige
 * \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
 * \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+* \param meiosFaltaRecolher O apontador para o primeiro elemento da lista ligada de meios mobilidade que falta recolher
 * \return Os meios de mobilidade recolhidos pelo camiao no posto
 * \author A. Cerqueira
 */
-MeioMobilidadeLista* RecolherMeiosMobilidadeEmPosto(Camiao* camiao, PostoVertice* posto, PostoVertice* primeiroPosto, MeioMobilidadeLista* primeiroMeio) {
+MeioMobilidadeLista* RecolherMeiosMobilidadeEmPosto(Camiao* camiao, PostoVertice* posto, PostoVertice* primeiroPosto, MeioMobilidadeLista* primeiroMeio, MeioMobilidadeLista** meiosFaltaRecolher) {
 	float capacidadeOcupada = 0;
-	MeioMobilidadeLista* meioAtual = primeiroMeio;
+	MeioMobilidadeLista* meioAtual = (*meiosFaltaRecolher == NULL) ? primeiroMeio : *meiosFaltaRecolher;
 	
 	while (meioAtual != NULL) {
 		
@@ -423,6 +447,7 @@ MeioMobilidadeLista* RecolherMeiosMobilidadeEmPosto(Camiao* camiao, PostoVertice
 		meioAtual = meioAtual->proximo;
 	}
 
+	*meiosFaltaRecolher = meioAtual;
 	return primeiroMeio;
 }
 
@@ -441,9 +466,20 @@ MeioMobilidadeLista* RecolherMeiosMobilidade(Camiao* camiao, PostoVertice* prime
 	*kmPercorridos = 0;
 
 	while (postoAtual != NULL) {
-		Percurso* percurso = ProcurarPercursoMaisRapido(camiao->localizacaoAtual, postoAtual, primeiroPosto);
-		*kmPercorridos += ContarDistanciaEmPercurso(percurso);
-		primeiroMeio = RecolherMeiosMobilidadeEmPosto(camiao, postoAtual, primeiroPosto, primeiroMeio);
+
+		MeioMobilidadeLista* meiosFaltaRecolher = NULL;
+		int nMeios = ContarMeiosPorRecolherEmPosto(postoAtual, primeiroMeio);
+		if (nMeios == 0) {
+			postoAtual = postoAtual->proximo;
+			continue;
+		}
+
+		do
+		{
+			Percurso* percurso = ProcurarPercursoMaisRapido(camiao->localizacaoAtual, postoAtual, primeiroPosto);
+			*kmPercorridos += ContarDistanciaEmPercurso(percurso);
+			primeiroMeio = RecolherMeiosMobilidadeEmPosto(camiao, postoAtual, primeiroPosto, primeiroMeio, &meiosFaltaRecolher);
+		} while (meiosFaltaRecolher != NULL);
 
 		postoAtual = postoAtual->proximo;
 	}
