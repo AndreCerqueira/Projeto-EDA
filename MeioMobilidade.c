@@ -187,7 +187,43 @@ MeioMobilidadeLista* AdicionarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, 
 * \return true se a operação foi realizada com sucesso, false caso contrário
 * \author A. Cerqueira
 */
-bool RemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio, int id) {
+MeioMobilidadeLista* RemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio, int id) {
+
+	MeioMobilidadeLista* meioAtual = primeiroMeio;
+	MeioMobilidadeLista* meioAnterior = NULL;
+
+	while (meioAtual != NULL) {
+
+		if (meioAtual->m.id == id) {
+
+			if (meioAnterior == NULL) {
+				primeiroMeio = meioAtual->proximo;
+			}
+			else {
+				meioAnterior->proximo = meioAtual->proximo;
+			}
+
+			free(meioAtual);
+			return primeiroMeio;
+		}
+
+		meioAnterior = meioAtual;
+		meioAtual = meioAtual->proximo;
+	}
+
+	return primeiroMeio;
+}
+
+
+/**
+* \brief Desativar um Meio da lista ligada
+*
+* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+* \param id O id do Meio que será desativado
+* \return true se a operação foi realizada com sucesso, false caso contrário
+* \author A. Cerqueira
+*/
+bool DesativarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, int id) {
 
 	MeioMobilidadeLista* meioAtual = primeiroMeio;
 

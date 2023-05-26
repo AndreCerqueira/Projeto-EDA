@@ -106,14 +106,25 @@
 
 	
 	/**
-	* \brief Remover um cliente da lista ligada
+	* \brief Desativar um cliente da lista ligada
 	* 
+	* \param primeiroCliente O apontador para o primeiro elemento da lista ligada de clientes
+	* \param id O id do cliente que será desativado
+	* \return true se a operação foi realizada com sucesso, false caso contrário
+	* \author A. Cerqueira
+	*/
+	bool DesativarCliente(ClienteLista* primeiroCliente, int id);
+	
+
+	/**
+	* \brief Remover um cliente da lista ligada
+	*
 	* \param primeiroCliente O apontador para o primeiro elemento da lista ligada de clientes
 	* \param id O id do cliente que será removido
 	* \return true se a operação foi realizada com sucesso, false caso contrário
 	* \author A. Cerqueira
 	*/
-	bool RemoverCliente(ClienteLista* primeiroCliente, int id);
+	ClienteLista* RemoverCliente(ClienteLista* primeiroCliente, int id);
 
 
 	/**

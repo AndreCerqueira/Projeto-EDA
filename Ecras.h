@@ -26,12 +26,12 @@
 	
 	void MostrarMenuAdicionarCliente(ClienteLista** primeiroCliente);
 	void MostrarMenuEditarCliente(ClienteLista* primeiroCliente);
-	void MostrarMenuRemoverCliente(ClienteLista* primeiroCliente);
+	void MostrarMenuRemoverCliente(ClienteLista** primeiroCliente);
 	void MostrarMenuListaClientes(ClienteLista* primeiroCliente);
 	
 	void MostrarMenuAdicionarMeioMobilidade(MeioMobilidadeLista** primeiroMeio);
 	void MostrarMenuEditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio);
-	void MostrarMenuRemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio);
+	void MostrarMenuRemoverMeioMobilidade(MeioMobilidadeLista** primeiroMeio);
 	
 	void MostrarMenuAlugarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente, PostoVertice* primeiroPosto, AluguerLista** primeiroAluguer);
 
@@ -41,7 +41,7 @@
 	
 	void MostrarMenuAdicionarGestor(GestorLista** primeiroGestor);
 	void MostrarMenuEditarGestor(GestorLista* primeiroGestor);
-	void MostrarMenuRemoverGestor(GestorLista* primeiroGestor);
+	void MostrarMenuRemoverGestor(GestorLista** primeiroGestor);
 	void MostrarMenuListaGestores(GestorLista* primeiroGestor);
 	void MostrarMenuListaPostos(PostoVertice* primeiroPosto);
 	void MostrarMenuListaPostosComAdjacencias(PostoVertice* primeiroPosto);

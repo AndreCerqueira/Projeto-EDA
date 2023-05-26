@@ -184,7 +184,43 @@ GestorLista* AdicionarGestor(GestorLista* primeiroGestor, Gestor novoGestor) {
 * \return true se a operação foi realizada com sucesso, false caso contrário
 * \author A. Cerqueira
 */
-bool RemoverGestor(GestorLista* primeiroGestor, int id) {
+GestorLista* RemoverGestor(GestorLista* primeiroGestor, int id) {
+
+	GestorLista* gestorAtual = primeiroGestor;
+	GestorLista* gestorAnterior = NULL;
+
+	while (gestorAtual != NULL) {
+
+		if (gestorAtual->g.id == id) {
+
+			if (gestorAnterior == NULL) {
+				primeiroGestor = gestorAtual->proximo;
+			}
+			else {
+				gestorAnterior->proximo = gestorAtual->proximo;
+			}
+
+			free(gestorAtual);
+			return primeiroGestor;
+		}
+
+		gestorAnterior = gestorAtual;
+		gestorAtual = gestorAtual->proximo;
+	}
+
+	return primeiroGestor;
+}
+
+
+/**
+* \brief Desativar um Gestor da lista ligada
+*
+* \param primeiroGestor O apontador para o primeiro elemento da lista ligada de gestores
+* \param id O id do Gestor que será desativado
+* \return true se a operação foi realizada com sucesso, false caso contrário
+* \author A. Cerqueira
+*/
+bool DesativarGestor(GestorLista* primeiroGestor, int id) {
 
 	GestorLista* gestorAtual = primeiroGestor;
 

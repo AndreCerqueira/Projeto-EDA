@@ -38,7 +38,7 @@ int main() {
 				MostrarMenuEditarCliente(primeiroCliente);
 				break;
 			case 3:
-				MostrarMenuRemoverCliente(primeiroCliente);
+				MostrarMenuRemoverCliente(&primeiroCliente);
 				break;
 			case 4:
 				MostrarMenuListaClientes(primeiroCliente);
@@ -50,7 +50,7 @@ int main() {
 				MostrarMenuEditarMeioMobilidade(primeiroMeio);
 				break;
 			case 7:
-				MostrarMenuRemoverMeioMobilidade(primeiroMeio);
+				MostrarMenuRemoverMeioMobilidade(&primeiroMeio);
 				break;
 			case 8:
 				MostrarMenuAlugarMeioMobilidade(primeiroMeio, primeiroCliente, primeiroPosto, &primeiroAluguer);
@@ -71,7 +71,7 @@ int main() {
 				MostrarMenuEditarGestor(primeiroGestor);
 				break;
 			case 14:
-				MostrarMenuRemoverGestor(primeiroGestor);
+				MostrarMenuRemoverGestor(&primeiroGestor);
 				break;
 			case 15:
 				MostrarMenuListaGestores(primeiroGestor);

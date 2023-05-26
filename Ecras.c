@@ -199,7 +199,7 @@ void MostrarMenuEditarCliente(ClienteLista* primeiroCliente) {
 
 
 // Remover Cliente
-void MostrarMenuRemoverCliente(ClienteLista* primeiroCliente) {
+void MostrarMenuRemoverCliente(ClienteLista** primeiroCliente) {
 
 	// Variaveis
 	int id;
@@ -219,9 +219,9 @@ void MostrarMenuRemoverCliente(ClienteLista* primeiroCliente) {
 		return;
 
 	// Atribuição de dados
-	RemoverCliente(primeiroCliente, id);
+	*primeiroCliente = RemoverCliente(*primeiroCliente, id);
 
-	GuardarClientes(CLIENTE_SAVE_FILE_NAME, primeiroCliente);
+	GuardarClientes(CLIENTE_SAVE_FILE_NAME, *primeiroCliente);
 }
 
 
@@ -333,7 +333,7 @@ void MostrarMenuEditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
 
 
 // Remover Meio de mobilidade
-void MostrarMenuRemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
+void MostrarMenuRemoverMeioMobilidade(MeioMobilidadeLista** primeiroMeio) {
 
 	// Variaveis
 	int id;
@@ -353,9 +353,9 @@ void MostrarMenuRemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio) {
 		return;
 
 	// Atribuição de dados
-	RemoverMeioMobilidade(primeiroMeio, id);
+	*primeiroMeio = RemoverMeioMobilidade(*primeiroMeio, id);
 
-	GuardarMeiosMobilidade(MEIO_SAVE_FILE_NAME, primeiroMeio);
+	GuardarMeiosMobilidade(MEIO_SAVE_FILE_NAME, *primeiroMeio);
 }
 
 
@@ -572,7 +572,7 @@ void MostrarMenuEditarGestor(GestorLista* primeiroGestor) {
 
 
 // Remover Gestor
-void MostrarMenuRemoverGestor(GestorLista* primeiroGestor) {
+void MostrarMenuRemoverGestor(GestorLista** primeiroGestor) {
 	
 	// Variaveis
 	int id;
@@ -592,9 +592,9 @@ void MostrarMenuRemoverGestor(GestorLista* primeiroGestor) {
 		return;
 
 	// Atribuição de dados
-	RemoverGestor(primeiroGestor, id);
+	*primeiroGestor = RemoverGestor(*primeiroGestor, id);
 
-	GuardarGestores(GESTOR_SAVE_FILE_NAME, primeiroGestor);
+	GuardarGestores(GESTOR_SAVE_FILE_NAME, *primeiroGestor);
 }
 
 

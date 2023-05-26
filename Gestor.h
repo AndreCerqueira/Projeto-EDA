@@ -105,6 +105,17 @@
 
 
 	/**
+	* \brief Desativar um Gestor da lista ligada
+	*
+	* \param primeiroGestor O apontador para o primeiro elemento da lista ligada de gestores
+	* \param id O id do Gestor que será desativado
+	* \return true se a operação foi realizada com sucesso, false caso contrário
+	* \author A. Cerqueira
+	*/
+	bool DesativarGestor(GestorLista* primeiroGestor, int id);
+	
+
+	/**
 	* \brief Remover um Gestor da lista ligada
 	*
 	* \param primeiroGestor O apontador para o primeiro elemento da lista ligada de gestores
@@ -112,7 +123,7 @@
 	* \return true se a operação foi realizada com sucesso, false caso contrário
 	* \author A. Cerqueira
 	*/
-	bool RemoverGestor(GestorLista* primeiroGestor, int id);
+	GestorLista* RemoverGestor(GestorLista* primeiroGestor, int id);
 
 
 	/**

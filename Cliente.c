@@ -186,7 +186,43 @@ ClienteLista* AdicionarCliente(ClienteLista* primeiroCliente, Cliente novoClient
 * \return true se a operação foi realizada com sucesso, false caso contrário
 * \author A. Cerqueira
 */
-bool RemoverCliente(ClienteLista* primeiroCliente, int id) {
+ClienteLista* RemoverCliente(ClienteLista* primeiroCliente, int id) {
+
+	ClienteLista* clienteAtual = primeiroCliente;
+	ClienteLista* clienteAnterior = NULL;
+	
+	while (clienteAtual != NULL) {
+
+		if (clienteAtual->c.id == id) {
+			
+			if (clienteAnterior == NULL) {
+				primeiroCliente = clienteAtual->proximo;
+			}
+			else {
+				clienteAnterior->proximo = clienteAtual->proximo;
+			}
+
+			free(clienteAtual);
+			return primeiroCliente;
+		}
+
+		clienteAnterior = clienteAtual;
+		clienteAtual = clienteAtual->proximo;
+	}
+
+	return primeiroCliente;
+}
+
+
+/**
+* \brief Remover um cliente da lista ligada
+*
+* \param primeiroCliente O apontador para o primeiro elemento da lista ligada de clientes
+* \param id O id do cliente que será removido
+* \return true se a operação foi realizada com sucesso, false caso contrário
+* \author A. Cerqueira
+*/
+bool DesativarCliente(ClienteLista* primeiroCliente, int id) {
 
 	ClienteLista* clienteAtual = primeiroCliente;
 
