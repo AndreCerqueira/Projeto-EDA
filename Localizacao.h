@@ -308,6 +308,7 @@
 	 *
 	 * \param dijkstraDestino O apontador para o vertice de destino do algoritmo de Dijkstra
 	 * \return O apontador para o primeiro elemento da lista ligada de postos do percurso
+	 * \author A. Cerqueira
 	 */
 	Percurso* ConstruirPercurso(VerticeDijkstra* dijkstraDestino);
 	
@@ -317,6 +318,7 @@
 	*
 	* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
 	* \return O apontador para o primeiro elemento da lista ligada de vertices do algoritmo de Dijkstra
+	* \author A. Cerqueira
 	*/
 	VerticeDijkstra* InicializarDijkstraVertices(PostoVertice* primeiroPosto);
 
@@ -326,6 +328,7 @@
 	 *
 	 * \param dijkstraVertices O array com todos os vertices
 	 * \return O apontador para o vertice a ser visitado
+	 * \author A. Cerqueira
 	 */
 	VerticeDijkstra* EncontrarProximoVertice(VerticeDijkstra* dijkstraVertices);
 	
@@ -336,6 +339,7 @@
 	 * \param dijkstraVertices A lista ligada de vertices do algoritmo de Dijkstra
 	 * \param id O id do vertice a encontrar
 	 * \return O apontador para o vertice encontrado
+	 * \author A. Cerqueira
 	 */
 	VerticeDijkstra* EncontrarVerticeDijkstraPorId(VerticeDijkstra* dijkstraVertices, int id);
 
@@ -344,8 +348,33 @@
 	 * \brief Liberta a memoria alocada para a lista ligada de vertices do algoritmo de Dijkstra.
 	 *
 	 * \param dijkstraVertices O apontador para o primeiro elemento da lista ligada de vertices do algoritmo de Dijkstra
+	 * \return true se a memoria foi libertada com sucesso, false caso contrario
+	 * \author A. Cerqueira
 	 */
 	bool LibertarDijkstraVertices(VerticeDijkstra* dijkstraVertices);
+
+
+	/**
+	 * \brief Encontra todos os postos dentro de um raio de um posto.
+	 *
+	 * \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+	 * \param posto O apontador para o posto de origem da procura
+	 * \param raio O raio de procura
+	 * \return O apontador para o vertice encontrado
+	 * \author A. Cerqueira
+	 */
+	PostoVertice* EncontrarPostosEmRaio(PostoVertice* primeiroPosto, PostoVertice* posto, float raio);
+
+
+	/**
+	 * \brief Verifica se um posto existe na lista ligada de postos.
+	 * 
+	 * \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+	 * \param posto O apontador para o posto a procurar
+	 * \return true se o posto existe em postos, false caso contrario
+	 * \author A. Cerqueira
+	 */
+	bool TemPostoEmListaPostos(PostoVertice* primeiroPosto, PostoVertice* posto);
 
 #endif
 

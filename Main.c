@@ -56,7 +56,7 @@ int main() {
 				MostrarMenuAlugarMeioMobilidade(primeiroMeio, primeiroCliente, primeiroPosto, &primeiroAluguer);
 				break;
 			case 9:
-				MostrarMenuListaMeiosMobilidade(primeiroMeio, primeiroCliente, primeiroPosto);
+				MostrarMenuListaMeiosMobilidade(primeiroMeio, primeiroPosto);
 				break;
 			case 10:
 				MostrarMenuListaMeiosMobilidadePorAutonomia(primeiroMeio, primeiroCliente, primeiroPosto);
@@ -90,6 +90,9 @@ int main() {
 				break;
 			case 20:
 				RecolherMeiosMobilidadeEcra(&camiao, primeiroPosto, &primeiroMeio);
+				break;
+			case 21:
+				ProcurarMeiosMobilidadeEmRaio(primeiroPosto, primeiroMeio);
 				break;
 			case 0:
 				LibertarClientes(primeiroCliente);

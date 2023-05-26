@@ -705,3 +705,73 @@ bool LibertarDijkstraVertices(VerticeDijkstra* dijkstraVertices) {
 
 	return true;
 }
+
+
+/**
+ * \brief Encontra todos os postos dentro de um raio de um posto.
+ *
+ * \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+ * \param posto O apontador para o posto de origem da procura
+ * \param raio O raio de procura
+ * \return O apontador para o vertice encontrado
+ */
+PostoVertice* EncontrarPostosEmRaio(PostoVertice* primeiroPosto, PostoVertice* posto, float raio) {
+
+	if (posto == NULL)
+		return NULL;
+
+	PostoVertice* postosEmRaio = NULL;
+	VerticeDijkstra* dijkstraVertices = InicializarDijkstraVertices(primeiroPosto);
+	VerticeDijkstra* atual = EncontrarVerticeDijkstraPorId(dijkstraVertices, posto->p.f.id);
+	atual->distancia = 0;
+
+	while (atual != NULL) {
+		PostoAdjacente* adj = atual->vertice->p.primeiraAdjacencia;
+
+		while (adj != NULL) {
+			VerticeDijkstra* adjDijkstra = EncontrarVerticeDijkstraPorId(dijkstraVertices, adj->f.destinoId);
+			float novaDistancia = atual->distancia + adj->f.distancia;
+
+			if (novaDistancia < adjDijkstra->distancia) {
+				adjDijkstra->distancia = novaDistancia;
+				adjDijkstra->antecessor = atual;
+				
+				if (adjDijkstra->distancia < raio && !TemPostoEmListaPostos(postosEmRaio, posto)) {
+					postosEmRaio = AdicionarPosto(postosEmRaio, adjDijkstra->vertice->p);
+				}
+			}
+
+			adj = adj->proximo;
+		}
+
+		atual->visitado = true;
+		atual = EncontrarProximoVertice(dijkstraVertices);
+	}
+
+	// Libertar memória
+	LibertarDijkstraVertices(dijkstraVertices);
+
+	return postosEmRaio;
+}
+
+
+/**
+ * \brief Verifica se um posto existe na lista ligada de postos.
+ *
+ * \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
+ * \param posto O apontador para o posto a procurar
+ * \return true se o posto existe em postos, false caso contrario
+ * \author A. Cerqueira
+ */
+bool TemPostoEmListaPostos(PostoVertice* primeiroPosto, PostoVertice* posto) {
+	
+	while (primeiroPosto != NULL) {
+
+		if (primeiroPosto->p.f.id == posto->p.f.id)
+			return true;
+		
+		primeiroPosto = primeiroPosto->proximo;
+	}
+	
+	return false;
+}

@@ -76,7 +76,7 @@ void MostrarMenuPrincipal(int* op) {
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
 	puts("| 8- Alugar Meio de mobilidade\t\t   | 20- (Problema Caixeiro Viajante)\t\t|");
 	puts("|\t\t\t\t\t   |     Recolher meios de transporte\t\t|");
-	puts("| 9- Listar Meios de mobilidade\t\t   | \t\t\t\t\t\t|");
+	puts("| 9- Listar Meios de mobilidade\t\t   | 21- Procurar Meios em Raio \t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
 	puts("| 10- Listar ordem decrescente de autonomia| \t\t\t\t\t\t|");
 	puts("|\t\t\t\t\t   |\t\t\t\t\t\t|");
@@ -430,7 +430,7 @@ void MostrarMenuAlugarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteL
 
 
 // Lista de Meios de mobilidade
-void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente, PostoVertice* primeiroPosto) {
+void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio, PostoVertice* primeiroPosto) {
 	
 	// Mostrar os dados 
 	system("cls");
@@ -743,4 +743,46 @@ void RecolherMeiosMobilidadeEcra(Camiao* camiao, PostoVertice* primeiroPosto, Me
 	// Confirmar ou cancelar a respetiva operação.
 	if (Confirmar() == IS_CANCELED)
 		return;
+}
+
+
+void ProcurarMeiosMobilidadeEmRaio(PostoVertice* primeiroPosto, MeioMobilidadeLista* primeiroMeio) {
+
+	// Variaveis
+	MeioMobilidadeLista* meiosRaio;
+	PostoVertice* postosEmRaio;
+	int postoId;
+	float raio;
+
+	// Inserir os dados 
+	system("cls");
+	puts("+----------------------------------------+");
+	puts("|         Procurar meios em Raio         |");
+	puts("+----------------------------------------+");
+
+	printf("Insira o id do posto: ");
+	scanf_s("%d", &postoId);
+	fflush(stdin);
+
+	printf("Insira o raio: ");
+	scanf_s("%f", &raio);
+	fflush(stdin);
+	
+	PostoVertice* postoSelecionado = ProcurarPostoPorId(primeiroPosto, postoId);
+
+	postosEmRaio = EncontrarPostosEmRaio(primeiroPosto, postoSelecionado, raio);
+
+	while (postosEmRaio != NULL)
+	{
+		meiosRaio = ProcurarMeiosMobilidadeEmPosto(postosEmRaio, primeiroMeio);
+		
+		MostrarMenuListaMeiosMobilidade(meiosRaio, primeiroPosto);
+		
+		postosEmRaio = postosEmRaio->proximo;
+	}
+	
+	// Confirmar ou cancelar a respetiva operação.
+	if (Confirmar() == IS_CANCELED)
+		return;
+
 }

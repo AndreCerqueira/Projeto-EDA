@@ -35,7 +35,7 @@
 	
 	void MostrarMenuAlugarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente, PostoVertice* primeiroPosto, AluguerLista** primeiroAluguer);
 
-	void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente, PostoVertice* primeiroPosto);
+	void MostrarMenuListaMeiosMobilidade(MeioMobilidadeLista* primeiroMeio, PostoVertice* primeiroPosto);
 	void MostrarMenuListaMeiosMobilidadePorAutonomia(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente, PostoVertice* primeiroPosto);
 	void MostrarMenuListaMeiosMobilidadeLocalizacao(MeioMobilidadeLista* primeiroMeio, ClienteLista* primeiroCliente, PostoVertice* primeiroPosto);
 	
@@ -49,5 +49,6 @@
 	void MostrarMenuListaAlugueres(AluguerLista* primeiroAluguer, ClienteLista* primeiroCliente, MeioMobilidadeLista* primeiroMeio);
 
 	void RecolherMeiosMobilidadeEcra(Camiao* camiao, PostoVertice* primeiroPosto, MeioMobilidadeLista** primeiroMeio);
+	void ProcurarMeiosMobilidadeEmRaio(PostoVertice* primeiroPosto, MeioMobilidadeLista* primeiroMeio);
 	
 #endif

@@ -226,6 +226,17 @@
 
 
 	/**
+	* \brief Procura todos os meios de mobilidade que estão no posto selecionado.
+	*
+	* \param posto O apontador para o posto onde o camiao se dirige
+	* \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
+	* \return Os meios de mobilidade que estão no posto selecionado
+	* \author A. Cerqueira
+	*/
+	MeioMobilidadeLista* ProcurarMeiosMobilidadeEmPosto(PostoVertice* posto, MeioMobilidadeLista* primeiroMeio);
+	
+
+	/**
 	* \brief Recolhe todos os meios de mobilidade que estão numa determinada localização, e que tenham menos de 50% de bateria.
 	*
 	* \param camiao O apontador para o camiao que vai recolher os meios de mobilidade
