@@ -127,7 +127,7 @@ MeioMobilidadeLista* LerMeiosMobilidade(char* filePath) {
 *
 * \param filePath O caminho para o arquivo .dat onde os meios mobilidade serão guardados.
 * \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
-* \return true se a operação foi realizada com sucesso, false caso contrário
+* \return true se a operação foi realizada com sucesso, false caso o ficheiro não tenha sido aberto com sucesso
 * \author A. Cerqueira
 */
 bool GuardarMeiosMobilidade(char* filePath, MeioMobilidadeLista* primeiroMeio) {
@@ -184,7 +184,7 @@ MeioMobilidadeLista* AdicionarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, 
 *
 * \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
 * \param id O id do Meio que será removido
-* \return true se a operação foi realizada com sucesso, false caso contrário
+* \return O novo apontador para o primeiro elemento da lista ligada de meios mobilidade
 * \author A. Cerqueira
 */
 MeioMobilidadeLista* RemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio, int id) {
@@ -220,7 +220,7 @@ MeioMobilidadeLista* RemoverMeioMobilidade(MeioMobilidadeLista* primeiroMeio, in
 *
 * \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
 * \param id O id do Meio que será desativado
-* \return true se a operação foi realizada com sucesso, false caso contrário
+* \return true se a operação foi realizada com sucesso, false caso não foi encontrado meio para o id
 * \author A. Cerqueira
 */
 bool DesativarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, int id) {
@@ -246,7 +246,7 @@ bool DesativarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, int id) {
 *
 * \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
 * \param meioSelecionado O Meio que será alterado
-* \return true se a operação foi realizada com sucesso, false caso contrário
+* \return true se a operação foi realizada com sucesso, false caso não foi encontrado meio para o id
 * \author A. Cerqueira
 */
 bool EditarMeioMobilidade(MeioMobilidadeLista* primeiroMeio, MeioMobilidade meioSelecionado) {
@@ -479,14 +479,12 @@ MeioMobilidadeLista* ProcurarMeiosMobilidadeEmPosto(PostoVertice* posto, MeioMob
 *
 * \param camiao O apontador para o camiao que vai recolher os meios de mobilidade
 * \param posto O apontador para o posto onde o camiao se dirige
-* \param primeiroPosto O apontador para o primeiro elemento da lista ligada de postos
 * \param primeiroMeio O apontador para o primeiro elemento da lista ligada de meios mobilidade
 * \param meiosFaltaRecolher O apontador para o primeiro elemento da lista ligada de meios mobilidade que falta recolher
 * \return Os meios de mobilidade recolhidos pelo camiao no posto
 * \author A. Cerqueira
 */
-MeioMobilidadeLista* RecolherMeiosMobilidadeEmPosto(Camiao* camiao, PostoVertice* posto, PostoVertice* primeiroPosto, MeioMobilidadeLista* primeiroMeio, MeioMobilidadeLista** meiosFaltaRecolher) {
-	float capacidadeOcupada = 0;
+MeioMobilidadeLista* RecolherMeiosMobilidadeEmPosto(Camiao* camiao, PostoVertice* posto, MeioMobilidadeLista* primeiroMeio, MeioMobilidadeLista** meiosFaltaRecolher) {
 	MeioMobilidadeLista* meioAtual = (*meiosFaltaRecolher == NULL) ? primeiroMeio : *meiosFaltaRecolher;
 	
 	while (meioAtual != NULL) {
@@ -496,14 +494,15 @@ MeioMobilidadeLista* RecolherMeiosMobilidadeEmPosto(Camiao* camiao, PostoVertice
 			continue;
 		}
 			
-		// Verificar se o caminhão tem capacidade para recolher o meio de mobilidade
-		if (capacidadeOcupada + meioAtual->m.peso > camiao->capacidadeMaxima) {
+		// Verificar se o caminhão tem capacidade para recolher o meio de mobilidade e se tem bateria para o fazer
+		if (camiao->capacidadeOcupada + meioAtual->m.peso > camiao->capacidadeMaxima || camiao->cargaBateria - camiao->consumoBateriaPorKm < 0) {
 			break;
 		}
 
 		// Atualizar o meio de mobilidade
 		meioAtual->m.postoId = camiao->localizacaoAtual->p.f.id;
-		capacidadeOcupada += meioAtual->m.peso;
+		camiao->capacidadeOcupada += meioAtual->m.peso;
+		camiao->cargaBateria -= camiao->consumoBateriaPorKm;
 		
 		meioAtual = meioAtual->proximo;
 	}
@@ -538,8 +537,13 @@ MeioMobilidadeLista* RecolherMeiosMobilidade(Camiao* camiao, PostoVertice* prime
 		do
 		{
 			Percurso* percurso = ProcurarPercursoMaisRapido(camiao->localizacaoAtual, postoAtual, primeiroPosto);
-			*kmPercorridos += ContarDistanciaEmPercurso(percurso);
-			primeiroMeio = RecolherMeiosMobilidadeEmPosto(camiao, postoAtual, primeiroPosto, primeiroMeio, &meiosFaltaRecolher);
+			*kmPercorridos += ContarDistanciaEmPercurso(percurso) * 2; // Ida e volta
+			primeiroMeio = RecolherMeiosMobilidadeEmPosto(camiao, postoAtual, primeiroMeio, &meiosFaltaRecolher);
+			
+			// Atualizar o camião
+			camiao->cargaBateria = 100;
+			camiao->capacidadeOcupada = 0;
+
 		} while (meiosFaltaRecolher != NULL);
 
 		postoAtual = postoAtual->proximo;

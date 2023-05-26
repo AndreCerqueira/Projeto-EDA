@@ -24,6 +24,9 @@ int main() {
 
 	Camiao camiao;
 	camiao.capacidadeMaxima = 10000;
+	camiao.capacidadeOcupada = 0;
+	camiao.consumoBateriaPorKm = 1;
+	camiao.cargaBateria = 100;
 	camiao.localizacaoAtual = primeiroPosto;
 
 	// Program loop
